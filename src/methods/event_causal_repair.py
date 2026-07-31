@@ -12,7 +12,6 @@ It implements four separate contracts:
 
 from __future__ import annotations
 
-import time
 from dataclasses import dataclass, field
 from typing import Dict, FrozenSet, Iterable, List, Optional, Set, Tuple
 
@@ -430,6 +429,144 @@ def _frozen_nodes(
     return frozen
 
 
+@dataclass(frozen=True)
+class RepairNeighborhood:
+    """One deterministic level of the expanding repair hierarchy."""
+
+    hierarchy_level: int
+    name: str
+    mutable: FrozenSet[DecisionKey]
+
+
+_SHARED_RESOURCE_PREFIXES = (
+    "inventory:",
+    "corridor:",
+)
+
+
+def _decisions_for_uavs(
+    dependency_graph: PlanBeliefDependencyGraph,
+    uavs: Iterable[int],
+) -> Set[DecisionKey]:
+    selected = {int(u) for u in uavs}
+    return {
+        key
+        for key in dependency_graph.decisions
+        if key.uav in selected
+    }
+
+
+def _shared_resource_uav_closure(
+    dependency_graph: PlanBeliefDependencyGraph,
+    seed_uavs: Iterable[int],
+) -> Set[int]:
+    """Expand UAVs through shared inventory and corridor resources only."""
+
+    selected = {int(u) for u in seed_uavs}
+
+    while True:
+        shared_resources: Set[str] = set()
+
+        for key in sorted(dependency_graph.decisions):
+            if key.uav not in selected:
+                continue
+
+            decision = dependency_graph.decisions[key]
+            shared_resources.update(
+                resource
+                for resource in decision.resources
+                if resource.startswith(_SHARED_RESOURCE_PREFIXES)
+            )
+
+        expanded = set(selected)
+
+        for resource in sorted(shared_resources):
+            expanded.update(
+                key.uav
+                for key in dependency_graph.resource_to_decisions.get(
+                    resource,
+                    set(),
+                )
+            )
+
+        if expanded == selected:
+            return selected
+
+        selected = expanded
+
+
+def expanding_repair_neighborhoods(
+    dependency_graph: PlanBeliefDependencyGraph,
+    trace: ImpactTrace,
+    selective_repair: bool = True,
+) -> List[RepairNeighborhood]:
+    """Build the parameter-free deterministic repair hierarchy.
+
+    Level 1 repairs only the causal decision closure.
+    Level 2 releases complete routes of causally affected UAVs.
+    Level 3 releases UAVs connected through shared inventory or corridors.
+    Level 4 releases the complete fleet.
+
+    Duplicate decision sets are removed, so an expansion level is not solved
+    twice when it adds no new mutable decisions.
+    """
+
+    all_decisions = set(dependency_graph.decisions)
+
+    if not selective_repair:
+        return [
+            RepairNeighborhood(
+                hierarchy_level=4,
+                name="full_fleet",
+                mutable=frozenset(all_decisions),
+            )
+        ]
+
+    causal = set(trace.mutable)
+    causal_uavs = {key.uav for key in causal}
+
+    affected_routes = _decisions_for_uavs(
+        dependency_graph,
+        causal_uavs,
+    )
+
+    shared_uavs = _shared_resource_uav_closure(
+        dependency_graph,
+        causal_uavs,
+    )
+    shared_resource_routes = _decisions_for_uavs(
+        dependency_graph,
+        shared_uavs,
+    )
+
+    raw_levels = [
+        (1, "causal_decisions", causal),
+        (2, "affected_uav_routes", affected_routes),
+        (3, "shared_resource_uavs", shared_resource_routes),
+        (4, "full_fleet", all_decisions),
+    ]
+
+    neighborhoods: List[RepairNeighborhood] = []
+    seen: Set[FrozenSet[DecisionKey]] = set()
+
+    for hierarchy_level, name, mutable in raw_levels:
+        signature = frozenset(mutable)
+
+        if signature in seen:
+            continue
+
+        seen.add(signature)
+        neighborhoods.append(
+            RepairNeighborhood(
+                hierarchy_level=hierarchy_level,
+                name=name,
+                mutable=signature,
+            )
+        )
+
+    return neighborhoods
+
+
 def optimistic_value_upper_bound(env) -> float:
     """Relaxed value upper bound: immediate, free, unconstrained service."""
     ctx = env._plan_context()
@@ -497,7 +634,7 @@ def event_impact_value_proxy(
 
 
 class EventCausalRepairController:
-    """Baseline-compatible controller implementing selective belief repair."""
+    """Optimistic-bound-screened expanding event-causal ALNS repair."""
 
     name = "Event-Causal Belief-Repair ALNS"
 
@@ -511,10 +648,18 @@ class EventCausalRepairController:
         self.selective_repair = bool(selective_repair)
         self.solve_cost = solve_cost
         self.screen_soft_events = bool(screen_soft_events)
+
         if proxy_threshold_fraction < 0.0:
-            raise ValueError("proxy_threshold_fraction must be nonnegative")
-        self.proxy_threshold_fraction = float(proxy_threshold_fraction)
-        self.previous_snapshot: Optional[OperationalSnapshot] = None
+            raise ValueError(
+                "proxy_threshold_fraction must be nonnegative"
+            )
+
+        self.proxy_threshold_fraction = float(
+            proxy_threshold_fraction
+        )
+        self.previous_snapshot: Optional[
+            OperationalSnapshot
+        ] = None
         self.scenario_token: Optional[int] = None
         self.last_t = -np.inf
         self.diagnostics: List[Dict[str, object]] = []
@@ -529,162 +674,486 @@ class EventCausalRepairController:
         self.repair_wall_time_s = 0.0
         self.repair_solver_calls = 0
 
+    @staticmethod
+    def _prefer_candidate(
+        candidate_hard: Set[DecisionKey],
+        candidate_value: float,
+        selected_hard: Optional[Set[DecisionKey]],
+        selected_value: float,
+    ) -> bool:
+        """Choose the best diagnostic candidate when no level is accepted."""
+
+        if selected_hard is None:
+            return True
+
+        candidate_feasible = not candidate_hard
+        selected_feasible = not selected_hard
+
+        if candidate_feasible and not selected_feasible:
+            return True
+
+        if candidate_feasible != selected_feasible:
+            return False
+
+        if candidate_feasible:
+            return candidate_value > selected_value + 1e-9
+
+        if len(candidate_hard) != len(selected_hard):
+            return len(candidate_hard) < len(selected_hard)
+
+        return candidate_value > selected_value + 1e-9
+
     def act(self, env, obs, masks, deciders):
         del obs, masks
-        actions = {u: env.A_FOLLOW for u in deciders}
+
+        actions = {
+            u: env.A_FOLLOW
+            for u in deciders
+        }
         token = id(env.scenario)
+
         if (
             self.previous_snapshot is None
             or token != self.scenario_token
             or env.t < self.last_t - 1e-9
         ):
-            self.previous_snapshot = OperationalSnapshot.capture(env)
+            self.previous_snapshot = (
+                OperationalSnapshot.capture(env)
+            )
             self.scenario_token = token
             self.last_t = float(env.t)
             return actions
 
         current = OperationalSnapshot.capture(env)
         changes = OperationalChanges.between(
-            self.previous_snapshot, current)
-        dependency_graph = PlanBeliefDependencyGraph.build(env)
+            self.previous_snapshot,
+            current,
+        )
+        dependency_graph = PlanBeliefDependencyGraph.build(
+            env
+        )
         event_type = env.last_decision_event_type
         hard = _hard_infeasible_decisions(
-            env, env.scaffold, dependency_graph)
+            env,
+            env.scaffold,
+            dependency_graph,
+        )
+
         if not changes.has_relevant_change and not hard:
             self.previous_snapshot = current
             self.last_t = float(env.t)
             return actions
 
         trace = trace_impacts(
-            env, dependency_graph, changes, event_type)
+            env,
+            dependency_graph,
+            changes,
+            event_type,
+        )
         ctx = env._plan_context()
-        current_value = env.planner.evaluate_belief_value(
-            env.scaffold, ctx)
+        current_value = (
+            env.planner.evaluate_belief_value(
+                env.scaffold,
+                ctx,
+            )
+        )
         upper_bound = optimistic_value_upper_bound(env)
-        j_current = max(upper_bound - current_value, 0.0)
+        j_current = max(
+            upper_bound - current_value,
+            0.0,
+        )
         lower_bound = 0.0
         potential_gain_bound = j_current - lower_bound
         event_impact_proxy = event_impact_value_proxy(
-            env, self.previous_snapshot, current, changes)
+            env,
+            self.previous_snapshot,
+            current,
+            changes,
+        )
         solve_cost = float(
-            env.p.hybrid.xi_C if self.solve_cost is None else self.solve_cost)
+            env.p.hybrid.xi_C
+            if self.solve_cost is None
+            else self.solve_cost
+        )
         proxy_activation_threshold = max(
             solve_cost,
             self.proxy_threshold_fraction * upper_bound,
         )
-        total_decisions = len(dependency_graph.decisions)
-        scope_fraction = (
-            len(trace.mutable) / total_decisions
-            if total_decisions else (1.0 if changes.has_opportunity else 0.0)
+        total_decisions = len(
+            dependency_graph.decisions
         )
+        initial_scope_fraction = (
+            len(trace.mutable) / total_decisions
+            if total_decisions
+            else (
+                1.0
+                if changes.has_opportunity
+                else 0.0
+            )
+        )
+
         record: Dict[str, object] = {
             "time_h": float(env.t),
             "event_kind": trace.event_kind,
-            "event_type": event_type.name if event_type is not None else "",
-            "changed_resources": "|".join(sorted(trace.changed_resources)),
+            "event_type": (
+                event_type.name
+                if event_type is not None
+                else ""
+            ),
+            "changed_resources": "|".join(
+                sorted(trace.changed_resources)
+            ),
             "hard_impact_count": len(trace.hard),
             "direct_impact_count": len(trace.direct),
-            "opportunity_seed_count": len(trace.opportunity_seeds),
-            "mutable_decision_count": len(trace.mutable),
-            "frozen_decision_count": len(trace.frozen),
+            "opportunity_seed_count": len(
+                trace.opportunity_seeds
+            ),
+            "mutable_decision_count": len(
+                trace.mutable
+            ),
+            "frozen_decision_count": len(
+                trace.frozen
+            ),
             "total_decision_count": total_decisions,
-            "repair_scope_fraction": float(scope_fraction),
-            "current_plan_value": float(current_value),
-            "optimistic_value_upper_bound": float(upper_bound),
+            "repair_scope_fraction": float(
+                initial_scope_fraction
+            ),
+            "current_plan_value": float(
+                current_value
+            ),
+            "optimistic_value_upper_bound": float(
+                upper_bound
+            ),
             "J_current": float(j_current),
             "LB": float(lower_bound),
-            "potential_gain_bound": float(potential_gain_bound),
-            "event_impact_value_proxy": float(event_impact_proxy),
+            "potential_gain_bound": float(
+                potential_gain_bound
+            ),
+            "event_impact_value_proxy": float(
+                event_impact_proxy
+            ),
             "solve_cost": solve_cost,
-            "proxy_threshold_fraction": self.proxy_threshold_fraction,
-            "screen_soft_events": int(self.screen_soft_events),
+            "proxy_threshold_fraction": (
+                self.proxy_threshold_fraction
+            ),
+            "screen_soft_events": int(
+                self.screen_soft_events
+            ),
             "proxy_activation_threshold": float(
-                proxy_activation_threshold),
+                proxy_activation_threshold
+            ),
             "attempted": 0,
             "installed": 0,
             "fallback_full_replan": 0,
+            "full_fleet_attempted": 0,
+            "neighborhood_attempt_count": 0,
+            "neighborhood_levels_attempted": "",
+            "accepted_neighborhood_level": 0,
+            "accepted_neighborhood_name": "",
             "localized_solve_wall_time_s": 0.0,
             "fallback_solve_wall_time_s": 0.0,
             "repair_wall_time_s": 0.0,
             "repair_solver_calls": 0,
             "candidate_plan_value": float("nan"),
             "actual_improvement": float("nan"),
-            "net_improvement_after_solve": float("nan"),
+            "net_improvement_after_solve": float(
+                "nan"
+            ),
             "outcome": "",
         }
 
         if not trace.hard and not trace.changed_resources:
-            record["outcome"] = "continue_no_relevant_change"
-        elif self.screen_soft_events and not trace.hard and potential_gain_bound <= solve_cost + 1e-9:
-            record["outcome"] = "certified_continue"
+            record["outcome"] = (
+                "continue_no_relevant_change"
+            )
+
         elif (
-            self.screen_soft_events and
-            not trace.hard
-            and event_impact_proxy <= proxy_activation_threshold + 1e-9
+            self.screen_soft_events
+            and not trace.hard
+            and potential_gain_bound
+            <= solve_cost + 1e-9
         ):
-            record["outcome"] = "continue_event_impact_below_threshold"
+            record["outcome"] = "certified_continue"
+
+        elif (
+            self.screen_soft_events
+            and not trace.hard
+            and event_impact_proxy
+            <= proxy_activation_threshold + 1e-9
+        ):
+            record["outcome"] = (
+                "continue_event_impact_below_threshold"
+            )
+
         elif env.K_rem <= 0:
-            record["outcome"] = "continue_budget_exhausted"
+            record["outcome"] = (
+                "continue_budget_exhausted"
+            )
+
+        elif not env.begin_external_resolve():
+            record["outcome"] = (
+                "continue_budget_exhausted"
+            )
+
         else:
-            env.begin_external_resolve()
             record["attempted"] = 1
-            if self.selective_repair:
-                warm = _partial_warm_start(
-                    env.scaffold, trace.mutable)
-                frozen = _frozen_nodes(
-                    dependency_graph, trace.mutable)
-            else:
-                warm, frozen = None, None
-                record["repair_scope_fraction"] = 1.0
-                record["mutable_decision_count"] = total_decisions
-                record["frozen_decision_count"] = 0
-            solve_started = time.perf_counter()
-            candidate = env.propose_scaffold_repair(warm, frozen)
-            localized_solve_wall_time = time.perf_counter() - solve_started
-            record["localized_solve_wall_time_s"] = float(
-                localized_solve_wall_time)
-            record["repair_solver_calls"] = 1
-            candidate_graph = PlanBeliefDependencyGraph.build(env, candidate)
-            candidate_hard = _hard_infeasible_decisions(
-                env, candidate, candidate_graph)
-            candidate_value = env.planner.evaluate_belief_value(
-                candidate, ctx)
 
-            if self.selective_repair and (
-                candidate_hard or candidate_value <= current_value + 1e-9
+            transaction_calls_before = int(
+                env.repair_solver_calls
+            )
+            transaction_wall_before = float(
+                env.repair_solver_wall_time_s
+            )
+
+            neighborhoods = expanding_repair_neighborhoods(
+                dependency_graph,
+                trace,
+                selective_repair=self.selective_repair,
+            )
+
+            attempted_names: List[str] = []
+
+            selected_candidate: Optional[Scaffold] = None
+            selected_hard: Optional[Set[DecisionKey]] = None
+            selected_value = -np.inf
+            selected_level = 0
+            selected_name = ""
+            selected_mutable: FrozenSet[DecisionKey] = (
+                frozenset()
+            )
+
+            accepted = False
+
+            for attempt_index, neighborhood in enumerate(
+                neighborhoods,
+                start=1,
             ):
-                fallback_started = time.perf_counter()
-                full_candidate = env.propose_scaffold_repair(None, None)
-                fallback_solve_wall_time = (
-                    time.perf_counter() - fallback_started)
-                record["fallback_solve_wall_time_s"] = float(
-                    fallback_solve_wall_time)
-                record["repair_solver_calls"] = 2
-                full_graph = PlanBeliefDependencyGraph.build(
-                    env, full_candidate)
-                full_hard = _hard_infeasible_decisions(
-                    env, full_candidate, full_graph)
-                full_value = env.planner.evaluate_belief_value(
-                    full_candidate, ctx)
-                if not full_hard and (
-                    candidate_hard or full_value > candidate_value + 1e-9
-                ):
-                    candidate = full_candidate
-                    candidate_hard = full_hard
-                    candidate_value = full_value
+                mutable = set(neighborhood.mutable)
+
+                if neighborhood.name == "full_fleet":
+                    warm = None
+                    frozen = None
+                    record["full_fleet_attempted"] = 1
                     record["fallback_full_replan"] = 1
+                else:
+                    warm = _partial_warm_start(
+                        env.scaffold,
+                        mutable,
+                    )
+                    frozen = _frozen_nodes(
+                        dependency_graph,
+                        mutable,
+                    )
 
-            actual_improvement = candidate_value - current_value
-            record["candidate_plan_value"] = float(candidate_value)
-            record["actual_improvement"] = float(actual_improvement)
+                solve_wall_before = float(
+                    env.repair_solver_wall_time_s
+                )
+                candidate = env.propose_scaffold_repair(
+                    warm,
+                    frozen,
+                )
+                solve_wall_time = max(
+                    float(env.repair_solver_wall_time_s)
+                    - solve_wall_before,
+                    0.0,
+                )
+
+                candidate_graph = (
+                    PlanBeliefDependencyGraph.build(
+                        env,
+                        candidate,
+                    )
+                )
+                candidate_hard = (
+                    _hard_infeasible_decisions(
+                        env,
+                        candidate,
+                        candidate_graph,
+                    )
+                )
+                candidate_value = (
+                    env.planner.evaluate_belief_value(
+                        candidate,
+                        ctx,
+                    )
+                )
+                actual_improvement = (
+                    candidate_value - current_value
+                )
+                candidate_feasible = not candidate_hard
+                accepted_here = (
+                    candidate_feasible
+                    and (
+                        bool(trace.hard)
+                        or actual_improvement
+                        > solve_cost + 1e-9
+                    )
+                )
+
+                mutable_count = len(mutable)
+                frozen_count = max(
+                    total_decisions - mutable_count,
+                    0,
+                )
+                scope_fraction = (
+                    mutable_count / total_decisions
+                    if total_decisions
+                    else (
+                        1.0
+                        if changes.has_opportunity
+                        else 0.0
+                    )
+                )
+
+                prefix = f"level_{attempt_index}"
+                record[f"{prefix}_hierarchy_level"] = (
+                    neighborhood.hierarchy_level
+                )
+                record[f"{prefix}_name"] = (
+                    neighborhood.name
+                )
+                record[f"{prefix}_mutable_count"] = (
+                    mutable_count
+                )
+                record[f"{prefix}_scope_fraction"] = float(
+                    scope_fraction
+                )
+                record[f"{prefix}_candidate_value"] = float(
+                    candidate_value
+                )
+                record[f"{prefix}_improvement"] = float(
+                    actual_improvement
+                )
+                record[f"{prefix}_hard_count"] = len(
+                    candidate_hard
+                )
+                record[f"{prefix}_feasible"] = int(
+                    candidate_feasible
+                )
+                record[f"{prefix}_accepted"] = int(
+                    accepted_here
+                )
+                record[f"{prefix}_solve_wall_time_s"] = (
+                    float(solve_wall_time)
+                )
+
+                attempted_names.append(neighborhood.name)
+
+                if neighborhood.name == "causal_decisions":
+                    record[
+                        "localized_solve_wall_time_s"
+                    ] = float(solve_wall_time)
+                else:
+                    record[
+                        "fallback_solve_wall_time_s"
+                    ] = float(
+                        record[
+                            "fallback_solve_wall_time_s"
+                        ]
+                    ) + float(solve_wall_time)
+
+                if self._prefer_candidate(
+                    candidate_hard,
+                    candidate_value,
+                    selected_hard,
+                    selected_value,
+                ):
+                    selected_candidate = candidate
+                    selected_hard = set(candidate_hard)
+                    selected_value = float(candidate_value)
+                    selected_level = (
+                        neighborhood.hierarchy_level
+                    )
+                    selected_name = neighborhood.name
+                    selected_mutable = neighborhood.mutable
+
+                if accepted_here:
+                    selected_candidate = candidate
+                    selected_hard = set(candidate_hard)
+                    selected_value = float(candidate_value)
+                    selected_level = (
+                        neighborhood.hierarchy_level
+                    )
+                    selected_name = neighborhood.name
+                    selected_mutable = neighborhood.mutable
+                    accepted = True
+                    break
+
+            if selected_candidate is None or selected_hard is None:
+                raise RuntimeError(
+                    "Expanding repair produced no candidate"
+                )
+
+            transaction_calls = (
+                int(env.repair_solver_calls)
+                - transaction_calls_before
+            )
+            transaction_wall_time = max(
+                float(env.repair_solver_wall_time_s)
+                - transaction_wall_before,
+                0.0,
+            )
+
+            selected_improvement = (
+                selected_value - current_value
+            )
+            selected_mutable_count = len(
+                selected_mutable
+            )
+            selected_scope_fraction = (
+                selected_mutable_count / total_decisions
+                if total_decisions
+                else (
+                    1.0
+                    if changes.has_opportunity
+                    else 0.0
+                )
+            )
+
+            record["neighborhood_attempt_count"] = (
+                transaction_calls
+            )
+            record["neighborhood_levels_attempted"] = (
+                "|".join(attempted_names)
+            )
+            record["repair_solver_calls"] = (
+                transaction_calls
+            )
+            record["repair_wall_time_s"] = float(
+                transaction_wall_time
+            )
+            record["candidate_plan_value"] = float(
+                selected_value
+            )
+            record["actual_improvement"] = float(
+                selected_improvement
+            )
             record["net_improvement_after_solve"] = float(
-                actual_improvement - solve_cost)
-            if not candidate_hard and (
-                trace.hard or actual_improvement >solve_cost + 1e-9
+                selected_improvement - solve_cost
+            )
+            record["mutable_decision_count"] = (
+                selected_mutable_count
+            )
+            record["frozen_decision_count"] = max(
+                total_decisions - selected_mutable_count,
+                0,
+            )
+            record["repair_scope_fraction"] = float(
+                selected_scope_fraction
+            )
 
-            ):
-                env.install_scaffold_repair(candidate)
+            if accepted:
+                env.install_scaffold_repair(
+                    selected_candidate
+                )
                 record["installed"] = 1
+                record["accepted_neighborhood_level"] = (
+                    selected_level
+                )
+                record["accepted_neighborhood_name"] = (
+                    selected_name
+                )
+
                 if trace.hard:
                     record["outcome"] = (
                         "installed_feasibility_repair"
@@ -692,19 +1161,24 @@ class EventCausalRepairController:
                 else:
                     record["outcome"] = (
                         "installed_net_beneficial"
-                )
-            elif candidate_hard:
-                record["outcome"] = "rejected_infeasible_candidate"
-            else:
-                record["outcome"] = "rejected_no_net_benefit"
+                    )
 
-            repair_wall_time = (
-                float(record["localized_solve_wall_time_s"])
-                + float(record["fallback_solve_wall_time_s"])
+            elif selected_hard:
+                record["outcome"] = (
+                    "rejected_infeasible_candidate"
+                )
+
+            else:
+                record["outcome"] = (
+                    "rejected_no_net_benefit"
+                )
+
+            self.repair_wall_time_s += float(
+                transaction_wall_time
             )
-            record["repair_wall_time_s"] = repair_wall_time
-            self.repair_wall_time_s += repair_wall_time
-            self.repair_solver_calls += int(record["repair_solver_calls"])
+            self.repair_solver_calls += int(
+                transaction_calls
+            )
 
         self.diagnostics.append(record)
         self.previous_snapshot = current
@@ -712,10 +1186,14 @@ class EventCausalRepairController:
         return actions
 
 
-class RegretGatedFullReplanController(EventCausalRepairController):
-    """Ablation retaining the valid trigger but removing localization."""
+class OptimisticBoundScreenedFullReplanController(
+    EventCausalRepairController
+):
+    """Ablation retaining the valid screen but removing localization."""
 
-    name = "Regret-Gated Full Replan ALNS"
+    name = (
+        "Optimistic-Bound-Screened Full Replan ALNS"
+    )
 
     def __init__(
         self,
@@ -725,21 +1203,17 @@ class RegretGatedFullReplanController(EventCausalRepairController):
         super().__init__(
             selective_repair=False,
             solve_cost=solve_cost,
-            proxy_threshold_fraction=proxy_threshold_fraction,
+            proxy_threshold_fraction=(
+                proxy_threshold_fraction
+            ),
             screen_soft_events=True,
         )
+
 
 class EveryEventFullReplanController(
     EventCausalRepairController
 ):
-    """Full-fleet ALNS repair after every observed operational change.
-
-    This baseline uses the same external repair transaction,
-    committed-leg contract, onboard-payload contract, candidate
-    evaluation and installation pathway as the proposed controller.
-
-    Only the trigger screening and repair localization are removed.
-    """
+    """Full-fleet ALNS repair after every observed operational change."""
 
     name = "Full Event Replan ALNS"
 
@@ -753,3 +1227,4 @@ class EveryEventFullReplanController(
             proxy_threshold_fraction=0.0,
             screen_soft_events=False,
         )
+

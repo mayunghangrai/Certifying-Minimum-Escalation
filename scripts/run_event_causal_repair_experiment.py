@@ -38,14 +38,14 @@ from env.uav_env import UAMTVRPIUEnv  # noqa: E402
 from methods.event_causal_repair import (
     EventCausalRepairController,
     EveryEventFullReplanController,
-    RegretGatedFullReplanController,
+    OptimisticBoundScreenedFullReplanController,
 )
 
 
 MAX_STEPS = 6000
 METHOD_ORDER = (
     "Event-Causal Belief-Repair ALNS",
-    "Regret-Gated Full Replan ALNS",
+    "Optimistic-Bound-Screened Full Replan ALNS",
     "Full Event Replan ALNS",
     "Initial Plan Only",
 )
@@ -85,7 +85,7 @@ def _controllers(solve_cost=None, proxy_threshold_fraction=0.0):
             solve_cost=solve_cost,
             proxy_threshold_fraction=proxy_threshold_fraction,
         ),
-        RegretGatedFullReplanController(
+        OptimisticBoundScreenedFullReplanController(
             solve_cost=solve_cost,
             proxy_threshold_fraction=proxy_threshold_fraction,
         ),
