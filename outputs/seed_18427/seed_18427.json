@@ -1,0 +1,8431 @@
+{
+  "config": {
+    "audit": {
+      "expected_urgency_leaders": [
+        {
+          "operational": "N4",
+          "time_s": 12600.0,
+          "true": "N4"
+        },
+        {
+          "operational": "N4",
+          "time_s": 13320.0,
+          "true": "N3"
+        },
+        {
+          "operational": "N3",
+          "time_s": 18720.0,
+          "true": "N3"
+        },
+        {
+          "operational": "N4",
+          "time_s": 21960.0,
+          "true": "N4"
+        }
+      ],
+      "fixed_corridors": [
+        {
+          "corridor_id": "corridor_depot_n3_south_outbound",
+          "destination": "N3",
+          "fixture_role": "temporary_nfz_affected",
+          "origin": "DEPOT",
+          "waypoints_m": [
+            [
+              500.0,
+              500.0
+            ],
+            [
+              2400.0,
+              650.0
+            ],
+            [
+              3450.0,
+              950.0
+            ],
+            [
+              4300.0,
+              1000.0
+            ]
+          ]
+        },
+        {
+          "corridor_id": "corridor_depot_n3_north_alternative",
+          "destination": "N3",
+          "fixture_role": "temporary_nfz_alternative",
+          "origin": "DEPOT",
+          "waypoints_m": [
+            [
+              500.0,
+              500.0
+            ],
+            [
+              800.0,
+              200.0
+            ],
+            [
+              2500.0,
+              200.0
+            ],
+            [
+              4100.0,
+              500.0
+            ],
+            [
+              4300.0,
+              1000.0
+            ]
+          ]
+        },
+        {
+          "corridor_id": "corridor_n1_n5_hazard_outbound",
+          "destination": "N5",
+          "fixture_role": "hazard_affected",
+          "origin": "N1",
+          "waypoints_m": [
+            [
+              1000.0,
+              4200.0
+            ],
+            [
+              1600.0,
+              4300.0
+            ],
+            [
+              2200.0,
+              3550.0
+            ],
+            [
+              2600.0,
+              3800.0
+            ]
+          ]
+        },
+        {
+          "corridor_id": "corridor_n1_n5_north_alternative",
+          "destination": "N5",
+          "fixture_role": "hazard_alternative",
+          "origin": "N1",
+          "waypoints_m": [
+            [
+              1000.0,
+              4200.0
+            ],
+            [
+              1400.0,
+              4700.0
+            ],
+            [
+              2600.0,
+              4700.0
+            ],
+            [
+              2600.0,
+              3800.0
+            ]
+          ]
+        }
+      ],
+      "snapshot_time_s": 15120.0,
+      "urgency_checkpoints_s": [
+        12600.0,
+        13320.0,
+        18720.0,
+        21960.0
+      ]
+    },
+    "commodities": {
+      "active_names": [
+        "medical",
+        "water"
+      ],
+      "canonical_names": [
+        "medical",
+        "food",
+        "water",
+        "shelter"
+      ],
+      "criticality": [
+        4.0,
+        2.0,
+        3.0,
+        1.0
+      ],
+      "unit_mass_kg": [
+        0.25,
+        0.5,
+        1.0,
+        2.5
+      ],
+      "waiting_growth_per_hour": [
+        0.35,
+        0.2,
+        0.3,
+        0.1
+      ],
+      "waiting_scale": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "corridors": {
+      "alternatives_per_direction": 3,
+      "astar_path_penalty": 4.0,
+      "degraded_energy_multiplier": 1.2,
+      "degraded_risk_multiplier": 1.5,
+      "degraded_time_multiplier": 1.25,
+      "minimum_ground_speed_m_per_s": 5.0,
+      "nearest_neighbours": 2,
+      "nominal_payload_kg": 1.0
+    },
+    "depot": {
+      "depot_id": "DEPOT",
+      "initial_inventory": [
+        60.0,
+        0.0,
+        100.0,
+        0.0
+      ],
+      "x_m": 500.0,
+      "y_m": 500.0
+    },
+    "dynamic_zones": [
+      {
+        "activation_notice_reception_s": 17280.0,
+        "active_from_s": 11520.0,
+        "active_to_s": 22320.0,
+        "center_x_m": 3450.0,
+        "center_y_m": 950.0,
+        "expiration_notice_reception_s": 23400.0,
+        "radius_m": 450.0,
+        "shape": "circle",
+        "zone_id": "TNFZ1",
+        "zone_type": "temporary_nfz"
+      },
+      {
+        "activation_notice_reception_s": 17640.0,
+        "active_from_s": 10440.0,
+        "active_to_s": 25200.0,
+        "center_x_m": 2000.0,
+        "center_y_m": 3400.0,
+        "expiration_notice_reception_s": 26280.0,
+        "intensity": 1.0,
+        "radius_x_m": 800.0,
+        "radius_y_m": 550.0,
+        "shape": "ellipse",
+        "zone_id": "HAZ1",
+        "zone_type": "hazard"
+      }
+    ],
+    "fleet": {
+      "airspeed_m_per_s": 16.6666666667,
+      "battery_capacity_wh": 230.0,
+      "climb_energy_wh_per_m_per_kg": 0.012,
+      "descent_energy_wh_per_m_per_kg": 0.004,
+      "empty_mass_kg": 4.0,
+      "horizontal_energy_wh_per_m_per_kg": 0.003125,
+      "payload_capacity_kg": 2.5,
+      "safety_reserve_wh": 23.0,
+      "service_energy_wh": 2.5,
+      "uav_count": 2
+    },
+    "generator_version": "2.0.0",
+    "nodes": [
+      {
+        "initially_known": true,
+        "node_id": "N1",
+        "onset_s": 0.0,
+        "reported_demand": [
+          7.0,
+          0.0,
+          10.0,
+          0.0
+        ],
+        "reported_vulnerability": 1.2,
+        "true_demand": [
+          8.0,
+          0.0,
+          12.0,
+          0.0
+        ],
+        "true_vulnerability": 1.3,
+        "x_m": 1000.0,
+        "y_m": 4200.0
+      },
+      {
+        "initially_known": true,
+        "node_id": "N2",
+        "onset_s": 0.0,
+        "reported_demand": [
+          4.0,
+          0.0,
+          11.0,
+          0.0
+        ],
+        "reported_vulnerability": 1.2,
+        "true_demand": [
+          4.0,
+          0.0,
+          18.0,
+          0.0
+        ],
+        "true_vulnerability": 1.3,
+        "x_m": 2100.0,
+        "y_m": 1200.0
+      },
+      {
+        "initially_known": true,
+        "node_id": "N3",
+        "onset_s": 0.0,
+        "reported_demand": [
+          8.0,
+          0.0,
+          6.0,
+          0.0
+        ],
+        "reported_vulnerability": 1.5,
+        "true_demand": [
+          10.0,
+          0.0,
+          6.0,
+          0.0
+        ],
+        "true_vulnerability": 1.6,
+        "x_m": 4300.0,
+        "y_m": 1000.0
+      },
+      {
+        "initially_known": true,
+        "node_id": "N4",
+        "onset_s": 0.0,
+        "reported_demand": [
+          5.0,
+          0.0,
+          9.0,
+          0.0
+        ],
+        "reported_vulnerability": 2.1,
+        "true_demand": [
+          5.0,
+          0.0,
+          8.0,
+          0.0
+        ],
+        "true_vulnerability": 2.4,
+        "x_m": 4200.0,
+        "y_m": 4100.0
+      },
+      {
+        "initially_known": true,
+        "node_id": "N5",
+        "onset_s": 5400.0,
+        "reported_demand": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reported_vulnerability": 1.0,
+        "true_demand": [
+          3.0,
+          0.0,
+          14.0,
+          0.0
+        ],
+        "true_vulnerability": 0.9,
+        "x_m": 2600.0,
+        "y_m": 3800.0
+      },
+      {
+        "initially_known": false,
+        "node_id": "N6",
+        "onset_s": 2520.0,
+        "reported_demand": [
+          4.0,
+          0.0,
+          7.0,
+          0.0
+        ],
+        "reported_vulnerability": 1.3,
+        "true_demand": [
+          4.0,
+          0.0,
+          7.0,
+          0.0
+        ],
+        "true_vulnerability": 1.4,
+        "x_m": 800.0,
+        "y_m": 2500.0
+      }
+    ],
+    "obstacles": [
+      {
+        "height_m": 70.0,
+        "max_x_m": 2050.0,
+        "max_y_m": 2850.0,
+        "min_x_m": 1550.0,
+        "min_y_m": 750.0,
+        "obstacle_id": "B1"
+      },
+      {
+        "height_m": 95.0,
+        "max_x_m": 3450.0,
+        "max_y_m": 4550.0,
+        "min_x_m": 2850.0,
+        "min_y_m": 2250.0,
+        "obstacle_id": "B2"
+      },
+      {
+        "height_m": 55.0,
+        "max_x_m": 1250.0,
+        "max_y_m": 3650.0,
+        "min_x_m": 650.0,
+        "min_y_m": 3000.0,
+        "obstacle_id": "B3"
+      }
+    ],
+    "permanent_nfz": [
+      {
+        "center_x_m": 2500.0,
+        "center_y_m": 2500.0,
+        "radius_m": 350.0,
+        "shape": "circle",
+        "zone_id": "PNFZ1"
+      }
+    ],
+    "region": {
+      "altitude_increment_m": 20.0,
+      "coarse_cell_m": 125.0,
+      "fine_cell_m": 25.0,
+      "height_m": 5000.0,
+      "minimum_horizontal_clearance_m": 50.0,
+      "minimum_vertical_clearance_m": 20.0,
+      "width_m": 5000.0
+    },
+    "risk": {
+      "reference_ranges": {
+        "dynamic_hazard_intensity": [
+          0.0,
+          1.5
+        ],
+        "infrastructure_index": [
+          0.0,
+          1.0
+        ],
+        "landing_difficulty_index": [
+          0.0,
+          1.0
+        ],
+        "population_people_per_km2": [
+          0.0,
+          5000.0
+        ],
+        "terrain_obstacle_index": [
+          0.0,
+          1.0
+        ]
+      },
+      "weights": {
+        "dynamic_hazard": 0.25,
+        "infrastructure": 0.25,
+        "population": 0.3,
+        "terrain_obstacle": 0.2
+      }
+    },
+    "schema_version": "2.0",
+    "terrain": {
+      "peaks": [
+        {
+          "amplitude_m": 80.0,
+          "sigma_m": 600.0,
+          "x_m": 1500.0,
+          "y_m": 3700.0
+        },
+        {
+          "amplitude_m": 110.0,
+          "sigma_m": 800.0,
+          "x_m": 3800.0,
+          "y_m": 2700.0
+        }
+      ],
+      "seeded_detail_amplitude_m": 8.0
+    },
+    "units": {
+      "demand": "standardized_unit",
+      "distance": "metre",
+      "energy": "watt_hour",
+      "mass": "kilogram",
+      "time": "second"
+    }
+  },
+  "content_hash": "e255c0ef84864d7985bd72a07a9d9969f5c8b835b04fd6694b64041392efa68a",
+  "corridors": [
+    {
+      "accumulated_climb_m": 4.085347,
+      "accumulated_descent_m": 5.14583,
+      "corridor_id": "corridor_depot_n2_astar_1_forward",
+      "cruise_altitude_m": 40.0,
+      "destination": "N2",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.07054979,
+      "minimum_obstacle_clearance_m": 50.0,
+      "nominal_energy_wh": 34.412254,
+      "nominal_length_m": 2180.109834,
+      "nominal_travel_time_s": 111.149055,
+      "origin": "DEPOT",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          500.0,
+          500.0
+        ],
+        [
+          750.0,
+          500.0
+        ],
+        [
+          1000.0,
+          500.0
+        ],
+        [
+          1250.0,
+          500.0
+        ],
+        [
+          1500.0,
+          500.0
+        ],
+        [
+          1750.0,
+          500.0
+        ],
+        [
+          1875.0,
+          500.0
+        ],
+        [
+          2125.0,
+          750.0
+        ],
+        [
+          2125.0,
+          1000.0
+        ],
+        [
+          2100.0,
+          1200.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 5.14583,
+      "accumulated_descent_m": 4.085347,
+      "corridor_id": "corridor_depot_n2_astar_1_reverse",
+      "cruise_altitude_m": 40.0,
+      "destination": "DEPOT",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.07054979,
+      "minimum_obstacle_clearance_m": 50.0,
+      "nominal_energy_wh": 34.454673,
+      "nominal_length_m": 2180.109834,
+      "nominal_travel_time_s": 161.083339,
+      "origin": "N2",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          2100.0,
+          1200.0
+        ],
+        [
+          2125.0,
+          1000.0
+        ],
+        [
+          2125.0,
+          750.0
+        ],
+        [
+          1875.0,
+          500.0
+        ],
+        [
+          1750.0,
+          500.0
+        ],
+        [
+          1500.0,
+          500.0
+        ],
+        [
+          1250.0,
+          500.0
+        ],
+        [
+          1000.0,
+          500.0
+        ],
+        [
+          750.0,
+          500.0
+        ],
+        [
+          500.0,
+          500.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 6.646542,
+      "accumulated_descent_m": 7.707025,
+      "corridor_id": "corridor_depot_n2_astar_2_forward",
+      "cruise_altitude_m": 40.0,
+      "destination": "N2",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.08490655,
+      "minimum_obstacle_clearance_m": 50.0,
+      "nominal_energy_wh": 41.415756,
+      "nominal_length_m": 2615.220664,
+      "nominal_travel_time_s": 138.111785,
+      "origin": "DEPOT",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          500.0,
+          500.0
+        ],
+        [
+          625.0,
+          375.0
+        ],
+        [
+          875.0,
+          375.0
+        ],
+        [
+          1125.0,
+          375.0
+        ],
+        [
+          1375.0,
+          375.0
+        ],
+        [
+          1625.0,
+          375.0
+        ],
+        [
+          1875.0,
+          375.0
+        ],
+        [
+          2125.0,
+          625.0
+        ],
+        [
+          2250.0,
+          750.0
+        ],
+        [
+          2250.0,
+          1000.0
+        ],
+        [
+          2250.0,
+          1250.0
+        ],
+        [
+          2100.0,
+          1200.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 7.707025,
+      "accumulated_descent_m": 6.646542,
+      "corridor_id": "corridor_depot_n2_astar_2_reverse",
+      "cruise_altitude_m": 40.0,
+      "destination": "DEPOT",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.08490655,
+      "minimum_obstacle_clearance_m": 50.0,
+      "nominal_energy_wh": 41.458175,
+      "nominal_length_m": 2615.220664,
+      "nominal_travel_time_s": 187.830228,
+      "origin": "N2",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          2100.0,
+          1200.0
+        ],
+        [
+          2250.0,
+          1250.0
+        ],
+        [
+          2250.0,
+          1000.0
+        ],
+        [
+          2250.0,
+          750.0
+        ],
+        [
+          2125.0,
+          625.0
+        ],
+        [
+          1875.0,
+          375.0
+        ],
+        [
+          1625.0,
+          375.0
+        ],
+        [
+          1375.0,
+          375.0
+        ],
+        [
+          1125.0,
+          375.0
+        ],
+        [
+          875.0,
+          375.0
+        ],
+        [
+          625.0,
+          375.0
+        ],
+        [
+          500.0,
+          500.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 9.099314,
+      "accumulated_descent_m": 10.159797,
+      "corridor_id": "corridor_depot_n2_astar_3_forward",
+      "cruise_altitude_m": 40.0,
+      "destination": "N2",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.10590239,
+      "minimum_obstacle_clearance_m": 50.0,
+      "nominal_energy_wh": 51.334106,
+      "nominal_length_m": 3237.436867,
+      "nominal_travel_time_s": 175.907549,
+      "origin": "DEPOT",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          500.0,
+          500.0
+        ],
+        [
+          500.0,
+          375.0
+        ],
+        [
+          625.0,
+          250.0
+        ],
+        [
+          875.0,
+          250.0
+        ],
+        [
+          1125.0,
+          250.0
+        ],
+        [
+          1375.0,
+          250.0
+        ],
+        [
+          1625.0,
+          250.0
+        ],
+        [
+          1875.0,
+          250.0
+        ],
+        [
+          2125.0,
+          500.0
+        ],
+        [
+          2375.0,
+          750.0
+        ],
+        [
+          2375.0,
+          1000.0
+        ],
+        [
+          2375.0,
+          1250.0
+        ],
+        [
+          2250.0,
+          1375.0
+        ],
+        [
+          2125.0,
+          1375.0
+        ],
+        [
+          2100.0,
+          1200.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 10.159797,
+      "accumulated_descent_m": 9.099314,
+      "corridor_id": "corridor_depot_n2_astar_3_reverse",
+      "cruise_altitude_m": 40.0,
+      "destination": "DEPOT",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.10590239,
+      "minimum_obstacle_clearance_m": 50.0,
+      "nominal_energy_wh": 51.376525,
+      "nominal_length_m": 3237.436867,
+      "nominal_travel_time_s": 225.800379,
+      "origin": "N2",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          2100.0,
+          1200.0
+        ],
+        [
+          2125.0,
+          1375.0
+        ],
+        [
+          2250.0,
+          1375.0
+        ],
+        [
+          2375.0,
+          1250.0
+        ],
+        [
+          2375.0,
+          1000.0
+        ],
+        [
+          2375.0,
+          750.0
+        ],
+        [
+          2125.0,
+          500.0
+        ],
+        [
+          1875.0,
+          250.0
+        ],
+        [
+          1625.0,
+          250.0
+        ],
+        [
+          1375.0,
+          250.0
+        ],
+        [
+          1125.0,
+          250.0
+        ],
+        [
+          875.0,
+          250.0
+        ],
+        [
+          625.0,
+          250.0
+        ],
+        [
+          500.0,
+          375.0
+        ],
+        [
+          500.0,
+          500.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 16.244121,
+      "accumulated_descent_m": 5.221525,
+      "corridor_id": "corridor_depot_n3_astar_1_forward",
+      "cruise_altitude_m": 60.0,
+      "destination": "N3",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.12712418,
+      "minimum_obstacle_clearance_m": 250.0,
+      "nominal_energy_wh": 63.486357,
+      "nominal_length_m": 3994.065874,
+      "nominal_travel_time_s": 196.291752,
+      "origin": "DEPOT",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          500.0,
+          500.0
+        ],
+        [
+          750.0,
+          500.0
+        ],
+        [
+          1000.0,
+          500.0
+        ],
+        [
+          1250.0,
+          500.0
+        ],
+        [
+          1500.0,
+          500.0
+        ],
+        [
+          1750.0,
+          500.0
+        ],
+        [
+          2000.0,
+          500.0
+        ],
+        [
+          2250.0,
+          500.0
+        ],
+        [
+          2500.0,
+          500.0
+        ],
+        [
+          2750.0,
+          500.0
+        ],
+        [
+          3000.0,
+          500.0
+        ],
+        [
+          3250.0,
+          500.0
+        ],
+        [
+          3500.0,
+          500.0
+        ],
+        [
+          3750.0,
+          500.0
+        ],
+        [
+          4000.0,
+          750.0
+        ],
+        [
+          4300.0,
+          1000.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 5.221525,
+      "accumulated_descent_m": 16.244121,
+      "corridor_id": "corridor_depot_n3_astar_1_reverse",
+      "cruise_altitude_m": 60.0,
+      "destination": "DEPOT",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.12712418,
+      "minimum_obstacle_clearance_m": 250.0,
+      "nominal_energy_wh": 63.045453,
+      "nominal_length_m": 3994.065874,
+      "nominal_travel_time_s": 307.650811,
+      "origin": "N3",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          4300.0,
+          1000.0
+        ],
+        [
+          4000.0,
+          750.0
+        ],
+        [
+          3750.0,
+          500.0
+        ],
+        [
+          3500.0,
+          500.0
+        ],
+        [
+          3250.0,
+          500.0
+        ],
+        [
+          3000.0,
+          500.0
+        ],
+        [
+          2750.0,
+          500.0
+        ],
+        [
+          2500.0,
+          500.0
+        ],
+        [
+          2250.0,
+          500.0
+        ],
+        [
+          2000.0,
+          500.0
+        ],
+        [
+          1750.0,
+          500.0
+        ],
+        [
+          1500.0,
+          500.0
+        ],
+        [
+          1250.0,
+          500.0
+        ],
+        [
+          1000.0,
+          500.0
+        ],
+        [
+          750.0,
+          500.0
+        ],
+        [
+          500.0,
+          500.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 14.344798,
+      "accumulated_descent_m": 3.322202,
+      "corridor_id": "corridor_depot_n3_north_alternative",
+      "cruise_altitude_m": 60.0,
+      "destination": "N3",
+      "fixture_role": "temporary_nfz_alternative",
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.10785956,
+      "minimum_obstacle_clearance_m": 550.0,
+      "nominal_energy_wh": 67.968735,
+      "nominal_length_m": 4290.662609,
+      "nominal_travel_time_s": 213.79785,
+      "origin": "DEPOT",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          500.0,
+          500.0
+        ],
+        [
+          800.0,
+          200.0
+        ],
+        [
+          2500.0,
+          200.0
+        ],
+        [
+          4100.0,
+          500.0
+        ],
+        [
+          4300.0,
+          1000.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 3.322202,
+      "accumulated_descent_m": 14.344798,
+      "corridor_id": "corridor_depot_n3_north_alternative_reverse",
+      "cruise_altitude_m": 60.0,
+      "destination": "DEPOT",
+      "fixture_role": "temporary_nfz_alternative_reverse",
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.10785956,
+      "minimum_obstacle_clearance_m": 550.0,
+      "nominal_energy_wh": 67.527831,
+      "nominal_length_m": 4290.662609,
+      "nominal_travel_time_s": 324.94342,
+      "origin": "N3",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          4300.0,
+          1000.0
+        ],
+        [
+          4100.0,
+          500.0
+        ],
+        [
+          2500.0,
+          200.0
+        ],
+        [
+          800.0,
+          200.0
+        ],
+        [
+          500.0,
+          500.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 14.212718,
+      "accumulated_descent_m": 3.190122,
+      "corridor_id": "corridor_depot_n3_south_outbound",
+      "cruise_altitude_m": 60.0,
+      "destination": "N3",
+      "fixture_role": "temporary_nfz_affected",
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.13998005,
+      "minimum_obstacle_clearance_m": 127.35387,
+      "nominal_energy_wh": 61.063404,
+      "nominal_length_m": 3849.397657,
+      "nominal_travel_time_s": 187.892161,
+      "origin": "DEPOT",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          500.0,
+          500.0
+        ],
+        [
+          2400.0,
+          650.0
+        ],
+        [
+          3450.0,
+          950.0
+        ],
+        [
+          4300.0,
+          1000.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 3.190122,
+      "accumulated_descent_m": 14.212718,
+      "corridor_id": "corridor_depot_n3_south_reverse",
+      "cruise_altitude_m": 60.0,
+      "destination": "DEPOT",
+      "fixture_role": "temporary_nfz_affected_reverse",
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.13998005,
+      "minimum_obstacle_clearance_m": 127.35387,
+      "nominal_energy_wh": 60.6225,
+      "nominal_length_m": 3849.397657,
+      "nominal_travel_time_s": 299.656817,
+      "origin": "N3",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          4300.0,
+          1000.0
+        ],
+        [
+          3450.0,
+          950.0
+        ],
+        [
+          2400.0,
+          650.0
+        ],
+        [
+          500.0,
+          500.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 2.098406,
+      "accumulated_descent_m": 3.109434,
+      "corridor_id": "corridor_depot_n6_astar_1_forward",
+      "cruise_altitude_m": 40.0,
+      "destination": "N6",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.05818575,
+      "minimum_obstacle_clearance_m": 500.0,
+      "nominal_energy_wh": 33.633601,
+      "nominal_length_m": 2140.512484,
+      "nominal_travel_time_s": 119.290056,
+      "origin": "DEPOT",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          500.0,
+          500.0
+        ],
+        [
+          500.0,
+          750.0
+        ],
+        [
+          500.0,
+          1000.0
+        ],
+        [
+          500.0,
+          1250.0
+        ],
+        [
+          500.0,
+          1500.0
+        ],
+        [
+          500.0,
+          1750.0
+        ],
+        [
+          500.0,
+          2000.0
+        ],
+        [
+          500.0,
+          2250.0
+        ],
+        [
+          800.0,
+          2500.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 3.109434,
+      "accumulated_descent_m": 2.098406,
+      "corridor_id": "corridor_depot_n6_astar_1_reverse",
+      "cruise_altitude_m": 40.0,
+      "destination": "DEPOT",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.05818575,
+      "minimum_obstacle_clearance_m": 500.0,
+      "nominal_energy_wh": 33.674042,
+      "nominal_length_m": 2140.512484,
+      "nominal_travel_time_s": 140.207805,
+      "origin": "N6",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          800.0,
+          2500.0
+        ],
+        [
+          500.0,
+          2250.0
+        ],
+        [
+          500.0,
+          2000.0
+        ],
+        [
+          500.0,
+          1750.0
+        ],
+        [
+          500.0,
+          1500.0
+        ],
+        [
+          500.0,
+          1250.0
+        ],
+        [
+          500.0,
+          1000.0
+        ],
+        [
+          500.0,
+          750.0
+        ],
+        [
+          500.0,
+          500.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 2.135606,
+      "accumulated_descent_m": 3.146635,
+      "corridor_id": "corridor_depot_n6_astar_2_forward",
+      "cruise_altitude_m": 40.0,
+      "destination": "N6",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.05916243,
+      "minimum_obstacle_clearance_m": 500.0,
+      "nominal_energy_wh": 33.209546,
+      "nominal_length_m": 2113.182511,
+      "nominal_travel_time_s": 117.60946,
+      "origin": "DEPOT",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          500.0,
+          500.0
+        ],
+        [
+          625.0,
+          625.0
+        ],
+        [
+          625.0,
+          875.0
+        ],
+        [
+          625.0,
+          1125.0
+        ],
+        [
+          625.0,
+          1375.0
+        ],
+        [
+          625.0,
+          1625.0
+        ],
+        [
+          625.0,
+          1875.0
+        ],
+        [
+          625.0,
+          2125.0
+        ],
+        [
+          625.0,
+          2250.0
+        ],
+        [
+          750.0,
+          2375.0
+        ],
+        [
+          800.0,
+          2500.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 3.146635,
+      "accumulated_descent_m": 2.135606,
+      "corridor_id": "corridor_depot_n6_astar_2_reverse",
+      "cruise_altitude_m": 40.0,
+      "destination": "DEPOT",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.05916243,
+      "minimum_obstacle_clearance_m": 500.0,
+      "nominal_energy_wh": 33.249987,
+      "nominal_length_m": 2113.182511,
+      "nominal_travel_time_s": 138.465037,
+      "origin": "N6",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          800.0,
+          2500.0
+        ],
+        [
+          750.0,
+          2375.0
+        ],
+        [
+          625.0,
+          2250.0
+        ],
+        [
+          625.0,
+          2125.0
+        ],
+        [
+          625.0,
+          1875.0
+        ],
+        [
+          625.0,
+          1625.0
+        ],
+        [
+          625.0,
+          1375.0
+        ],
+        [
+          625.0,
+          1125.0
+        ],
+        [
+          625.0,
+          875.0
+        ],
+        [
+          625.0,
+          625.0
+        ],
+        [
+          500.0,
+          500.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 2.397444,
+      "accumulated_descent_m": 3.408472,
+      "corridor_id": "corridor_depot_n6_astar_3_forward",
+      "cruise_altitude_m": 40.0,
+      "destination": "N6",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.06064625,
+      "minimum_obstacle_clearance_m": 500.0,
+      "nominal_energy_wh": 36.623424,
+      "nominal_length_m": 2330.330086,
+      "nominal_travel_time_s": 131.133517,
+      "origin": "DEPOT",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          500.0,
+          500.0
+        ],
+        [
+          375.0,
+          625.0
+        ],
+        [
+          375.0,
+          875.0
+        ],
+        [
+          375.0,
+          1125.0
+        ],
+        [
+          375.0,
+          1375.0
+        ],
+        [
+          375.0,
+          1625.0
+        ],
+        [
+          375.0,
+          1875.0
+        ],
+        [
+          375.0,
+          2125.0
+        ],
+        [
+          375.0,
+          2250.0
+        ],
+        [
+          625.0,
+          2500.0
+        ],
+        [
+          800.0,
+          2500.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 3.408472,
+      "accumulated_descent_m": 2.397444,
+      "corridor_id": "corridor_depot_n6_astar_3_reverse",
+      "cruise_altitude_m": 40.0,
+      "destination": "DEPOT",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.06064625,
+      "minimum_obstacle_clearance_m": 500.0,
+      "nominal_energy_wh": 36.663865,
+      "nominal_length_m": 2330.330086,
+      "nominal_travel_time_s": 152.165122,
+      "origin": "N6",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          800.0,
+          2500.0
+        ],
+        [
+          625.0,
+          2500.0
+        ],
+        [
+          375.0,
+          2250.0
+        ],
+        [
+          375.0,
+          2125.0
+        ],
+        [
+          375.0,
+          1875.0
+        ],
+        [
+          375.0,
+          1625.0
+        ],
+        [
+          375.0,
+          1375.0
+        ],
+        [
+          375.0,
+          1125.0
+        ],
+        [
+          375.0,
+          875.0
+        ],
+        [
+          375.0,
+          625.0
+        ],
+        [
+          500.0,
+          500.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 11.275399,
+      "accumulated_descent_m": 21.658519,
+      "corridor_id": "corridor_n1_n5_astar_1_forward",
+      "cruise_altitude_m": 80.0,
+      "destination": "N5",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.11861182,
+      "minimum_obstacle_clearance_m": 250.0,
+      "nominal_energy_wh": 28.993198,
+      "nominal_length_m": 1784.544231,
+      "nominal_travel_time_s": 90.078704,
+      "origin": "N1",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          1000.0,
+          4200.0
+        ],
+        [
+          1250.0,
+          4250.0
+        ],
+        [
+          1500.0,
+          4250.0
+        ],
+        [
+          1750.0,
+          4250.0
+        ],
+        [
+          2000.0,
+          4250.0
+        ],
+        [
+          2125.0,
+          4250.0
+        ],
+        [
+          2375.0,
+          4000.0
+        ],
+        [
+          2600.0,
+          3800.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 21.658519,
+      "accumulated_descent_m": 11.275399,
+      "corridor_id": "corridor_n1_n5_astar_1_reverse",
+      "cruise_altitude_m": 80.0,
+      "destination": "N1",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.11861182,
+      "minimum_obstacle_clearance_m": 250.0,
+      "nominal_energy_wh": 29.408523,
+      "nominal_length_m": 1784.544231,
+      "nominal_travel_time_s": 132.732418,
+      "origin": "N5",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          2600.0,
+          3800.0
+        ],
+        [
+          2375.0,
+          4000.0
+        ],
+        [
+          2125.0,
+          4250.0
+        ],
+        [
+          2000.0,
+          4250.0
+        ],
+        [
+          1750.0,
+          4250.0
+        ],
+        [
+          1500.0,
+          4250.0
+        ],
+        [
+          1250.0,
+          4250.0
+        ],
+        [
+          1000.0,
+          4200.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 6.844919,
+      "accumulated_descent_m": 17.22804,
+      "corridor_id": "corridor_n1_n5_hazard_outbound",
+      "cruise_altitude_m": 100.0,
+      "destination": "N5",
+      "fixture_role": "hazard_affected",
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.14134897,
+      "minimum_obstacle_clearance_m": 250.0,
+      "nominal_energy_wh": 32.637193,
+      "nominal_length_m": 2040.443945,
+      "nominal_travel_time_s": 105.236956,
+      "origin": "N1",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          1000.0,
+          4200.0
+        ],
+        [
+          1600.0,
+          4300.0
+        ],
+        [
+          2200.0,
+          3550.0
+        ],
+        [
+          2600.0,
+          3800.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 17.22804,
+      "accumulated_descent_m": 6.844919,
+      "corridor_id": "corridor_n1_n5_hazard_reverse",
+      "cruise_altitude_m": 100.0,
+      "destination": "N1",
+      "fixture_role": "hazard_affected_reverse",
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.14134897,
+      "minimum_obstacle_clearance_m": 250.0,
+      "nominal_energy_wh": 33.052517,
+      "nominal_length_m": 2040.443945,
+      "nominal_travel_time_s": 147.741134,
+      "origin": "N5",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          2600.0,
+          3800.0
+        ],
+        [
+          2200.0,
+          3550.0
+        ],
+        [
+          1600.0,
+          4300.0
+        ],
+        [
+          1000.0,
+          4200.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 19.075699,
+      "accumulated_descent_m": 29.45882,
+      "corridor_id": "corridor_n1_n5_north_alternative",
+      "cruise_altitude_m": 80.0,
+      "destination": "N5",
+      "fixture_role": "hazard_alternative",
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.13553817,
+      "minimum_obstacle_clearance_m": 250.0,
+      "nominal_energy_wh": 44.5511,
+      "nominal_length_m": 2740.312424,
+      "nominal_travel_time_s": 148.212696,
+      "origin": "N1",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          1000.0,
+          4200.0
+        ],
+        [
+          1400.0,
+          4700.0
+        ],
+        [
+          2600.0,
+          4700.0
+        ],
+        [
+          2600.0,
+          3800.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 29.45882,
+      "accumulated_descent_m": 19.075699,
+      "corridor_id": "corridor_n1_n5_north_alternative_reverse",
+      "cruise_altitude_m": 80.0,
+      "destination": "N1",
+      "fixture_role": "hazard_alternative_reverse",
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.13553817,
+      "minimum_obstacle_clearance_m": 250.0,
+      "nominal_energy_wh": 44.966425,
+      "nominal_length_m": 2740.312424,
+      "nominal_travel_time_s": 191.224919,
+      "origin": "N5",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          2600.0,
+          3800.0
+        ],
+        [
+          2600.0,
+          4700.0
+        ],
+        [
+          1400.0,
+          4700.0
+        ],
+        [
+          1000.0,
+          4200.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 0.0,
+      "accumulated_descent_m": 34.121949,
+      "corridor_id": "corridor_n1_n6_astar_1_forward",
+      "cruise_altitude_m": 80.0,
+      "destination": "N6",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.11057719,
+      "minimum_obstacle_clearance_m": 150.0,
+      "nominal_energy_wh": 32.935909,
+      "nominal_length_m": 2064.222086,
+      "nominal_travel_time_s": 134.439162,
+      "origin": "N1",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          1000.0,
+          4200.0
+        ],
+        [
+          750.0,
+          4000.0
+        ],
+        [
+          500.0,
+          3750.0
+        ],
+        [
+          500.0,
+          3500.0
+        ],
+        [
+          500.0,
+          3250.0
+        ],
+        [
+          500.0,
+          3000.0
+        ],
+        [
+          500.0,
+          2750.0
+        ],
+        [
+          800.0,
+          2500.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 34.121949,
+      "accumulated_descent_m": 0.0,
+      "corridor_id": "corridor_n1_n6_astar_1_reverse",
+      "cruise_altitude_m": 80.0,
+      "destination": "N1",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.11057719,
+      "minimum_obstacle_clearance_m": 150.0,
+      "nominal_energy_wh": 34.300787,
+      "nominal_length_m": 2064.222086,
+      "nominal_travel_time_s": 117.957837,
+      "origin": "N6",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          800.0,
+          2500.0
+        ],
+        [
+          500.0,
+          2750.0
+        ],
+        [
+          500.0,
+          3000.0
+        ],
+        [
+          500.0,
+          3250.0
+        ],
+        [
+          500.0,
+          3500.0
+        ],
+        [
+          500.0,
+          3750.0
+        ],
+        [
+          750.0,
+          4000.0
+        ],
+        [
+          1000.0,
+          4200.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 0.573784,
+      "accumulated_descent_m": 34.695733,
+      "corridor_id": "corridor_n1_n6_astar_2_forward",
+      "cruise_altitude_m": 80.0,
+      "destination": "N6",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.11896047,
+      "minimum_obstacle_clearance_m": 265.230508,
+      "nominal_energy_wh": 37.764112,
+      "nominal_length_m": 2370.289292,
+      "nominal_travel_time_s": 153.441102,
+      "origin": "N1",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          1000.0,
+          4200.0
+        ],
+        [
+          875.0,
+          4250.0
+        ],
+        [
+          625.0,
+          4000.0
+        ],
+        [
+          375.0,
+          3750.0
+        ],
+        [
+          375.0,
+          3500.0
+        ],
+        [
+          375.0,
+          3250.0
+        ],
+        [
+          375.0,
+          3000.0
+        ],
+        [
+          375.0,
+          2750.0
+        ],
+        [
+          625.0,
+          2500.0
+        ],
+        [
+          800.0,
+          2500.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 34.695733,
+      "accumulated_descent_m": 0.573784,
+      "corridor_id": "corridor_n1_n6_astar_2_reverse",
+      "cruise_altitude_m": 80.0,
+      "destination": "N1",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.11896047,
+      "minimum_obstacle_clearance_m": 265.230508,
+      "nominal_energy_wh": 39.12899,
+      "nominal_length_m": 2370.289292,
+      "nominal_travel_time_s": 137.077475,
+      "origin": "N6",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          800.0,
+          2500.0
+        ],
+        [
+          625.0,
+          2500.0
+        ],
+        [
+          375.0,
+          2750.0
+        ],
+        [
+          375.0,
+          3000.0
+        ],
+        [
+          375.0,
+          3250.0
+        ],
+        [
+          375.0,
+          3500.0
+        ],
+        [
+          375.0,
+          3750.0
+        ],
+        [
+          625.0,
+          4000.0
+        ],
+        [
+          875.0,
+          4250.0
+        ],
+        [
+          1000.0,
+          4200.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 34.373584,
+      "accumulated_descent_m": 68.495533,
+      "corridor_id": "corridor_n1_n6_astar_3_forward",
+      "cruise_altitude_m": 120.0,
+      "destination": "N6",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.13746897,
+      "minimum_obstacle_clearance_m": 70.84865,
+      "nominal_energy_wh": 36.829777,
+      "nominal_length_m": 2137.436867,
+      "nominal_travel_time_s": 139.082512,
+      "origin": "N1",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          1000.0,
+          4200.0
+        ],
+        [
+          1000.0,
+          4000.0
+        ],
+        [
+          1250.0,
+          3750.0
+        ],
+        [
+          1375.0,
+          3625.0
+        ],
+        [
+          1375.0,
+          3375.0
+        ],
+        [
+          1375.0,
+          3125.0
+        ],
+        [
+          1375.0,
+          3000.0
+        ],
+        [
+          1125.0,
+          2750.0
+        ],
+        [
+          875.0,
+          2500.0
+        ],
+        [
+          800.0,
+          2500.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 68.495533,
+      "accumulated_descent_m": 34.373584,
+      "corridor_id": "corridor_n1_n6_astar_3_reverse",
+      "cruise_altitude_m": 120.0,
+      "destination": "N1",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.13746897,
+      "minimum_obstacle_clearance_m": 70.84865,
+      "nominal_energy_wh": 38.194655,
+      "nominal_length_m": 2137.436867,
+      "nominal_travel_time_s": 122.515073,
+      "origin": "N6",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          800.0,
+          2500.0
+        ],
+        [
+          875.0,
+          2500.0
+        ],
+        [
+          1125.0,
+          2750.0
+        ],
+        [
+          1375.0,
+          3000.0
+        ],
+        [
+          1375.0,
+          3125.0
+        ],
+        [
+          1375.0,
+          3375.0
+        ],
+        [
+          1375.0,
+          3625.0
+        ],
+        [
+          1250.0,
+          3750.0
+        ],
+        [
+          1000.0,
+          4000.0
+        ],
+        [
+          1000.0,
+          4200.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 17.041173,
+      "accumulated_descent_m": 4.958094,
+      "corridor_id": "corridor_n2_n3_astar_1_forward",
+      "cruise_altitude_m": 60.0,
+      "destination": "N3",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.11541832,
+      "minimum_obstacle_clearance_m": 50.0,
+      "nominal_energy_wh": 37.185099,
+      "nominal_length_m": 2308.061888,
+      "nominal_travel_time_s": 114.52303,
+      "origin": "N2",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          2100.0,
+          1200.0
+        ],
+        [
+          2375.0,
+          1250.0
+        ],
+        [
+          2625.0,
+          1250.0
+        ],
+        [
+          2750.0,
+          1250.0
+        ],
+        [
+          3000.0,
+          1000.0
+        ],
+        [
+          3250.0,
+          1000.0
+        ],
+        [
+          3500.0,
+          1000.0
+        ],
+        [
+          3750.0,
+          1000.0
+        ],
+        [
+          4000.0,
+          1000.0
+        ],
+        [
+          4300.0,
+          1000.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 4.958094,
+      "accumulated_descent_m": 17.041173,
+      "corridor_id": "corridor_n2_n3_astar_1_reverse",
+      "cruise_altitude_m": 60.0,
+      "destination": "N2",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.11541832,
+      "minimum_obstacle_clearance_m": 50.0,
+      "nominal_energy_wh": 36.701776,
+      "nominal_length_m": 2308.061888,
+      "nominal_travel_time_s": 175.750936,
+      "origin": "N3",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          4300.0,
+          1000.0
+        ],
+        [
+          4000.0,
+          1000.0
+        ],
+        [
+          3750.0,
+          1000.0
+        ],
+        [
+          3500.0,
+          1000.0
+        ],
+        [
+          3250.0,
+          1000.0
+        ],
+        [
+          3000.0,
+          1000.0
+        ],
+        [
+          2750.0,
+          1250.0
+        ],
+        [
+          2625.0,
+          1250.0
+        ],
+        [
+          2375.0,
+          1250.0
+        ],
+        [
+          2100.0,
+          1200.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 15.59376,
+      "accumulated_descent_m": 3.510682,
+      "corridor_id": "corridor_n2_n3_astar_2_forward",
+      "cruise_altitude_m": 60.0,
+      "destination": "N3",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.11676245,
+      "minimum_obstacle_clearance_m": 50.0,
+      "nominal_energy_wh": 38.52838,
+      "nominal_length_m": 2401.442578,
+      "nominal_travel_time_s": 119.975466,
+      "origin": "N2",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          2100.0,
+          1200.0
+        ],
+        [
+          2375.0,
+          1000.0
+        ],
+        [
+          2500.0,
+          875.0
+        ],
+        [
+          2750.0,
+          875.0
+        ],
+        [
+          3000.0,
+          875.0
+        ],
+        [
+          3250.0,
+          875.0
+        ],
+        [
+          3500.0,
+          875.0
+        ],
+        [
+          3750.0,
+          875.0
+        ],
+        [
+          4000.0,
+          875.0
+        ],
+        [
+          4250.0,
+          875.0
+        ],
+        [
+          4300.0,
+          1000.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 3.510682,
+      "accumulated_descent_m": 15.59376,
+      "corridor_id": "corridor_n2_n3_astar_2_reverse",
+      "cruise_altitude_m": 60.0,
+      "destination": "N2",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.11676245,
+      "minimum_obstacle_clearance_m": 50.0,
+      "nominal_energy_wh": 38.045056,
+      "nominal_length_m": 2401.442578,
+      "nominal_travel_time_s": 181.019355,
+      "origin": "N3",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          4300.0,
+          1000.0
+        ],
+        [
+          4250.0,
+          875.0
+        ],
+        [
+          4000.0,
+          875.0
+        ],
+        [
+          3750.0,
+          875.0
+        ],
+        [
+          3500.0,
+          875.0
+        ],
+        [
+          3250.0,
+          875.0
+        ],
+        [
+          3000.0,
+          875.0
+        ],
+        [
+          2750.0,
+          875.0
+        ],
+        [
+          2500.0,
+          875.0
+        ],
+        [
+          2375.0,
+          1000.0
+        ],
+        [
+          2100.0,
+          1200.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 23.970102,
+      "accumulated_descent_m": 11.887024,
+      "corridor_id": "corridor_n2_n3_astar_3_forward",
+      "cruise_altitude_m": 60.0,
+      "destination": "N3",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.12559646,
+      "minimum_obstacle_clearance_m": 50.0,
+      "nominal_energy_wh": 40.248933,
+      "nominal_length_m": 2468.671122,
+      "nominal_travel_time_s": 124.031775,
+      "origin": "N2",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          2100.0,
+          1200.0
+        ],
+        [
+          2250.0,
+          1375.0
+        ],
+        [
+          2500.0,
+          1375.0
+        ],
+        [
+          2750.0,
+          1375.0
+        ],
+        [
+          3000.0,
+          1375.0
+        ],
+        [
+          3250.0,
+          1125.0
+        ],
+        [
+          3500.0,
+          1125.0
+        ],
+        [
+          3750.0,
+          1125.0
+        ],
+        [
+          4000.0,
+          1125.0
+        ],
+        [
+          4250.0,
+          1125.0
+        ],
+        [
+          4300.0,
+          1000.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 11.887024,
+      "accumulated_descent_m": 23.970102,
+      "corridor_id": "corridor_n2_n3_astar_3_reverse",
+      "cruise_altitude_m": 60.0,
+      "destination": "N2",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.12559646,
+      "minimum_obstacle_clearance_m": 50.0,
+      "nominal_energy_wh": 39.76561,
+      "nominal_length_m": 2468.671122,
+      "nominal_travel_time_s": 185.115928,
+      "origin": "N3",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          4300.0,
+          1000.0
+        ],
+        [
+          4250.0,
+          1125.0
+        ],
+        [
+          4000.0,
+          1125.0
+        ],
+        [
+          3750.0,
+          1125.0
+        ],
+        [
+          3500.0,
+          1125.0
+        ],
+        [
+          3250.0,
+          1125.0
+        ],
+        [
+          3000.0,
+          1375.0
+        ],
+        [
+          2750.0,
+          1375.0
+        ],
+        [
+          2500.0,
+          1375.0
+        ],
+        [
+          2250.0,
+          1375.0
+        ],
+        [
+          2100.0,
+          1200.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 7.444224,
+      "accumulated_descent_m": 7.39477,
+      "corridor_id": "corridor_n2_n6_astar_1_forward",
+      "cruise_altitude_m": 40.0,
+      "destination": "N6",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.14825765,
+      "minimum_obstacle_clearance_m": 50.0,
+      "nominal_energy_wh": 60.914425,
+      "nominal_length_m": 3860.472051,
+      "nominal_travel_time_s": 250.075747,
+      "origin": "N2",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          2100.0,
+          1200.0
+        ],
+        [
+          2250.0,
+          1125.0
+        ],
+        [
+          2250.0,
+          875.0
+        ],
+        [
+          2250.0,
+          750.0
+        ],
+        [
+          2000.0,
+          500.0
+        ],
+        [
+          1750.0,
+          500.0
+        ],
+        [
+          1625.0,
+          500.0
+        ],
+        [
+          1375.0,
+          750.0
+        ],
+        [
+          1125.0,
+          1000.0
+        ],
+        [
+          875.0,
+          1250.0
+        ],
+        [
+          625.0,
+          1500.0
+        ],
+        [
+          625.0,
+          1750.0
+        ],
+        [
+          625.0,
+          2000.0
+        ],
+        [
+          625.0,
+          2250.0
+        ],
+        [
+          625.0,
+          2500.0
+        ],
+        [
+          800.0,
+          2500.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 7.39477,
+      "accumulated_descent_m": 7.444224,
+      "corridor_id": "corridor_n2_n6_astar_1_reverse",
+      "cruise_altitude_m": 40.0,
+      "destination": "N2",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.14825765,
+      "minimum_obstacle_clearance_m": 50.0,
+      "nominal_energy_wh": 60.912447,
+      "nominal_length_m": 3860.472051,
+      "nominal_travel_time_s": 222.116327,
+      "origin": "N6",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          800.0,
+          2500.0
+        ],
+        [
+          625.0,
+          2500.0
+        ],
+        [
+          625.0,
+          2250.0
+        ],
+        [
+          625.0,
+          2000.0
+        ],
+        [
+          625.0,
+          1750.0
+        ],
+        [
+          625.0,
+          1500.0
+        ],
+        [
+          875.0,
+          1250.0
+        ],
+        [
+          1125.0,
+          1000.0
+        ],
+        [
+          1375.0,
+          750.0
+        ],
+        [
+          1625.0,
+          500.0
+        ],
+        [
+          1750.0,
+          500.0
+        ],
+        [
+          2000.0,
+          500.0
+        ],
+        [
+          2250.0,
+          750.0
+        ],
+        [
+          2250.0,
+          875.0
+        ],
+        [
+          2250.0,
+          1125.0
+        ],
+        [
+          2100.0,
+          1200.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 11.652517,
+      "accumulated_descent_m": 11.603063,
+      "corridor_id": "corridor_n2_n6_astar_2_forward",
+      "cruise_altitude_m": 40.0,
+      "destination": "N6",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.17206739,
+      "minimum_obstacle_clearance_m": 50.0,
+      "nominal_energy_wh": 73.472099,
+      "nominal_length_m": 4642.616737,
+      "nominal_travel_time_s": 298.197792,
+      "origin": "N2",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          2100.0,
+          1200.0
+        ],
+        [
+          2250.0,
+          1250.0
+        ],
+        [
+          2375.0,
+          1125.0
+        ],
+        [
+          2375.0,
+          875.0
+        ],
+        [
+          2375.0,
+          750.0
+        ],
+        [
+          2125.0,
+          500.0
+        ],
+        [
+          2000.0,
+          375.0
+        ],
+        [
+          1750.0,
+          375.0
+        ],
+        [
+          1625.0,
+          375.0
+        ],
+        [
+          1375.0,
+          625.0
+        ],
+        [
+          1125.0,
+          875.0
+        ],
+        [
+          875.0,
+          1125.0
+        ],
+        [
+          625.0,
+          1375.0
+        ],
+        [
+          500.0,
+          1500.0
+        ],
+        [
+          500.0,
+          1750.0
+        ],
+        [
+          500.0,
+          2000.0
+        ],
+        [
+          500.0,
+          2250.0
+        ],
+        [
+          500.0,
+          2500.0
+        ],
+        [
+          625.0,
+          2625.0
+        ],
+        [
+          750.0,
+          2625.0
+        ],
+        [
+          800.0,
+          2500.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 11.603063,
+      "accumulated_descent_m": 11.652517,
+      "corridor_id": "corridor_n2_n6_astar_2_reverse",
+      "cruise_altitude_m": 40.0,
+      "destination": "N2",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.17206739,
+      "minimum_obstacle_clearance_m": 50.0,
+      "nominal_energy_wh": 73.470121,
+      "nominal_length_m": 4642.616737,
+      "nominal_travel_time_s": 270.292395,
+      "origin": "N6",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          800.0,
+          2500.0
+        ],
+        [
+          750.0,
+          2625.0
+        ],
+        [
+          625.0,
+          2625.0
+        ],
+        [
+          500.0,
+          2500.0
+        ],
+        [
+          500.0,
+          2250.0
+        ],
+        [
+          500.0,
+          2000.0
+        ],
+        [
+          500.0,
+          1750.0
+        ],
+        [
+          500.0,
+          1500.0
+        ],
+        [
+          625.0,
+          1375.0
+        ],
+        [
+          875.0,
+          1125.0
+        ],
+        [
+          1125.0,
+          875.0
+        ],
+        [
+          1375.0,
+          625.0
+        ],
+        [
+          1625.0,
+          375.0
+        ],
+        [
+          1750.0,
+          375.0
+        ],
+        [
+          2000.0,
+          375.0
+        ],
+        [
+          2125.0,
+          500.0
+        ],
+        [
+          2375.0,
+          750.0
+        ],
+        [
+          2375.0,
+          875.0
+        ],
+        [
+          2375.0,
+          1125.0
+        ],
+        [
+          2250.0,
+          1250.0
+        ],
+        [
+          2100.0,
+          1200.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 13.938014,
+      "accumulated_descent_m": 13.88856,
+      "corridor_id": "corridor_n2_n6_astar_3_forward",
+      "cruise_altitude_m": 40.0,
+      "destination": "N6",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.17669944,
+      "minimum_obstacle_clearance_m": 50.0,
+      "nominal_energy_wh": 77.425235,
+      "nominal_length_m": 4883.915736,
+      "nominal_travel_time_s": 313.449323,
+      "origin": "N2",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          2100.0,
+          1200.0
+        ],
+        [
+          2250.0,
+          1375.0
+        ],
+        [
+          2500.0,
+          1125.0
+        ],
+        [
+          2500.0,
+          875.0
+        ],
+        [
+          2500.0,
+          750.0
+        ],
+        [
+          2250.0,
+          500.0
+        ],
+        [
+          2000.0,
+          250.0
+        ],
+        [
+          1750.0,
+          250.0
+        ],
+        [
+          1625.0,
+          250.0
+        ],
+        [
+          1375.0,
+          500.0
+        ],
+        [
+          1125.0,
+          750.0
+        ],
+        [
+          875.0,
+          1000.0
+        ],
+        [
+          625.0,
+          1250.0
+        ],
+        [
+          875.0,
+          1500.0
+        ],
+        [
+          875.0,
+          1750.0
+        ],
+        [
+          875.0,
+          2000.0
+        ],
+        [
+          875.0,
+          2250.0
+        ],
+        [
+          875.0,
+          2500.0
+        ],
+        [
+          800.0,
+          2500.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 13.88856,
+      "accumulated_descent_m": 13.938014,
+      "corridor_id": "corridor_n2_n6_astar_3_reverse",
+      "cruise_altitude_m": 40.0,
+      "destination": "N2",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.17669944,
+      "minimum_obstacle_clearance_m": 50.0,
+      "nominal_energy_wh": 77.423257,
+      "nominal_length_m": 4883.915736,
+      "nominal_travel_time_s": 285.273125,
+      "origin": "N6",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          800.0,
+          2500.0
+        ],
+        [
+          875.0,
+          2500.0
+        ],
+        [
+          875.0,
+          2250.0
+        ],
+        [
+          875.0,
+          2000.0
+        ],
+        [
+          875.0,
+          1750.0
+        ],
+        [
+          875.0,
+          1500.0
+        ],
+        [
+          625.0,
+          1250.0
+        ],
+        [
+          875.0,
+          1000.0
+        ],
+        [
+          1125.0,
+          750.0
+        ],
+        [
+          1375.0,
+          500.0
+        ],
+        [
+          1625.0,
+          250.0
+        ],
+        [
+          1750.0,
+          250.0
+        ],
+        [
+          2000.0,
+          250.0
+        ],
+        [
+          2250.0,
+          500.0
+        ],
+        [
+          2500.0,
+          750.0
+        ],
+        [
+          2500.0,
+          875.0
+        ],
+        [
+          2500.0,
+          1125.0
+        ],
+        [
+          2250.0,
+          1375.0
+        ],
+        [
+          2100.0,
+          1200.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 78.23205,
+      "accumulated_descent_m": 70.946806,
+      "corridor_id": "corridor_n3_n4_astar_1_forward",
+      "cruise_altitude_m": 140.0,
+      "destination": "N4",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.15647216,
+      "minimum_obstacle_clearance_m": 750.0,
+      "nominal_energy_wh": 54.812146,
+      "nominal_length_m": 3116.754375,
+      "nominal_travel_time_s": 179.228186,
+      "origin": "N3",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          4300.0,
+          1000.0
+        ],
+        [
+          4250.0,
+          1250.0
+        ],
+        [
+          4250.0,
+          1500.0
+        ],
+        [
+          4250.0,
+          1750.0
+        ],
+        [
+          4250.0,
+          2000.0
+        ],
+        [
+          4250.0,
+          2250.0
+        ],
+        [
+          4250.0,
+          2500.0
+        ],
+        [
+          4250.0,
+          2750.0
+        ],
+        [
+          4250.0,
+          3000.0
+        ],
+        [
+          4250.0,
+          3250.0
+        ],
+        [
+          4250.0,
+          3500.0
+        ],
+        [
+          4250.0,
+          3750.0
+        ],
+        [
+          4250.0,
+          4000.0
+        ],
+        [
+          4200.0,
+          4100.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 70.946806,
+      "accumulated_descent_m": 78.23205,
+      "corridor_id": "corridor_n3_n4_astar_1_reverse",
+      "cruise_altitude_m": 140.0,
+      "destination": "N3",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.15647216,
+      "minimum_obstacle_clearance_m": 750.0,
+      "nominal_energy_wh": 54.520736,
+      "nominal_length_m": 3116.754375,
+      "nominal_travel_time_s": 195.699303,
+      "origin": "N4",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          4200.0,
+          4100.0
+        ],
+        [
+          4250.0,
+          4000.0
+        ],
+        [
+          4250.0,
+          3750.0
+        ],
+        [
+          4250.0,
+          3500.0
+        ],
+        [
+          4250.0,
+          3250.0
+        ],
+        [
+          4250.0,
+          3000.0
+        ],
+        [
+          4250.0,
+          2750.0
+        ],
+        [
+          4250.0,
+          2500.0
+        ],
+        [
+          4250.0,
+          2250.0
+        ],
+        [
+          4250.0,
+          2000.0
+        ],
+        [
+          4250.0,
+          1750.0
+        ],
+        [
+          4250.0,
+          1500.0
+        ],
+        [
+          4250.0,
+          1250.0
+        ],
+        [
+          4300.0,
+          1000.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 73.352075,
+      "accumulated_descent_m": 66.066832,
+      "corridor_id": "corridor_n3_n4_astar_2_forward",
+      "cruise_altitude_m": 120.0,
+      "destination": "N4",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.16085851,
+      "minimum_obstacle_clearance_m": 750.0,
+      "nominal_energy_wh": 57.637313,
+      "nominal_length_m": 3322.550493,
+      "nominal_travel_time_s": 192.517046,
+      "origin": "N3",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          4300.0,
+          1000.0
+        ],
+        [
+          4375.0,
+          1125.0
+        ],
+        [
+          4375.0,
+          1375.0
+        ],
+        [
+          4375.0,
+          1625.0
+        ],
+        [
+          4375.0,
+          1875.0
+        ],
+        [
+          4375.0,
+          2125.0
+        ],
+        [
+          4375.0,
+          2375.0
+        ],
+        [
+          4375.0,
+          2625.0
+        ],
+        [
+          4375.0,
+          2875.0
+        ],
+        [
+          4375.0,
+          3125.0
+        ],
+        [
+          4375.0,
+          3375.0
+        ],
+        [
+          4375.0,
+          3625.0
+        ],
+        [
+          4375.0,
+          3875.0
+        ],
+        [
+          4375.0,
+          4125.0
+        ],
+        [
+          4200.0,
+          4100.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 66.066832,
+      "accumulated_descent_m": 73.352075,
+      "corridor_id": "corridor_n3_n4_astar_2_reverse",
+      "cruise_altitude_m": 120.0,
+      "destination": "N3",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.16085851,
+      "minimum_obstacle_clearance_m": 750.0,
+      "nominal_energy_wh": 57.345903,
+      "nominal_length_m": 3322.550493,
+      "nominal_travel_time_s": 208.793928,
+      "origin": "N4",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          4200.0,
+          4100.0
+        ],
+        [
+          4375.0,
+          4125.0
+        ],
+        [
+          4375.0,
+          3875.0
+        ],
+        [
+          4375.0,
+          3625.0
+        ],
+        [
+          4375.0,
+          3375.0
+        ],
+        [
+          4375.0,
+          3125.0
+        ],
+        [
+          4375.0,
+          2875.0
+        ],
+        [
+          4375.0,
+          2625.0
+        ],
+        [
+          4375.0,
+          2375.0
+        ],
+        [
+          4375.0,
+          2125.0
+        ],
+        [
+          4375.0,
+          1875.0
+        ],
+        [
+          4375.0,
+          1625.0
+        ],
+        [
+          4375.0,
+          1375.0
+        ],
+        [
+          4375.0,
+          1125.0
+        ],
+        [
+          4300.0,
+          1000.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 86.568397,
+      "accumulated_descent_m": 79.283153,
+      "corridor_id": "corridor_n3_n4_astar_3_forward",
+      "cruise_altitude_m": 140.0,
+      "destination": "N4",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.17247746,
+      "minimum_obstacle_clearance_m": 675.0,
+      "nominal_energy_wh": 58.250315,
+      "nominal_length_m": 3294.115073,
+      "nominal_travel_time_s": 190.399798,
+      "origin": "N3",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          4300.0,
+          1000.0
+        ],
+        [
+          4125.0,
+          1125.0
+        ],
+        [
+          4125.0,
+          1375.0
+        ],
+        [
+          4125.0,
+          1625.0
+        ],
+        [
+          4125.0,
+          1875.0
+        ],
+        [
+          4125.0,
+          2125.0
+        ],
+        [
+          4125.0,
+          2375.0
+        ],
+        [
+          4125.0,
+          2625.0
+        ],
+        [
+          4125.0,
+          2875.0
+        ],
+        [
+          4125.0,
+          3125.0
+        ],
+        [
+          4125.0,
+          3375.0
+        ],
+        [
+          4125.0,
+          3625.0
+        ],
+        [
+          4125.0,
+          3875.0
+        ],
+        [
+          4125.0,
+          4125.0
+        ],
+        [
+          4200.0,
+          4100.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 79.283153,
+      "accumulated_descent_m": 86.568397,
+      "corridor_id": "corridor_n3_n4_astar_3_reverse",
+      "cruise_altitude_m": 140.0,
+      "destination": "N3",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.17247746,
+      "minimum_obstacle_clearance_m": 675.0,
+      "nominal_energy_wh": 57.958905,
+      "nominal_length_m": 3294.115073,
+      "nominal_travel_time_s": 206.857701,
+      "origin": "N4",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          4200.0,
+          4100.0
+        ],
+        [
+          4125.0,
+          4125.0
+        ],
+        [
+          4125.0,
+          3875.0
+        ],
+        [
+          4125.0,
+          3625.0
+        ],
+        [
+          4125.0,
+          3375.0
+        ],
+        [
+          4125.0,
+          3125.0
+        ],
+        [
+          4125.0,
+          2875.0
+        ],
+        [
+          4125.0,
+          2625.0
+        ],
+        [
+          4125.0,
+          2375.0
+        ],
+        [
+          4125.0,
+          2125.0
+        ],
+        [
+          4125.0,
+          1875.0
+        ],
+        [
+          4125.0,
+          1625.0
+        ],
+        [
+          4125.0,
+          1375.0
+        ],
+        [
+          4125.0,
+          1125.0
+        ],
+        [
+          4300.0,
+          1000.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 19.979151,
+      "accumulated_descent_m": 15.559191,
+      "corridor_id": "corridor_n4_n5_astar_1_forward",
+      "cruise_altitude_m": 60.0,
+      "destination": "N5",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.14616931,
+      "minimum_obstacle_clearance_m": 100.0,
+      "nominal_energy_wh": 49.223443,
+      "nominal_length_m": 3053.664633,
+      "nominal_travel_time_s": 211.80905,
+      "origin": "N4",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          4200.0,
+          4100.0
+        ],
+        [
+          4250.0,
+          4250.0
+        ],
+        [
+          4000.0,
+          4500.0
+        ],
+        [
+          3750.0,
+          4750.0
+        ],
+        [
+          3500.0,
+          4750.0
+        ],
+        [
+          3250.0,
+          4750.0
+        ],
+        [
+          3000.0,
+          4750.0
+        ],
+        [
+          2875.0,
+          4750.0
+        ],
+        [
+          2625.0,
+          4500.0
+        ],
+        [
+          2750.0,
+          4375.0
+        ],
+        [
+          2750.0,
+          4125.0
+        ],
+        [
+          2750.0,
+          3875.0
+        ],
+        [
+          2750.0,
+          3750.0
+        ],
+        [
+          2600.0,
+          3800.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 15.559191,
+      "accumulated_descent_m": 19.979151,
+      "corridor_id": "corridor_n4_n5_astar_1_reverse",
+      "cruise_altitude_m": 60.0,
+      "destination": "N4",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.14616931,
+      "minimum_obstacle_clearance_m": 100.0,
+      "nominal_energy_wh": 49.046644,
+      "nominal_length_m": 3053.664633,
+      "nominal_travel_time_s": 164.822729,
+      "origin": "N5",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          2600.0,
+          3800.0
+        ],
+        [
+          2750.0,
+          3750.0
+        ],
+        [
+          2750.0,
+          3875.0
+        ],
+        [
+          2750.0,
+          4125.0
+        ],
+        [
+          2750.0,
+          4375.0
+        ],
+        [
+          2625.0,
+          4500.0
+        ],
+        [
+          2875.0,
+          4750.0
+        ],
+        [
+          3000.0,
+          4750.0
+        ],
+        [
+          3250.0,
+          4750.0
+        ],
+        [
+          3500.0,
+          4750.0
+        ],
+        [
+          3750.0,
+          4750.0
+        ],
+        [
+          4000.0,
+          4500.0
+        ],
+        [
+          4250.0,
+          4250.0
+        ],
+        [
+          4200.0,
+          4100.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 22.45397,
+      "accumulated_descent_m": 18.03401,
+      "corridor_id": "corridor_n4_n5_astar_2_forward",
+      "cruise_altitude_m": 80.0,
+      "destination": "N5",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.15223914,
+      "minimum_obstacle_clearance_m": 212.459146,
+      "nominal_energy_wh": 54.543943,
+      "nominal_length_m": 3381.505573,
+      "nominal_travel_time_s": 232.219477,
+      "origin": "N4",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          4200.0,
+          4100.0
+        ],
+        [
+          4375.0,
+          4250.0
+        ],
+        [
+          4125.0,
+          4500.0
+        ],
+        [
+          3875.0,
+          4750.0
+        ],
+        [
+          3750.0,
+          4875.0
+        ],
+        [
+          3500.0,
+          4875.0
+        ],
+        [
+          3250.0,
+          4875.0
+        ],
+        [
+          3000.0,
+          4875.0
+        ],
+        [
+          2875.0,
+          4875.0
+        ],
+        [
+          2625.0,
+          4625.0
+        ],
+        [
+          2500.0,
+          4500.0
+        ],
+        [
+          2500.0,
+          4250.0
+        ],
+        [
+          2500.0,
+          4000.0
+        ],
+        [
+          2500.0,
+          3750.0
+        ],
+        [
+          2600.0,
+          3800.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 18.03401,
+      "accumulated_descent_m": 22.45397,
+      "corridor_id": "corridor_n4_n5_astar_2_reverse",
+      "cruise_altitude_m": 80.0,
+      "destination": "N4",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.15223914,
+      "minimum_obstacle_clearance_m": 212.459146,
+      "nominal_energy_wh": 54.367145,
+      "nominal_length_m": 3381.505573,
+      "nominal_travel_time_s": 185.511949,
+      "origin": "N5",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          2600.0,
+          3800.0
+        ],
+        [
+          2500.0,
+          3750.0
+        ],
+        [
+          2500.0,
+          4000.0
+        ],
+        [
+          2500.0,
+          4250.0
+        ],
+        [
+          2500.0,
+          4500.0
+        ],
+        [
+          2625.0,
+          4625.0
+        ],
+        [
+          2875.0,
+          4875.0
+        ],
+        [
+          3000.0,
+          4875.0
+        ],
+        [
+          3250.0,
+          4875.0
+        ],
+        [
+          3500.0,
+          4875.0
+        ],
+        [
+          3750.0,
+          4875.0
+        ],
+        [
+          3875.0,
+          4750.0
+        ],
+        [
+          4125.0,
+          4500.0
+        ],
+        [
+          4375.0,
+          4250.0
+        ],
+        [
+          4200.0,
+          4100.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 26.743846,
+      "accumulated_descent_m": 22.323886,
+      "corridor_id": "corridor_n4_n5_astar_3_forward",
+      "cruise_altitude_m": 80.0,
+      "destination": "N5",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.18940882,
+      "minimum_obstacle_clearance_m": 225.0,
+      "nominal_energy_wh": 68.064761,
+      "nominal_length_m": 4224.873734,
+      "nominal_travel_time_s": 284.008681,
+      "origin": "N4",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          4200.0,
+          4100.0
+        ],
+        [
+          4375.0,
+          4125.0
+        ],
+        [
+          4500.0,
+          4250.0
+        ],
+        [
+          4250.0,
+          4500.0
+        ],
+        [
+          4000.0,
+          4750.0
+        ],
+        [
+          3750.0,
+          5000.0
+        ],
+        [
+          3500.0,
+          5000.0
+        ],
+        [
+          3250.0,
+          5000.0
+        ],
+        [
+          3000.0,
+          5000.0
+        ],
+        [
+          2875.0,
+          5000.0
+        ],
+        [
+          2625.0,
+          4750.0
+        ],
+        [
+          2375.0,
+          4500.0
+        ],
+        [
+          2375.0,
+          4250.0
+        ],
+        [
+          2375.0,
+          4000.0
+        ],
+        [
+          2375.0,
+          3750.0
+        ],
+        [
+          2500.0,
+          3625.0
+        ],
+        [
+          2625.0,
+          3625.0
+        ],
+        [
+          2600.0,
+          3800.0
+        ]
+      ]
+    },
+    {
+      "accumulated_climb_m": 22.323886,
+      "accumulated_descent_m": 26.743846,
+      "corridor_id": "corridor_n4_n5_astar_3_reverse",
+      "cruise_altitude_m": 80.0,
+      "destination": "N4",
+      "fixture_role": null,
+      "generation_seed_stream": "corridors",
+      "integrated_geographical_risk": 0.18940882,
+      "minimum_obstacle_clearance_m": 225.0,
+      "nominal_energy_wh": 67.887962,
+      "nominal_length_m": 4224.873734,
+      "nominal_travel_time_s": 237.348985,
+      "origin": "N5",
+      "static_feasible": true,
+      "version": "2.0.0",
+      "waypoints_m": [
+        [
+          2600.0,
+          3800.0
+        ],
+        [
+          2625.0,
+          3625.0
+        ],
+        [
+          2500.0,
+          3625.0
+        ],
+        [
+          2375.0,
+          3750.0
+        ],
+        [
+          2375.0,
+          4000.0
+        ],
+        [
+          2375.0,
+          4250.0
+        ],
+        [
+          2375.0,
+          4500.0
+        ],
+        [
+          2625.0,
+          4750.0
+        ],
+        [
+          2875.0,
+          5000.0
+        ],
+        [
+          3000.0,
+          5000.0
+        ],
+        [
+          3250.0,
+          5000.0
+        ],
+        [
+          3500.0,
+          5000.0
+        ],
+        [
+          3750.0,
+          5000.0
+        ],
+        [
+          4000.0,
+          4750.0
+        ],
+        [
+          4250.0,
+          4500.0
+        ],
+        [
+          4500.0,
+          4250.0
+        ],
+        [
+          4375.0,
+          4125.0
+        ],
+        [
+          4200.0,
+          4100.0
+        ]
+      ]
+    }
+  ],
+  "depot": {
+    "depot_id": "DEPOT",
+    "initial_inventory": [
+      60.0,
+      0.0,
+      100.0,
+      0.0
+    ],
+    "x_m": 500.0,
+    "y_m": 500.0
+  },
+  "exogenous_events": [
+    {
+      "affected_entity": "N6",
+      "commodity": null,
+      "event_id": "E_N6_P2",
+      "event_type": "P2_NODE_REVEAL",
+      "magnitude_or_mark": {
+        "reported_demand": [
+          4.0,
+          0.0,
+          7.0,
+          0.0
+        ],
+        "reported_vulnerability": 1.3
+      },
+      "physical_occurrence_time_s": 2520.0,
+      "report_generation_time_s": 16200.0,
+      "report_lost": false,
+      "report_reception_time_s": 18000.0,
+      "source_seed_stream": "reports",
+      "visible_to_controller": false
+    },
+    {
+      "affected_entity": "N5",
+      "commodity": null,
+      "event_id": "E_N5_ONSET",
+      "event_type": "ORDINARY_DEMAND_ONSET",
+      "magnitude_or_mark": {
+        "demand": [
+          3.0,
+          0.0,
+          14.0,
+          0.0
+        ]
+      },
+      "physical_occurrence_time_s": 5400.0,
+      "report_generation_time_s": null,
+      "report_lost": false,
+      "report_reception_time_s": null,
+      "source_seed_stream": "demand",
+      "visible_to_controller": false
+    },
+    {
+      "affected_entity": "N5",
+      "commodity": null,
+      "event_id": "E_N5_P1",
+      "event_type": "P1_REPORT",
+      "magnitude_or_mark": {
+        "reported_demand": [
+          3.0,
+          0.0,
+          14.0,
+          0.0
+        ],
+        "reported_vulnerability": 1.0
+      },
+      "physical_occurrence_time_s": 6120.0,
+      "report_generation_time_s": 6120.0,
+      "report_lost": false,
+      "report_reception_time_s": 7560.0,
+      "source_seed_stream": "reports",
+      "visible_to_controller": false
+    },
+    {
+      "affected_entity": "N4",
+      "commodity": null,
+      "event_id": "E_N4_LOST_P1",
+      "event_type": "P1_REPORT",
+      "magnitude_or_mark": {
+        "reported_demand": [
+          5.0,
+          0.0,
+          8.0,
+          0.0
+        ]
+      },
+      "physical_occurrence_time_s": 7920.0,
+      "report_generation_time_s": 7920.0,
+      "report_lost": true,
+      "report_reception_time_s": null,
+      "source_seed_stream": "reports",
+      "visible_to_controller": false
+    },
+    {
+      "affected_entity": "N2",
+      "commodity": null,
+      "event_id": "E_N2_DELAYED_P1",
+      "event_type": "P1_REPORT",
+      "magnitude_or_mark": {
+        "reported_demand": [
+          4.0,
+          0.0,
+          12.0,
+          0.0
+        ],
+        "reported_vulnerability": 1.2
+      },
+      "physical_occurrence_time_s": 8640.0,
+      "report_generation_time_s": 8640.0,
+      "report_lost": false,
+      "report_reception_time_s": 11160.0,
+      "source_seed_stream": "reports",
+      "visible_to_controller": false
+    },
+    {
+      "affected_entity": "HAZ1",
+      "commodity": null,
+      "event_id": "E_HAZ1_ACTIVATE",
+      "event_type": "HAZARD_ACTIVATE",
+      "magnitude_or_mark": {
+        "intensity": 1.0
+      },
+      "physical_occurrence_time_s": 10440.0,
+      "report_generation_time_s": 12240.0,
+      "report_lost": false,
+      "report_reception_time_s": 17640.0,
+      "source_seed_stream": "hazards",
+      "visible_to_controller": false
+    },
+    {
+      "affected_entity": "TNFZ1",
+      "commodity": null,
+      "event_id": "E_TNFZ1_ACTIVATE",
+      "event_type": "TEMP_NFZ_ACTIVATE",
+      "magnitude_or_mark": {
+        "active": true
+      },
+      "physical_occurrence_time_s": 11520.0,
+      "report_generation_time_s": 12600.0,
+      "report_lost": false,
+      "report_reception_time_s": 17280.0,
+      "source_seed_stream": "nfzs",
+      "visible_to_controller": false
+    },
+    {
+      "affected_entity": "N3",
+      "commodity": "water",
+      "event_id": "E_N3_P3",
+      "event_type": "P3_MUTATION",
+      "magnitude_or_mark": {
+        "delta": [
+          0.0,
+          0.0,
+          10.0,
+          0.0
+        ]
+      },
+      "physical_occurrence_time_s": 12960.0,
+      "report_generation_time_s": null,
+      "report_lost": false,
+      "report_reception_time_s": null,
+      "source_seed_stream": "p3_mutations",
+      "visible_to_controller": false
+    },
+    {
+      "affected_entity": "corridor_n1_n5_hazard_outbound",
+      "commodity": null,
+      "event_id": "E_CORRIDOR_OBS",
+      "event_type": "CORRIDOR_CONDITION_REPORT",
+      "magnitude_or_mark": {
+        "condition": "DEGRADED"
+      },
+      "physical_occurrence_time_s": 13320.0,
+      "report_generation_time_s": 14400.0,
+      "report_lost": false,
+      "report_reception_time_s": 18720.0,
+      "source_seed_stream": "reports",
+      "visible_to_controller": false
+    },
+    {
+      "affected_entity": "N3",
+      "commodity": null,
+      "event_id": "E_N3_P1",
+      "event_type": "P1_REPORT",
+      "magnitude_or_mark": {
+        "confidence": 1.0,
+        "reported_cohorts": [
+          {
+            "commodity_index": 0,
+            "onset_time_s": 0.0,
+            "quantity": 10.0
+          },
+          {
+            "commodity_index": 2,
+            "onset_time_s": 0.0,
+            "quantity": 6.0
+          },
+          {
+            "commodity_index": 2,
+            "onset_time_s": 12960.0,
+            "quantity": 10.0
+          }
+        ],
+        "reported_vulnerability": 1.5
+      },
+      "physical_occurrence_time_s": 16560.0,
+      "report_generation_time_s": 16560.0,
+      "report_lost": false,
+      "report_reception_time_s": 18360.0,
+      "source_seed_stream": "reports",
+      "visible_to_controller": false
+    },
+    {
+      "affected_entity": "DEPOT",
+      "commodity": null,
+      "event_id": "E_REPLENISH",
+      "event_type": "DEPOT_REPLENISHMENT",
+      "magnitude_or_mark": {
+        "quantity": [
+          10.0,
+          0.0,
+          20.0,
+          0.0
+        ]
+      },
+      "physical_occurrence_time_s": 20880.0,
+      "report_generation_time_s": 20880.0,
+      "report_lost": false,
+      "report_reception_time_s": 20880.0,
+      "source_seed_stream": "replenishment",
+      "visible_to_controller": true
+    },
+    {
+      "affected_entity": "TNFZ1",
+      "commodity": null,
+      "event_id": "E_TNFZ1_EXPIRE",
+      "event_type": "TEMP_NFZ_EXPIRE",
+      "magnitude_or_mark": {
+        "active": false
+      },
+      "physical_occurrence_time_s": 22320.0,
+      "report_generation_time_s": 22680.0,
+      "report_lost": false,
+      "report_reception_time_s": 23400.0,
+      "source_seed_stream": "nfzs",
+      "visible_to_controller": false
+    },
+    {
+      "affected_entity": "HAZ1",
+      "commodity": null,
+      "event_id": "E_HAZ1_DEACTIVATE",
+      "event_type": "HAZARD_DEACTIVATE",
+      "magnitude_or_mark": {
+        "intensity": 0.0
+      },
+      "physical_occurrence_time_s": 25200.0,
+      "report_generation_time_s": 25560.0,
+      "report_lost": false,
+      "report_reception_time_s": 26280.0,
+      "source_seed_stream": "hazards",
+      "visible_to_controller": false
+    }
+  ],
+  "fleet": {
+    "airspeed_m_per_s": 16.6666666667,
+    "battery_capacity_wh": 230.0,
+    "climb_energy_wh_per_m_per_kg": 0.012,
+    "descent_energy_wh_per_m_per_kg": 0.004,
+    "empty_mass_kg": 4.0,
+    "horizontal_energy_wh_per_m_per_kg": 0.003125,
+    "minimum_ground_speed_m_per_s": 5.0,
+    "nominal_payload_kg": 1.0,
+    "payload_capacity_kg": 2.5,
+    "safety_reserve_wh": 23.0,
+    "service_energy_wh": 2.5,
+    "uav_count": 2,
+    "uavs": [
+      {
+        "type": "canonical",
+        "uav_id": "UAV0"
+      },
+      {
+        "type": "canonical",
+        "uav_id": "UAV1"
+      }
+    ]
+  },
+  "geography": {
+    "altitude_increment_m": 20.0,
+    "coarse_cell_m": 125.0,
+    "coarse_grid": {
+      "base_composite_risk": [
+        [
+          0.02385074,
+          0.02394643,
+          0.02416125,
+          0.02461813,
+          0.02545912,
+          0.02683759,
+          0.02890466,
+          0.03178948,
+          0.03557427,
+          0.04026722,
+          0.04577825,
+          0.05190447,
+          0.05833197,
+          0.06465846,
+          0.07043747,
+          0.075239,
+          0.07871701,
+          0.08067043,
+          0.08108513,
+          0.08014734,
+          0.07822534,
+          0.07582301,
+          0.07351378,
+          0.07186611,
+          0.07137137,
+          0.07238189,
+          0.07506457,
+          0.07937288,
+          0.08503956,
+          0.09159239,
+          0.09839482,
+          0.10471114,
+          0.10979178,
+          0.11296846,
+          0.11374479,
+          0.11186557,
+          0.10735088,
+          0.10048767,
+          0.09178062,
+          0.08187319,
+          0.07145539
+        ],
+        [
+          0.02543824,
+          0.02578163,
+          0.02632606,
+          0.02722186,
+          0.02864474,
+          0.03078628,
+          0.03383673,
+          0.03795903,
+          0.04325541,
+          0.04973042,
+          0.05725762,
+          0.06555901,
+          0.07420669,
+          0.08265306,
+          0.09029059,
+          0.0965345,
+          0.10091479,
+          0.10315964,
+          0.10325263,
+          0.10145074,
+          0.098259,
+          0.09436667,
+          0.09055696,
+          0.087606,
+          0.08618567,
+          0.08678123,
+          0.08963049,
+          0.09468809,
+          0.10161707,
+          0.10981052,
+          0.11844518,
+          0.12656656,
+          0.13319967,
+          0.13747257,
+          0.13873372,
+          0.13664181,
+          0.13120998,
+          0.12279486,
+          0.112033,
+          0.09973869,
+          0.08678496
+        ],
+        [
+          0.02720685,
+          0.0278512,
+          0.02879018,
+          0.03020558,
+          0.03231221,
+          0.03534679,
+          0.03954641,
+          0.04511528,
+          0.05218105,
+          0.06074596,
+          0.07064228,
+          0.08150423,
+          0.09276907,
+          0.10371614,
+          0.11354519,
+          0.12148542,
+          0.12691708,
+          0.12948193,
+          0.12915866,
+          0.12628663,
+          0.12153184,
+          0.11580217,
+          0.11012817,
+          0.10553029,
+          0.10289219,
+          0.10285476,
+          0.105739,
+          0.11150205,
+          0.11972851,
+          0.12965947,
+          0.14026142,
+          0.15033411,
+          0.15865005,
+          0.16410957,
+          0.16588796,
+          0.16354794,
+          0.15709484,
+          0.14696264,
+          0.13393408,
+          0.1190126,
+          0.10327347
+        ],
+        [
+          0.02919508,
+          0.03020055,
+          0.03160296,
+          0.03361783,
+          0.03650267,
+          0.04054431,
+          0.04603275,
+          0.0532197,
+          0.06226326,
+          0.0731653,
+          0.08571372,
+          0.09944537,
+          0.11364609,
+          0.12739947,
+          0.1396862,
+          0.14952311,
+          0.15611875,
+          0.15901466,
+          0.15818195,
+          0.15405132,
+          0.1474692,
+          0.13958897,
+          0.13171856,
+          0.12515177,
+          0.12100845,
+          0.12010234,
+          0.12284671,
+          0.12920234,
+          0.13866947,
+          0.15032606,
+          0.1629138,
+          0.17497076,
+          0.18500151,
+          0.19166548,
+          0.19395523,
+          0.19133245,
+          0.1837943,
+          0.17185601,
+          0.1564536,
+          0.13878851,
+          0.12014722
+        ],
+        [
+          0.03146114,
+          0.0328963,
+          0.03483456,
+          0.03752453,
+          0.04126671,
+          0.04639952,
+          0.05326868,
+          0.06217715,
+          0.07331727,
+          0.08669315,
+          0.10204825,
+          0.11881802,
+          0.13612829,
+          0.15285395,
+          0.16774081,
+          0.17957696,
+          0.18738505,
+          0.19059711,
+          0.18917406,
+          0.18364256,
+          0.17504039,
+          0.16478158,
+          0.15446823,
+          0.14568305,
+          0.13979445,
+          0.13779709,
+          0.14020027,
+          0.14696865,
+          0.15751644,
+          0.17075614,
+          0.18520298,
+          0.199133,
+          0.21078383,
+          0.21857599,
+          0.22132159,
+          0.21838295,
+          0.20974961,
+          0.19601702,
+          0.17827193,
+          0.1579099,
+          0.13642407
+        ],
+        [
+          0.03408739,
+          0.03603203,
+          0.03858319,
+          0.0420178,
+          0.04667476,
+          0.05294048,
+          0.06121431,
+          0.07185031,
+          0.08507689,
+          0.10090373,
+          0.11903398,
+          0.13880576,
+          0.15918792,
+          0.17884827,
+          0.19629763,
+          0.2100939,
+          0.21907159,
+          0.22255085,
+          0.22048037,
+          0.21348128,
+          0.20278154,
+          0.1900545,
+          0.17719423,
+          0.1660691,
+          0.15829177,
+          0.15503321,
+          0.1568951,
+          0.16384504,
+          0.17521441,
+          0.18975877,
+          0.20578091,
+          0.22131326,
+          0.23434736,
+          0.24308503,
+          0.24617428,
+          0.24288808,
+          0.23321011,
+          0.21780955,
+          0.19791027,
+          0.17508358,
+          0.15100906
+        ],
+        [
+          0.03718338,
+          0.03973288,
+          0.04298181,
+          0.04722531,
+          0.05282998,
+          0.06021996,
+          0.06983989,
+          0.08208979,
+          0.09723325,
+          0.11528973,
+          0.13593147,
+          0.15841342,
+          0.18156536,
+          0.20386796,
+          0.22361693,
+          0.23915752,
+          0.24914903,
+          0.25280632,
+          0.25006486,
+          0.2416315,
+          0.22890848,
+          0.21380691,
+          0.1984878,
+          0.18507914,
+          0.17541358,
+          0.17081871,
+          0.17197623,
+          0.17885381,
+          0.19070837,
+          0.2061586,
+          0.22332545,
+          0.24003617,
+          0.25407776,
+          0.26347266,
+          0.26673619,
+          0.26307063,
+          0.2524574,
+          0.23562763,
+          0.21391777,
+          0.18904209,
+          0.16283075
+        ],
+        [
+          0.04088541,
+          0.04415638,
+          0.04820103,
+          0.05331659,
+          0.05987947,
+          0.06833379,
+          0.07915395,
+          0.09277504,
+          0.10949204,
+          0.12933933,
+          0.15197363,
+          0.17659226,
+          0.20192038,
+          0.22629184,
+          0.24782938,
+          0.26470415,
+          0.27543014,
+          0.27913342,
+          0.27573668,
+          0.26601602,
+          0.25151641,
+          0.23434364,
+          0.21687632,
+          0.20145197,
+          0.19007802,
+          0.18420332,
+          0.18456787,
+          0.19113438,
+          0.20309823,
+          0.21897181,
+          0.23674017,
+          0.25408188,
+          0.26864002,
+          0.27831433,
+          0.28153242,
+          0.27745294,
+          0.26606052,
+          0.24813248,
+          0.22508432,
+          0.19872825,
+          0.17099594
+        ],
+        [
+          0.04534995,
+          0.04948613,
+          0.0544442,
+          0.06050101,
+          0.06801764,
+          0.07743266,
+          0.08922744,
+          0.1038556,
+          0.12163683,
+          0.14262676,
+          0.16648798,
+          0.19239715,
+          0.21902552,
+          0.24462053,
+          0.26719554,
+          0.28480666,
+          0.29586869,
+          0.29944524,
+          0.29544806,
+          0.28469908,
+          0.26883978,
+          0.25010776,
+          0.23102734,
+          0.21407353,
+          0.20136431,
+          0.19442005,
+          0.19400897,
+          0.20008127,
+          0.21178686,
+          0.2275704,
+          0.24533843,
+          0.26269103,
+          0.27720207,
+          0.28671827,
+          0.28963488,
+          0.28510042,
+          0.27311048,
+          0.25447062,
+          0.23063634,
+          0.2034649,
+          0.1749318
+        ],
+        [
+          0.05073845,
+          0.05591484,
+          0.06192982,
+          0.06901163,
+          0.07747418,
+          0.08771804,
+          0.10020234,
+          0.11537789,
+          0.13358013,
+          0.15489353,
+          0.1790134,
+          0.20514255,
+          0.23196287,
+          0.25771249,
+          0.28037682,
+          0.29797263,
+          0.30887499,
+          0.31211923,
+          0.30760946,
+          0.29618449,
+          0.27952498,
+          0.25992206,
+          0.23995688,
+          0.2221532,
+          0.20866104,
+          0.20101205,
+          0.19996605,
+          0.20545083,
+          0.21658812,
+          0.23179734,
+          0.24896974,
+          0.26570394,
+          0.27958629,
+          0.28848667,
+          0.29082863,
+          0.28578789,
+          0.27338073,
+          0.25442344,
+          0.2303713,
+          0.20307179,
+          0.17448392
+        ],
+        [
+          0.05719176,
+          0.06361451,
+          0.07085837,
+          0.0790704,
+          0.08848053,
+          0.09941378,
+          0.11227335,
+          0.12748261,
+          0.14538255,
+          0.16609531,
+          0.18937984,
+          0.21451864,
+          0.24027801,
+          0.26497453,
+          0.28665828,
+          0.30339263,
+          0.31358043,
+          0.31626769,
+          0.31135501,
+          0.29966639,
+          0.28285814,
+          0.26318854,
+          0.24319766,
+          0.22536083,
+          0.21177453,
+          0.20391613,
+          0.20249715,
+          0.20741117,
+          0.21776801,
+          0.2320036,
+          0.24805624,
+          0.26359895,
+          0.27631095,
+          0.28416025,
+          0.28565885,
+          0.28004742,
+          0.26737433,
+          0.24845185,
+          0.22469856,
+          0.19790137,
+          0.1699466
+        ],
+        [
+          0.06479505,
+          0.07269412,
+          0.08136343,
+          0.09083416,
+          0.10121317,
+          0.11271014,
+          0.12563686,
+          0.1403636,
+          0.15722666,
+          0.17639557,
+          0.19772562,
+          0.22063512,
+          0.24405126,
+          0.26645964,
+          0.28607004,
+          0.30108034,
+          0.30998997,
+          0.31189536,
+          0.30669812,
+          0.29517569,
+          0.27889672,
+          0.26000053,
+          0.24088902,
+          0.22389304,
+          0.21097127,
+          0.20348247,
+          0.2020503,
+          0.20652131,
+          0.21600666,
+          0.22899527,
+          0.24352743,
+          0.25741743,
+          0.26850821,
+          0.27493238,
+          0.27534409,
+          0.26908376,
+          0.25624413,
+          0.23762348,
+          0.21457498,
+          0.1887838,
+          0.16201739
+        ],
+        [
+          0.07353706,
+          0.08314969,
+          0.09345251,
+          0.10432714,
+          0.1157194,
+          0.12768525,
+          0.14041108,
+          0.1541899,
+          0.1693441,
+          0.18610062,
+          0.20444277,
+          0.22397796,
+          0.24386627,
+          0.26284682,
+          0.27937719,
+          0.2918707,
+          0.29898646,
+          0.29990757,
+          0.29454074,
+          0.28358825,
+          0.26847402,
+          0.25114128,
+          0.23376708,
+          0.21845249,
+          0.20694392,
+          0.20042468,
+          0.19939522,
+          0.20364243,
+          0.21228772,
+          0.22390064,
+          0.23666577,
+          0.24859018,
+          0.25773545,
+          0.26245043,
+          0.26157401,
+          0.25457508,
+          0.24160303,
+          0.22343792,
+          0.20134939,
+          0.17689309,
+          0.15168561
+        ],
+        [
+          0.08327163,
+          0.09481624,
+          0.10694904,
+          0.11937298,
+          0.13184001,
+          0.14421935,
+          0.15654303,
+          0.16900654,
+          0.18191107,
+          0.19555003,
+          0.21006203,
+          0.22528873,
+          0.24068332,
+          0.25530844,
+          0.2679418,
+          0.27727817,
+          0.28218743,
+          0.28196843,
+          0.27653611,
+          0.26649448,
+          0.2530773,
+          0.2379706,
+          0.22305846,
+          0.21014566,
+          0.20070859,
+          0.19571118,
+          0.19550308,
+          0.19980047,
+          0.20773918,
+          0.2179863,
+          0.22889711,
+          0.238704,
+          0.24572188,
+          0.24854903,
+          0.24623727,
+          0.23840433,
+          0.22526739,
+          0.20758988,
+          0.18655117,
+          0.16356472,
+          0.14008029
+        ],
+        [
+          0.09369215,
+          0.10733497,
+          0.12145155,
+          0.1355452,
+          0.14915042,
+          0.16192594,
+          0.1737287,
+          0.18464222,
+          0.19494143,
+          0.20499287,
+          0.21510989,
+          0.22540025,
+          0.23565238,
+          0.2453011,
+          0.25349408,
+          0.25925271,
+          0.26169217,
+          0.26024646,
+          0.25484042,
+          0.24596407,
+          0.23463044,
+          0.2222281,
+          0.2103039,
+          0.20032375,
+          0.19345776,
+          0.1904232,
+          0.19140168,
+          0.19603086,
+          0.20346102,
+          0.21246285,
+          0.22157238,
+          0.22925975,
+          0.23410666,
+          0.23497423,
+          0.2311397,
+          0.22238053,
+          0.2089904,
+          0.19172247,
+          0.17166969,
+          0.15010486,
+          0.12831066
+        ],
+        [
+          0.10433038,
+          0.12015022,
+          0.13632763,
+          0.152157,
+          0.16694451,
+          0.18012718,
+          0.19137676,
+          0.20065743,
+          0.20821474,
+          0.21449071,
+          0.21998188,
+          0.2250766,
+          0.22991819,
+          0.23433641,
+          0.23787248,
+          0.23989558,
+          0.23978219,
+          0.2371101,
+          0.23181423,
+          0.22426268,
+          0.2152336,
+          0.20580022,
+          0.19715361,
+          0.19040425,
+          0.18640293,
+          0.18561149,
+          0.18803819,
+          0.19323909,
+          0.20037653,
+          0.20832153,
+          0.21578626,
+          0.22147267,
+          0.22422295,
+          0.22315583,
+          0.21777126,
+          0.20800756,
+          0.19424022,
+          0.17722133,
+          0.15796947,
+          0.1376301,
+          0.11733161
+        ],
+        [
+          0.11458825,
+          0.13254685,
+          0.15075632,
+          0.16830677,
+          0.18428038,
+          0.19789585,
+          0.20864154,
+          0.21636219,
+          0.22127189,
+          0.22388432,
+          0.22487424,
+          0.22490527,
+          0.22447047,
+          0.2237903,
+          0.22279603,
+          0.22120205,
+          0.21864412,
+          0.2148421,
+          0.20973984,
+          0.20358322,
+          0.19691667,
+          0.19050141,
+          0.18517853,
+          0.18171109,
+          0.18064015,
+          0.18218144,
+          0.18617716,
+          0.19210487,
+          0.19913607,
+          0.2062326,
+          0.21226678,
+          0.21615165,
+          0.21696729,
+          0.214069,
+          0.20716351,
+          0.19634179,
+          0.1820622,
+          0.16508571,
+          0.14637363,
+          0.12696536,
+          0.1078572
+        ],
+        [
+          0.12380473,
+          0.14373139,
+          0.16382279,
+          0.18298437,
+          0.20009462,
+          0.21417221,
+          0.22453564,
+          0.2309165,
+          0.23349497,
+          0.23284487,
+          0.22979957,
+          0.22527213,
+          0.22007618,
+          0.21479301,
+          0.20971625,
+          0.20488208,
+          0.20016818,
+          0.19542643,
+          0.19060743,
+          0.1858409,
+          0.18145144,
+          0.17790904,
+          0.17573086,
+          0.17536155,
+          0.17706137,
+          0.18082577,
+          0.18635031,
+          0.19304417,
+          0.20008719,
+          0.20651939,
+          0.21135012,
+          0.21367256,
+          0.21277016,
+          0.20820169,
+          0.19985404,
+          0.18795456,
+          0.17304068,
+          0.15589091,
+          0.13742812,
+          0.11861107,
+          0.10033155
+        ],
+        [
+          0.131351,
+          0.15294832,
+          0.17465557,
+          0.19522722,
+          0.21337307,
+          0.22794339,
+          0.23811015,
+          0.24350259,
+          0.24426254,
+          0.24100385,
+          0.23468435,
+          0.22642207,
+          0.21730096,
+          0.20821237,
+          0.19976554,
+          0.19227956,
+          0.18584581,
+          0.18043236,
+          0.17599401,
+          0.17255489,
+          0.17024258,
+          0.16926893,
+          0.16986775,
+          0.17220971,
+          0.1763184,
+          0.1820083,
+          0.18885858,
+          0.19622787,
+          0.20330724,
+          0.20920256,
+          0.21303383,
+          0.21403766,
+          0.21165877,
+          0.20561817,
+          0.19594836,
+          0.18299011,
+          0.16735129,
+          0.1498337,
+          0.13133977,
+          0.11277371,
+          0.09495218
+        ],
+        [
+          0.13673774,
+          0.15961173,
+          0.18258252,
+          0.2042985,
+          0.22334709,
+          0.23845149,
+          0.24866687,
+          0.25353266,
+          0.25314441,
+          0.24812726,
+          0.23951684,
+          0.22857666,
+          0.21659543,
+          0.20470946,
+          0.19378503,
+          0.18437647,
+          0.17675502,
+          0.17098656,
+          0.1670276,
+          0.16480975,
+          0.16429098,
+          0.16546469,
+          0.16833013,
+          0.17283796,
+          0.17882929,
+          0.18598692,
+          0.19381294,
+          0.20164048,
+          0.20867988,
+          0.21409291,
+          0.21708398,
+          0.21699411,
+          0.21338338,
+          0.20608885,
+          0.1952488,
+          0.18128943,
+          0.16487586,
+          0.14683542,
+          0.12806551,
+          0.10944032,
+          0.0917301
+        ],
+        [
+          0.13971193,
+          0.16342417,
+          0.1872716,
+          0.20984791,
+          0.22967049,
+          0.24538125,
+          0.25595008,
+          0.26083769,
+          0.26008071,
+          0.25427946,
+          0.24449166,
+          0.23205769,
+          0.21839729,
+          0.20482061,
+          0.19238858,
+          0.1818414,
+          0.17359606,
+          0.16779823,
+          0.16440416,
+          0.16326646,
+          0.1642015,
+          0.16702506,
+          0.171553,
+          0.17757361,
+          0.18480488,
+          0.19285339,
+          0.20119002,
+          0.20915368,
+          0.21598713,
+          0.22090181,
+          0.22316206,
+          0.22217455,
+          0.2175675,
+          0.20924542,
+          0.19740951,
+          0.18253984,
+          0.16534214,
+          0.14666809,
+          0.12742243,
+          0.10847128,
+          0.09056519
+        ],
+        [
+          0.14031956,
+          0.16445325,
+          0.1888208,
+          0.21201328,
+          0.23252991,
+          0.24897521,
+          0.26026201,
+          0.26577888,
+          0.2654857,
+          0.25991678,
+          0.25009231,
+          0.23735877,
+          0.22319345,
+          0.20901169,
+          0.19601088,
+          0.18507249,
+          0.17672948,
+          0.17119208,
+          0.16841504,
+          0.16818418,
+          0.17019958,
+          0.17413706,
+          0.17967763,
+          0.18650366,
+          0.19427,
+          0.20256477,
+          0.21087713,
+          0.21858725,
+          0.22498758,
+          0.22933642,
+          0.23093602,
+          0.22922127,
+          0.22384157,
+          0.21471972,
+          0.20207564,
+          0.18641,
+          0.16845028,
+          0.149069,
+          0.12918809,
+          0.10968522,
+          0.09131572
+        ],
+        [
+          0.13891591,
+          0.16314291,
+          0.18776954,
+          0.21143061,
+          0.23265182,
+          0.25003604,
+          0.26245916,
+          0.26923727,
+          0.2702309,
+          0.26586566,
+          0.25706652,
+          0.24512095,
+          0.2314988,
+          0.21766242,
+          0.20489836,
+          0.19419475,
+          0.18617825,
+          0.18111272,
+          0.17895088,
+          0.17942144,
+          0.1821285,
+          0.18663954,
+          0.19254314,
+          0.19946718,
+          0.20705994,
+          0.21494744,
+          0.22268678,
+          0.2297362,
+          0.23545712,
+          0.23915398,
+          0.24014692,
+          0.23786311,
+          0.23192743,
+          0.22223254,
+          0.20897331,
+          0.19263766,
+          0.17395564,
+          0.15381617,
+          0.13316709,
+          0.11291565,
+          0.09384488
+        ],
+        [
+          0.13611593,
+          0.16025038,
+          0.18502056,
+          0.20914001,
+          0.23119238,
+          0.24980128,
+          0.26381417,
+          0.27246616,
+          0.27549282,
+          0.27317098,
+          0.26628105,
+          0.25599916,
+          0.24373864,
+          0.23096737,
+          0.21902943,
+          0.20899791,
+          0.20158003,
+          0.19708704,
+          0.19546958,
+          0.19640573,
+          0.19941807,
+          0.20398973,
+          0.20965122,
+          0.2160197,
+          0.2227869,
+          0.22966783,
+          0.23633356,
+          0.24235507,
+          0.2471811,
+          0.25016163,
+          0.25061552,
+          0.24792787,
+          0.24165511,
+          0.23161354,
+          0.21793125,
+          0.20105205,
+          0.18169074,
+          0.16074919,
+          0.13921004,
+          0.11802779,
+          0.09803523
+        ],
+        [
+          0.13269113,
+          0.15671667,
+          0.18168221,
+          0.2063995,
+          0.22952445,
+          0.2497074,
+          0.26576257,
+          0.2768281,
+          0.28248863,
+          0.2828394,
+          0.27848095,
+          0.27044458,
+          0.26005897,
+          0.24877648,
+          0.23798487,
+          0.22883397,
+          0.22210711,
+          0.21816088,
+          0.21694381,
+          0.21808663,
+          0.22103919,
+          0.22521681,
+          0.23011771,
+          0.2353828,
+          0.24078796,
+          0.24617966,
+          0.25138131,
+          0.25610531,
+          0.2599019,
+          0.26216399,
+          0.26218986,
+          0.25928978,
+          0.25291087,
+          0.24275052,
+          0.22883248,
+          0.21152894,
+          0.19152493,
+          0.16973409,
+          0.14718409,
+          0.12489468,
+          0.10376994
+        ],
+        [
+          0.12943196,
+          0.15349478,
+          0.17886085,
+          0.20444226,
+          0.22896313,
+          0.25108963,
+          0.26958583,
+          0.28347163,
+          0.29215798,
+          0.29553735,
+          0.29401345,
+          0.28846172,
+          0.28012119,
+          0.27042873,
+          0.26081863,
+          0.2525209,
+          0.24639724,
+          0.24285012,
+          0.24182559,
+          0.24290779,
+          0.24547822,
+          0.24889484,
+          0.25264124,
+          0.25640672,
+          0.26008073,
+          0.2636717,
+          0.26718249,
+          0.27048582,
+          0.27324067,
+          0.27487633,
+          0.2746508,
+          0.27176922,
+          0.26553317,
+          0.25548469,
+          0.24151196,
+          0.22389381,
+          0.20327564,
+          0.18058482,
+          0.15690583,
+          0.13334181,
+          0.11088885
+        ],
+        [
+          0.12700329,
+          0.15137034,
+          0.17744577,
+          0.20422773,
+          0.23048785,
+          0.25488326,
+          0.27610212,
+          0.29302361,
+          0.30486937,
+          0.31132285,
+          0.31259452,
+          0.30941584,
+          0.30295321,
+          0.29464622,
+          0.28599153,
+          0.27831039,
+          0.27254856,
+          0.26915561,
+          0.26807412,
+          0.26884102,
+          0.27077162,
+          0.27317293,
+          0.27552493,
+          0.27758018,
+          0.27935851,
+          0.28104649,
+          0.28283903,
+          0.28477558,
+          0.28662189,
+          0.28783258,
+          0.28760564,
+          0.28501505,
+          0.27918789,
+          0.26948312,
+          0.2556308,
+          0.23780217,
+          0.21659852,
+          0.19296587,
+          0.16805794,
+          0.14307838,
+          0.11913367
+        ],
+        [
+          0.12582266,
+          0.15081199,
+          0.17793215,
+          0.20624015,
+          0.23452253,
+          0.26139385,
+          0.2854375,
+          0.30537308,
+          0.32022806,
+          0.32948716,
+          0.33319114,
+          0.3319595,
+          0.32692032,
+          0.31954654,
+          0.31141992,
+          0.30396637,
+          0.29822091,
+          0.29468022,
+          0.29328181,
+          0.29351503,
+          0.29463135,
+          0.29589174,
+          0.29677886,
+          0.2971143,
+          0.29705199,
+          0.29695702,
+          0.29721277,
+          0.29801767,
+          0.29923248,
+          0.3003218,
+          0.30040575,
+          0.2984079,
+          0.29326212,
+          0.28412816,
+          0.27056637,
+          0.25263471,
+          0.23089113,
+          0.20630706,
+          0.18011664,
+          0.1536376,
+          0.12810071
+        ],
+        [
+          0.1259858,
+          0.15188245,
+          0.18031948,
+          0.21037831,
+          0.2408228,
+          0.27019011,
+          0.29693346,
+          0.31960277,
+          0.33703974,
+          0.34855677,
+          0.35406482,
+          0.3541176,
+          0.34984893,
+          0.34280017,
+          0.33466064,
+          0.32697088,
+          0.32085625,
+          0.31685789,
+          0.3149064,
+          0.31444522,
+          0.31466689,
+          0.31479221,
+          0.31430991,
+          0.31310861,
+          0.31146743,
+          0.30991457,
+          0.30900199,
+          0.30906541,
+          0.31003988,
+          0.31138228,
+          0.31212112,
+          0.31102018,
+          0.30681469,
+          0.29846315,
+          0.28535707,
+          0.26744439,
+          0.24524483,
+          0.21976167,
+          0.19231667,
+          0.16434882,
+          0.1372197
+        ],
+        [
+          0.1272543,
+          0.15422821,
+          0.18410661,
+          0.21596042,
+          0.24849605,
+          0.28014498,
+          0.30921508,
+          0.33408941,
+          0.35344642,
+          0.3664659,
+          0.37297943,
+          0.3735269,
+          0.36929249,
+          0.36191674,
+          0.35321132,
+          0.34483297,
+          0.33799169,
+          0.33326694,
+          0.33058119,
+          0.32933709,
+          0.32867767,
+          0.32779222,
+          0.3261778,
+          0.32378184,
+          0.32098865,
+          0.31846004,
+          0.31688217,
+          0.31669462,
+          0.31787956,
+          0.31986864,
+          0.32159215,
+          0.32165714,
+          0.31861031,
+          0.31122252,
+          0.2987303,
+          0.28098309,
+          0.25847024,
+          0.23223062,
+          0.20367384,
+          0.17435789,
+          0.14577158
+        ],
+        [
+          0.12910672,
+          0.15714917,
+          0.18838402,
+          0.22184304,
+          0.25615062,
+          0.2896179,
+          0.32040767,
+          0.34675433,
+          0.36720874,
+          0.3808665,
+          0.3875331,
+          0.38778331,
+          0.38288746,
+          0.37460359,
+          0.36486708,
+          0.3554405,
+          0.34760459,
+          0.3419678,
+          0.33844447,
+          0.33640621,
+          0.33496136,
+          0.33328013,
+          0.33087038,
+          0.32772569,
+          0.32430716,
+          0.32136986,
+          0.31968902,
+          0.31976679,
+          0.32160238,
+          0.3245882,
+          0.32755915,
+          0.32898283,
+          0.32724374,
+          0.32095431,
+          0.30922208,
+          0.29181638,
+          0.26920468,
+          0.24246019,
+          0.21307123,
+          0.18270086,
+          0.15294978
+        ],
+        [
+          0.13084183,
+          0.15973311,
+          0.19200365,
+          0.22662912,
+          0.26214316,
+          0.29674017,
+          0.32845653,
+          0.35541184,
+          0.37607519,
+          0.38950943,
+          0.39554242,
+          0.39482078,
+          0.38872039,
+          0.37911688,
+          0.36805365,
+          0.35737554,
+          0.34841216,
+          0.34178906,
+          0.33741457,
+          0.33464363,
+          0.33256992,
+          0.33036074,
+          0.32753807,
+          0.32412671,
+          0.32063112,
+          0.31785298,
+          0.31660594,
+          0.31741049,
+          0.32025422,
+          0.32448244,
+          0.32884847,
+          0.33171173,
+          0.33133604,
+          0.32621825,
+          0.31537275,
+          0.29851171,
+          0.2760879,
+          0.249201,
+          0.21939848,
+          0.18842228,
+          0.15795728
+        ],
+        [
+          0.13171214,
+          0.16102675,
+          0.19379091,
+          0.22892202,
+          0.2648728,
+          0.29974439,
+          0.33148364,
+          0.35814259,
+          0.37816035,
+          0.39061562,
+          0.39539588,
+          0.39323895,
+          0.38562471,
+          0.37452573,
+          0.36206038,
+          0.35011998,
+          0.3400548,
+          0.33249423,
+          0.32734482,
+          0.3239631,
+          0.32145189,
+          0.31899448,
+          0.31613141,
+          0.31290337,
+          0.30982361,
+          0.30769284,
+          0.30731269,
+          0.30918022,
+          0.3132479,
+          0.31881437,
+          0.32457574,
+          0.32882658,
+          0.32976334,
+          0.32581995,
+          0.31595997,
+          0.29986318,
+          0.27797204,
+          0.25139785,
+          0.22171784,
+          0.19071546,
+          0.16012149
+        ],
+        [
+          0.13106066,
+          0.16020883,
+          0.19275594,
+          0.22757425,
+          0.26306307,
+          0.2972717,
+          0.32810934,
+          0.35361676,
+          0.3722559,
+          0.38316229,
+          0.38630508,
+          0.38251259,
+          0.37334572,
+          0.36083409,
+          0.34712329,
+          0.3341063,
+          0.32312191,
+          0.31478999,
+          0.30902124,
+          0.30519403,
+          0.30244568,
+          0.29999521,
+          0.297407,
+          0.29472377,
+          0.29243569,
+          0.29129905,
+          0.29205888,
+          0.29515411,
+          0.30048678,
+          0.30731787,
+          0.31431935,
+          0.31977228,
+          0.32186579,
+          0.31902831,
+          0.31021692,
+          0.29510302,
+          0.27411951,
+          0.24836853,
+          0.21942026,
+          0.18905444,
+          0.159002
+        ],
+        [
+          0.12843423,
+          0.1567313,
+          0.18826309,
+          0.22188247,
+          0.2559768,
+          0.28859774,
+          0.3176779,
+          0.34130644,
+          0.35801718,
+          0.36703261,
+          0.36840956,
+          0.36304753,
+          0.35254765,
+          0.33894241,
+          0.32434745,
+          0.3106082,
+          0.29901903,
+          0.29017765,
+          0.28400558,
+          0.27992285,
+          0.27712531,
+          0.27488632,
+          0.2727996,
+          0.27089883,
+          0.26962505,
+          0.26965529,
+          0.27164345,
+          0.27594618,
+          0.28240917,
+          0.29027238,
+          0.29822181,
+          0.30457913,
+          0.30758676,
+          0.30572398,
+          0.29798347,
+          0.28404917,
+          0.26434163,
+          0.23992937,
+          0.21233517,
+          0.1832866,
+          0.1544663
+        ],
+        [
+          0.12365269,
+          0.15040314,
+          0.18012765,
+          0.21169371,
+          0.24352582,
+          0.27373782,
+          0.30034874,
+          0.32155295,
+          0.33599735,
+          0.34300971,
+          0.34272634,
+          0.33608482,
+          0.32467466,
+          0.31047002,
+          0.29549708,
+          0.28150532,
+          0.26971391,
+          0.2606873,
+          0.25436375,
+          0.25022193,
+          0.24753625,
+          0.24564969,
+          0.24419036,
+          0.24317553,
+          0.24297895,
+          0.24417482,
+          0.24730416,
+          0.25262907,
+          0.25994217,
+          0.26848407,
+          0.27699382,
+          0.28388477,
+          0.28750775,
+          0.28644263,
+          0.27975358,
+          0.26715331,
+          0.24904457,
+          0.2264372,
+          0.20076724,
+          0.17366379,
+          0.14671521
+        ],
+        [
+          0.11682388,
+          0.14140432,
+          0.16862615,
+          0.19740799,
+          0.2262611,
+          0.25341903,
+          0.27704478,
+          0.29548635,
+          0.30753438,
+          0.31262888,
+          0.31096751,
+          0.30348582,
+          0.29170694,
+          0.27748708,
+          0.26270805,
+          0.24898094,
+          0.23742374,
+          0.22855834,
+          0.22234381,
+          0.21832945,
+          0.21588212,
+          0.21442498,
+          0.21362436,
+          0.21347752,
+          0.21428161,
+          0.2164966,
+          0.2205421,
+          0.22658484,
+          0.23437504,
+          0.24317757,
+          0.25181978,
+          0.25884964,
+          0.26277076,
+          0.26230244,
+          0.2566073,
+          0.24543758,
+          0.22917144,
+          0.20873758,
+          0.1854515,
+          0.16080455,
+          0.13625212
+        ],
+        [
+          0.1083064,
+          0.13023336,
+          0.15442516,
+          0.17988505,
+          0.20525442,
+          0.22893468,
+          0.24927878,
+          0.26482407,
+          0.27452366,
+          0.27792761,
+          0.27527173,
+          0.26744964,
+          0.25586861,
+          0.24221633,
+          0.22818617,
+          0.21521827,
+          0.20431024,
+          0.19593415,
+          0.19007128,
+          0.18634741,
+          0.18422846,
+          0.18322269,
+          0.18303689,
+          0.18364813,
+          0.18527586,
+          0.1882658,
+          0.19291944,
+          0.19931678,
+          0.20718093,
+          0.21582319,
+          0.22418712,
+          0.23098625,
+          0.23490722,
+          0.23483414,
+          0.23004472,
+          0.22033606,
+          0.20605516,
+          0.18803234,
+          0.16743779,
+          0.14559673,
+          0.12380357
+        ],
+        [
+          0.09863271,
+          0.11760531,
+          0.1384505,
+          0.16028228,
+          0.18190418,
+          0.20191938,
+          0.2189009,
+          0.23159627,
+          0.23912805,
+          0.24114752,
+          0.23790531,
+          0.23021939,
+          0.21934327,
+          0.2067602,
+          0.19394593,
+          0.18214952,
+          0.17223676,
+          0.16462489,
+          0.15931588,
+          0.15601157,
+          0.15427637,
+          0.15370297,
+          0.1540389,
+          0.15524351,
+          0.15746417,
+          0.16094141,
+          0.16587099,
+          0.17226121,
+          0.17982501,
+          0.1879381,
+          0.19567836,
+          0.20194206,
+          0.20561383,
+          0.20575384,
+          0.20176127,
+          0.19347878,
+          0.18121704,
+          0.1656978,
+          0.14793207,
+          0.12906334,
+          0.11020972
+        ],
+        [
+          0.08841261,
+          0.10432576,
+          0.12172877,
+          0.13986248,
+          0.15771055,
+          0.17409506,
+          0.18782211,
+          0.19785511,
+          0.20348255,
+          0.20444422,
+          0.20098565,
+          0.19382571,
+          0.18404135,
+          0.17289275,
+          0.16162538,
+          0.15129015,
+          0.14261749,
+          0.13596719,
+          0.13135797,
+          0.12856188,
+          0.12723503,
+          0.12704907,
+          0.12779065,
+          0.12940549,
+          0.13197899,
+          0.13566174,
+          0.14056175,
+          0.14663375,
+          0.15359635,
+          0.16090173,
+          0.16776972,
+          0.17328291,
+          0.17652436,
+          0.17672879,
+          0.17341429,
+          0.16646614,
+          0.15615587,
+          0.14309389,
+          0.12812934,
+          0.11222125,
+          0.09630856
+        ],
+        [
+          0.07823813,
+          0.09116838,
+          0.10523517,
+          0.11981164,
+          0.13406542,
+          0.14703831,
+          0.15776627,
+          0.16542082,
+          0.16944462,
+          0.16965162,
+          0.16626785,
+          0.15990129,
+          0.15144529,
+          0.14193541,
+          0.13238979,
+          0.12366617,
+          0.11636333,
+          0.11078334,
+          0.10695624,
+          0.10471456,
+          0.10379481,
+          0.1039386,
+          0.10496847,
+          0.10682108,
+          0.10953238,
+          0.11318113,
+          0.11780785,
+          0.12333193,
+          0.12949054,
+          0.13581776,
+          0.1416733,
+          0.14631798,
+          0.14902182,
+          0.14918225,
+          0.14642686,
+          0.14067844,
+          0.13216904,
+          0.12140182,
+          0.1090712,
+          0.09596017,
+          0.08283649
+        ]
+      ],
+      "terrain_elevation_m": [
+        [
+          16.200042,
+          15.647031,
+          14.966714,
+          14.186654,
+          13.338461,
+          12.456508,
+          11.57655,
+          10.734273,
+          9.963862,
+          9.296623,
+          8.759732,
+          8.375147,
+          8.158741,
+          8.119674,
+          8.26004,
+          8.574794,
+          9.051955,
+          9.67308,
+          10.413976,
+          11.245635,
+          12.135341,
+          13.047921,
+          13.947094,
+          14.796874,
+          15.562987,
+          16.214256,
+          16.723897,
+          17.070675,
+          17.239871,
+          17.223998,
+          17.023211,
+          16.645392,
+          16.105876,
+          15.426821,
+          14.636263,
+          13.766877,
+          12.854546,
+          11.936787,
+          11.051133,
+          10.233548,
+          9.51694
+        ],
+        [
+          16.816565,
+          16.263558,
+          15.583248,
+          14.803201,
+          13.955032,
+          13.073124,
+          12.193245,
+          11.351106,
+          10.580928,
+          9.914075,
+          9.377803,
+          8.994188,
+          8.779259,
+          8.742382,
+          8.885908,
+          9.205095,
+          9.688302,
+          10.317436,
+          11.068636,
+          11.913153,
+          12.818407,
+          13.749182,
+          14.668921,
+          15.541102,
+          16.330647,
+          17.005332,
+          17.537155,
+          17.903586,
+          18.088659,
+          18.083814,
+          17.888432,
+          17.510006,
+          16.963916,
+          16.272791,
+          15.465508,
+          14.57586,
+          13.640997,
+          12.699725,
+          11.790769,
+          10.951093,
+          10.214359
+        ],
+        [
+          17.39844,
+          16.845438,
+          16.165138,
+          15.385111,
+          14.536981,
+          13.655143,
+          12.775389,
+          11.933468,
+          11.163658,
+          10.497411,
+          9.962114,
+          9.580025,
+          9.36742,
+          9.33399,
+          9.482488,
+          9.80865,
+          10.30137,
+          10.943109,
+          11.710523,
+          12.575272,
+          13.504993,
+          14.464397,
+          15.416499,
+          16.323931,
+          17.150346,
+          17.86188,
+          18.428608,
+          18.825965,
+          19.036021,
+          19.048529,
+          18.861652,
+          18.482272,
+          17.925837,
+          17.215718,
+          16.382117,
+          15.460585,
+          14.490266,
+          13.511995,
+          12.566371,
+          11.691934,
+          10.92353
+        ],
+        [
+          17.927676,
+          17.374683,
+          16.6944,
+          15.914405,
+          15.066333,
+          14.184604,
+          13.305042,
+          12.463454,
+          11.694208,
+          11.028892,
+          10.495089,
+          10.115338,
+          9.906294,
+          9.878143,
+          10.034257,
+          10.371105,
+          10.878397,
+          11.539444,
+          12.331695,
+          13.227439,
+          14.194638,
+          15.197901,
+          16.199579,
+          17.161011,
+          18.04391,
+          18.811891,
+          19.432092,
+          19.876825,
+          20.125151,
+          20.164242,
+          19.990394,
+          19.609553,
+          19.037271,
+          18.298055,
+          17.424137,
+          16.453761,
+          15.429127,
+          14.394176,
+          13.392381,
+          12.464693,
+          11.647772
+        ],
+        [
+          18.387915,
+          17.834935,
+          17.154678,
+          16.374731,
+          15.526749,
+          14.645183,
+          13.76591,
+          12.924822,
+          12.156419,
+          11.492492,
+          10.960919,
+          10.584654,
+          10.38092,
+          10.36064,
+          10.528109,
+          10.880885,
+          11.409901,
+          12.099732,
+          12.929012,
+          13.870964,
+          14.894041,
+          15.962693,
+          17.038285,
+          18.080226,
+          19.047338,
+          19.899478,
+          20.599403,
+          21.114769,
+          21.420154,
+          21.498881,
+          21.344459,
+          20.961438,
+          20.365528,
+          19.58293,
+          18.648904,
+          17.605704,
+          16.500089,
+          15.380633,
+          14.295089,
+          13.288007,
+          12.398753
+        ],
+        [
+          18.764932,
+          18.211973,
+          17.531754,
+          16.751881,
+          15.904034,
+          15.022709,
+          14.143861,
+          13.303504,
+          12.536332,
+          11.874425,
+          11.346091,
+          10.974887,
+          10.778856,
+          10.769994,
+          10.953929,
+          11.329808,
+          11.890331,
+          12.62191,
+          13.504898,
+          14.513874,
+          15.618002,
+          16.781502,
+          17.964311,
+          19.123039,
+          20.212309,
+          21.18653,
+          22.002101,
+          22.61993,
+          23.008085,
+          23.144306,
+          23.018063,
+          22.63188,
+          22.001696,
+          21.156168,
+          20.134947,
+          18.98611,
+          17.763024,
+          16.520983,
+          15.313952,
+          14.191702,
+          13.197519
+        ],
+        [
+          19.047079,
+          18.494153,
+          17.813995,
+          17.034234,
+          16.186587,
+          15.305617,
+          14.427384,
+          13.588076,
+          12.822658,
+          12.16362,
+          11.639869,
+          11.275814,
+          11.090655,
+          11.097897,
+          11.305056,
+          11.713514,
+          12.318472,
+          13.108934,
+          14.067677,
+          15.171198,
+          16.389664,
+          17.68697,
+          19.021037,
+          20.344527,
+          21.606139,
+          22.752596,
+          23.731326,
+          24.493712,
+          24.998643,
+          25.215979,
+          25.129492,
+          24.738848,
+          24.06031,
+          23.125997,
+          21.981757,
+          20.68388,
+          19.29506,
+          17.880071,
+          16.501641,
+          15.216904,
+          14.074683
+        ],
+        [
+          19.225648,
+          18.672778,
+          17.992721,
+          17.213135,
+          16.365792,
+          15.485344,
+          14.607998,
+          13.770176,
+          13.00721,
+          12.352149,
+          11.834721,
+          11.480494,
+          11.310254,
+          11.339576,
+          11.578565,
+          12.031674,
+          12.697534,
+          13.568711,
+          14.631312,
+          15.864465,
+          17.239718,
+          18.720521,
+          20.262029,
+          21.811487,
+          23.309469,
+          24.692154,
+          25.894665,
+          26.85532,
+          27.520416,
+          27.849007,
+          27.817049,
+          27.420287,
+          26.675425,
+          25.619336,
+          24.306367,
+          22.804072,
+          21.187934,
+          19.535732,
+          17.922216,
+          16.414616,
+          15.069349
+        ],
+        [
+          19.295155,
+          18.742386,
+          18.062501,
+          17.283204,
+          16.436339,
+          15.556677,
+          14.680618,
+          13.844893,
+          13.085314,
+          12.435663,
+          11.926748,
+          11.585678,
+          11.43534,
+          11.494069,
+          11.77542,
+          12.287944,
+          13.03486,
+          14.013486,
+          15.214383,
+          16.620191,
+          18.204301,
+          19.929577,
+          21.747485,
+          23.59805,
+          25.411014,
+          27.1085,
+          28.609232,
+          29.834112,
+          30.712656,
+          31.189515,
+          31.230225,
+          30.825309,
+          29.992058,
+          28.77368,
+          27.235846,
+          25.461123,
+          23.542041,
+          21.573708,
+          19.646893,
+          17.842286,
+          16.226421
+        ],
+        [
+          19.253527,
+          18.700954,
+          18.021386,
+          17.242593,
+          16.396519,
+          15.51809,
+          14.64395,
+          13.811214,
+          13.056299,
+          12.413909,
+          11.916224,
+          11.592318,
+          11.467783,
+          11.564519,
+          11.900549,
+          12.489751,
+          13.341298,
+          14.458691,
+          15.838274,
+          17.467258,
+          19.32143,
+          21.362898,
+          23.538357,
+          25.778482,
+          27.998992,
+          30.103813,
+          31.990438,
+          33.557231,
+          34.711983,
+          35.380706,
+          35.515453,
+          35.099983,
+          34.152351,
+          32.723958,
+          30.895132,
+          28.767869,
+          26.456754,
+          24.079325,
+          21.747078,
+          19.558122,
+          17.592084
+        ],
+        [
+          19.102217,
+          18.550036,
+          17.87108,
+          17.093218,
+          16.248531,
+          15.372141,
+          14.500987,
+          13.672637,
+          12.92422,
+          12.291541,
+          11.808438,
+          11.506398,
+          11.414371,
+          11.558716,
+          11.963085,
+          12.648077,
+          13.630401,
+          14.921382,
+          16.524686,
+          18.433304,
+          20.626065,
+          23.064139,
+          25.688228,
+          28.417257,
+          31.149322,
+          33.765484,
+          36.136566,
+          38.132618,
+          39.634148,
+          40.543759,
+          40.79657,
+          40.367847,
+          39.2766,
+          37.584519,
+          35.390334,
+          32.820433,
+          30.017096,
+          27.12602,
+          24.284728,
+          21.613196,
+          19.207492
+        ],
+        [
+          18.846239,
+          18.294851,
+          17.617106,
+          16.841028,
+          15.998888,
+          15.126051,
+          14.259787,
+          13.438154,
+          12.699045,
+          12.079477,
+          11.615174,
+          11.340433,
+          11.288207,
+          11.490251,
+          11.977098,
+          12.777611,
+          13.917793,
+          15.418627,
+          17.292814,
+          19.540484,
+          22.144228,
+          25.064101,
+          28.233512,
+          31.557058,
+          34.911354,
+          38.149599,
+          41.110125,
+          43.628499,
+          45.552009,
+          46.754753,
+          47.151233,
+          46.706375,
+          45.44035,
+          43.427367,
+          40.788549,
+          37.679969,
+          34.277611,
+          30.76144,
+          27.300652,
+          24.041838,
+          21.101074
+        ],
+        [
+          18.494161,
+          17.944368,
+          17.269023,
+          16.496402,
+          15.659052,
+          14.792633,
+          13.934747,
+          13.123898,
+          12.39867,
+          11.797246,
+          11.357281,
+          11.116135,
+          11.111296,
+          11.380812,
+          11.963387,
+          12.897796,
+          14.221245,
+          15.966377,
+          18.156805,
+          20.801273,
+          23.88694,
+          27.372604,
+          31.18307,
+          35.20601,
+          39.292659,
+          43.263315,
+          46.917968,
+          50.051506,
+          52.472039,
+          54.020059,
+          54.585764,
+          54.121887,
+          52.649961,
+          50.258939,
+          47.096325,
+          43.353158,
+          39.245129,
+          34.992568,
+          30.801989,
+          26.851333,
+          23.280245
+        ],
+        [
+          18.058079,
+          17.511422,
+          16.840743,
+          16.074756,
+          15.246424,
+          14.391755,
+          13.548622,
+          12.755768,
+          12.052152,
+          11.476753,
+          11.068864,
+          10.86882,
+          10.918921,
+          11.264255,
+          11.95295,
+          13.035421,
+          14.562131,
+          16.579569,
+          19.124291,
+          22.215267,
+          25.845117,
+          29.971323,
+          34.508877,
+          39.326081,
+          44.245135,
+          49.048728,
+          53.493061,
+          57.326604,
+          60.312783,
+          62.253779,
+          63.012086,
+          62.526536,
+          60.820198,
+          57.998807,
+          54.239892,
+          49.7743,
+          44.862923,
+          39.772046,
+          34.750661,
+          30.012401,
+          25.723741
+        ],
+        [
+          17.553598,
+          17.012891,
+          16.351023,
+          15.597459,
+          14.785814,
+          13.952509,
+          13.1355,
+          12.373292,
+          11.704462,
+          11.167858,
+          10.803497,
+          10.654009,
+          10.766307,
+          11.192963,
+          11.992693,
+          13.229355,
+          14.968935,
+          17.274188,
+          20.196889,
+          23.768019,
+          27.986698,
+          32.80917,
+          38.139633,
+          43.824933,
+          49.655121,
+          55.37132,
+          60.681405,
+          65.282685,
+          68.889389,
+          71.261541,
+          72.231158,
+          71.721776,
+          69.758129,
+          66.464356,
+          62.05094,
+          56.792415,
+          50.999284,
+          44.988273,
+          39.054998,
+          33.452265,
+          28.376001
+        ],
+        [
+          16.999824,
+          16.46997,
+          15.824119,
+          15.093035,
+          14.311372,
+          13.516041,
+          12.7447,
+          12.034681,
+          11.422719,
+          10.945696,
+          10.642419,
+          10.556186,
+          10.737547,
+          11.246531,
+          12.153461,
+          13.537602,
+          15.483072,
+          18.071754,
+          21.373303,
+          25.432814,
+          30.257181,
+          35.801732,
+          41.959222,
+          48.55351,
+          55.340234,
+          62.016136,
+          68.237638,
+          73.647698,
+          77.908368,
+          80.735006,
+          81.927363,
+          81.392764,
+          79.157657,
+          75.365575,
+          70.26175,
+          64.166796,
+          57.443544,
+          50.461928,
+          43.566742,
+          37.052119,
+          31.145049
+        ],
+        [
+          16.419331,
+          15.90843,
+          15.290495,
+          14.598482,
+          13.868712,
+          13.138686,
+          12.445082,
+          11.822448,
+          11.303138,
+          10.918843,
+          10.703724,
+          10.698666,
+          10.955754,
+          11.541772,
+          12.539521,
+          14.045953,
+          16.166565,
+          19.005969,
+          22.655068,
+          27.175717,
+          32.584259,
+          38.835777,
+          45.81138,
+          53.31112,
+          61.055026,
+          68.694132,
+          75.832104,
+          82.056389,
+          86.975892,
+          90.260569,
+          91.677397,
+          91.117215,
+          88.608131,
+          84.313208,
+          78.51272,
+          71.573771,
+          63.911988,
+          55.950992,
+          48.085201,
+          40.650444,
+          33.905058
+        ],
+        [
+          15.838012,
+          15.358715,
+          14.787283,
+          14.160252,
+          13.516576,
+          12.894481,
+          12.328572,
+          11.848028,
+          11.476769,
+          11.236134,
+          11.150061,
+          11.251948,
+          11.591751,
+          12.241442,
+          13.297067,
+          14.876124,
+          17.109771,
+          20.130175,
+          24.053976,
+          28.963328,
+          34.886329,
+          41.778958,
+          49.51101,
+          57.85868,
+          66.506399,
+          75.059834,
+          83.070695,
+          90.072103,
+          95.621203,
+          99.343879,
+          100.975339,
+          100.390411,
+          97.618671,
+          92.841834,
+          86.373724,
+          78.625976,
+          70.064808,
+          61.165283,
+          52.369373,
+          44.052863,
+          36.50413
+        ],
+        [
+          15.284601,
+          14.855551,
+          14.358005,
+          13.834121,
+          13.326905,
+          12.875496,
+          12.510787,
+          12.252753,
+          12.110848,
+          12.088371,
+          12.190696,
+          12.436088,
+          12.866749,
+          13.557224,
+          14.617562,
+          16.189576,
+          18.435903,
+          21.522856,
+          25.598954,
+          30.771485,
+          37.083492,
+          44.493611,
+          52.8612,
+          61.939318,
+          71.377978,
+          80.739519,
+          89.526648,
+          97.2218,
+          103.334228,
+          107.449264,
+          109.272963,
+          108.665407,
+          105.657297,
+          100.447015,
+          93.378502,
+          84.903418,
+          75.533459,
+          65.789945,
+          56.157611,
+          47.048171,
+          38.777015
+        ],
+        [
+          14.789657,
+          14.436646,
+          14.050871,
+          13.682931,
+          13.38185,
+          13.187927,
+          13.126072,
+          13.201722,
+          13.401506,
+          13.699996,
+          14.072409,
+          14.511212,
+          15.042958,
+          15.741006,
+          16.730274,
+          18.181892,
+          20.29779,
+          23.287296,
+          27.339079,
+          32.59206,
+          39.108558,
+          46.852321,
+          55.673683,
+          65.303937,
+          75.360884,
+          85.367084,
+          94.781191,
+          103.040898,
+          109.613796,
+          114.050287,
+          116.031442,
+          115.404615,
+          112.201127,
+          106.632953,
+          99.068809,
+          89.993352,
+          79.955799,
+          69.515645,
+          59.192916,
+          49.428982,
+          40.561529
+        ],
+        [
+          14.383737,
+          14.140081,
+          13.915009,
+          13.771213,
+          13.76626,
+          13.941937,
+          14.314227,
+          14.867148,
+          15.553687,
+          16.305881,
+          17.053808,
+          17.750338,
+          18.396162,
+          19.058554,
+          19.878389,
+          21.062531,
+          22.862238,
+          25.541264,
+          29.339054,
+          34.434528,
+          40.914845,
+          48.752048,
+          57.789313,
+          67.738018,
+          78.18672,
+          88.622945,
+          98.467862,
+          107.122303,
+          114.020425,
+          118.685132,
+          120.777999,
+          120.136331,
+          116.791401,
+          110.964737,
+          103.042806,
+          93.534013,
+          83.014633,
+          72.071694,
+          61.25069,
+          51.014394,
+          41.716582
+        ],
+        [
+          14.09466,
+          14.000177,
+          13.994294,
+          14.15615,
+          14.554886,
+          15.234162,
+          16.197523,
+          17.399339,
+          18.746037,
+          20.110627,
+          21.360139,
+          22.391381,
+          23.166978,
+          23.742308,
+          24.27552,
+          25.016917,
+          26.279122,
+          28.393994,
+          31.664494,
+          36.319563,
+          42.477872,
+          50.123557,
+          59.094834,
+          69.085313,
+          79.657763,
+          90.270223,
+          100.314089,
+          109.162596,
+          116.226156,
+          121.008926,
+          123.159469,
+          122.50818,
+          119.085504,
+          113.117742,
+          105.000815,
+          95.255961,
+          84.47414,
+          73.257361,
+          62.164978,
+          51.671417,
+          42.139217
+        ],
+        [
+          13.943993,
+          14.042061,
+          14.319083,
+          14.875391,
+          15.794999,
+          17.123859,
+          18.849255,
+          20.886947,
+          23.082728,
+          25.232611,
+          27.12108,
+          28.570938,
+          29.493464,
+          29.925804,
+          30.044837,
+          30.152704,
+          30.636525,
+          31.91117,
+          34.357012,
+          38.263946,
+          43.789422,
+          50.933808,
+          59.53274,
+          69.264388,
+          79.669463,
+          90.182522,
+          100.173548,
+          108.99822,
+          116.053719,
+          120.834952,
+          122.984496,
+          122.329253,
+          118.897984,
+          112.916577,
+          104.781396,
+          95.014658,
+          84.208585,
+          72.96653,
+          61.849107,
+          51.331813,
+          41.77799
+        ],
+        [
+          13.943254,
+          14.27574,
+          14.897161,
+          15.933623,
+          17.487193,
+          19.606518,
+          22.258924,
+          25.312898,
+          28.540001,
+          31.641883,
+          34.30162,
+          36.250643,
+          37.335999,
+          37.570393,
+          37.150724,
+          36.438946,
+          35.909192,
+          36.073581,
+          37.40316,
+          40.25921,
+          44.84492,
+          51.180901,
+          59.102633,
+          68.275325,
+          78.221592,
+          88.358772,
+          98.044045,
+          106.625806,
+          113.49871,
+          118.158053,
+          120.247558,
+          119.594099,
+          116.223912,
+          110.357256,
+          102.381865,
+          92.808997,
+          82.218615,
+          71.201674,
+          60.307363,
+          50.001582,
+          40.640467
+        ],
+        [
+          14.090707,
+          14.691094,
+          15.706089,
+          17.291236,
+          19.569188,
+          22.5916,
+          26.302855,
+          30.517211,
+          34.921064,
+          39.107727,
+          42.643669,
+          45.154885,
+          46.413656,
+          46.402988,
+          45.340456,
+          43.65377,
+          41.913598,
+          40.740189,
+          40.705395,
+          42.249851,
+          45.627856,
+          50.883536,
+          57.854548,
+          66.195898,
+          75.416439,
+          84.922806,
+          94.068022,
+          102.203282,
+          108.731076,
+          113.15635,
+          115.130791,
+          114.484583,
+          111.240696,
+          105.608908,
+          97.959852,
+          88.782668,
+          78.632409,
+          68.074792,
+          57.635705,
+          47.761481,
+          38.793551
+        ],
+        [
+          14.369792,
+          15.255514,
+          16.689682,
+          18.859173,
+          21.908534,
+          25.892557,
+          30.731082,
+          36.180427,
+          41.836005,
+          47.17532,
+          51.640031,
+          54.742984,
+          56.175665,
+          55.887942,
+          54.11754,
+          51.359986,
+          48.286295,
+          45.629312,
+          44.065856,
+          44.119187,
+          46.097045,
+          50.068927,
+          55.876813,
+          63.168771,
+          71.444881,
+          80.108025,
+          88.515717,
+          96.031608,
+          102.075662,
+          106.17094,
+          107.983279,
+          107.34923,
+          104.287966,
+          98.994652,
+          91.815547,
+          83.208057,
+          73.691435,
+          63.795081,
+          54.011347,
+          44.758404,
+          36.356513
+        ],
+        [
+          14.750103,
+          15.915674,
+          17.760944,
+          20.503504,
+          24.309337,
+          29.236248,
+          35.179898,
+          41.839603,
+          48.721263,
+          55.188385,
+          60.559614,
+          64.235972,
+          65.828555,
+          65.253245,
+          62.765676,
+          58.9257,
+          54.500302,
+          50.330227,
+          47.192871,
+          45.690656,
+          46.182757,
+          48.763873,
+          53.28221,
+          59.382908,
+          66.563266,
+          74.230034,
+          81.753952,
+          88.520245,
+          93.975042,
+          97.666913,
+          99.281177,
+          98.663439,
+          95.828828,
+          90.954775,
+          84.357536,
+          76.455323,
+          67.723105,
+          58.645342,
+          49.672882,
+          41.189032,
+          33.487848
+        ],
+        [
+          15.191292,
+          16.604072,
+          18.812482,
+          22.06122,
+          26.535164,
+          32.294708,
+          39.214025,
+          46.941868,
+          54.90474,
+          62.364955,
+          68.531777,
+          72.706442,
+          74.427683,
+          73.579599,
+          70.43146,
+          65.59735,
+          59.926147,
+          54.350916,
+          49.735098,
+          46.748833,
+          45.79557,
+          46.992655,
+          50.196132,
+          55.053137,
+          61.065386,
+          67.65197,
+          74.205719,
+          80.141977,
+          84.940642,
+          88.181965,
+          89.575091,
+          88.976941,
+          86.398697,
+          81.998099,
+          76.057707,
+          68.951573,
+          61.104718,
+          52.950895,
+          44.894111,
+          37.278326,
+          30.368022
+        ],
+        [
+          15.649481,
+          17.249614,
+          19.733219,
+          23.365507,
+          28.34562,
+          34.73581,
+          42.39379,
+          50.929708,
+          59.709447,
+          67.917955,
+          74.68062,
+          79.221682,
+          81.023175,
+          79.942704,
+          76.256875,
+          70.617335,
+          63.931064,
+          57.196998,
+          51.33995,
+          47.07835,
+          44.847617,
+          44.782779,
+          46.749026,
+          50.401288,
+          55.254042,
+          60.747955,
+          66.306864,
+          71.384087,
+          75.499713,
+          78.270535,
+          79.43282,
+          78.856611,
+          76.549583,
+          72.649044,
+          67.402158,
+          61.136443,
+          54.224231,
+          47.045764,
+          39.955608,
+          33.256192,
+          27.180773
+        ],
+        [
+          16.084858,
+          17.790098,
+          20.428057,
+          24.275412,
+          29.539214,
+          36.282601,
+          44.353777,
+          53.340786,
+          62.574809,
+          71.196339,
+          78.282186,
+          83.011254,
+          84.830877,
+          83.580043,
+          79.534809,
+          73.362365,
+          65.996128,
+          58.465592,
+          51.72402,
+          46.512211,
+          43.281046,
+          42.176282,
+          43.073241,
+          45.641006,
+          49.415892,
+          53.869721,
+          58.465954,
+          62.702821,
+          66.145718,
+          68.451465,
+          69.385673,
+          68.83283,
+          66.797848,
+          63.397975,
+          58.845159,
+          53.420447,
+          47.443494,
+          41.241011,
+          35.118102,
+          29.335638,
+          24.095638
+        ],
+        [
+          16.468627,
+          18.183553,
+          20.835674,
+          24.702633,
+          29.992036,
+          36.766786,
+          44.873677,
+          53.897839,
+          63.165885,
+          71.812152,
+          78.905969,
+          83.61786,
+          85.386277,
+          84.041109,
+          79.849186,
+          73.468269,
+          65.822087,
+          57.930383,
+          50.737281,
+          44.976351,
+          41.095039,
+          39.241682,
+          39.302365,
+          40.966716,
+          43.801919,
+          47.320123,
+          51.032156,
+          54.486806,
+          57.29839,
+          59.165819,
+          59.885185,
+          59.35624,
+          57.582065,
+          54.66117,
+          50.772047,
+          46.151424,
+          41.068635,
+          35.799241,
+          30.601061,
+          25.695241,
+          21.253935
+        ],
+        [
+          16.787463,
+          18.415406,
+          20.939667,
+          24.628223,
+          29.681788,
+          36.161913,
+          43.922198,
+          52.56434,
+          61.440969,
+          69.719135,
+          76.502449,
+          80.99065,
+          82.639685,
+          81.280282,
+          77.161607,
+          70.907116,
+          63.394734,
+          55.594103,
+          48.40259,
+          42.516918,
+          38.36214,
+          36.080857,
+          35.570175,
+          36.545982,
+          38.614357,
+          41.335605,
+          44.274049,
+          47.032944,
+          49.27744,
+          50.749122,
+          51.274636,
+          50.769276,
+          49.235304,
+          46.754485,
+          43.474828,
+          39.592478,
+          35.330625,
+          30.917887,
+          26.568684,
+          22.467693,
+          18.75965
+        ],
+        [
+          17.04426,
+          18.499497,
+          20.769958,
+          24.10453,
+          28.690436,
+          34.586896,
+          41.661628,
+          49.550196,
+          57.658421,
+          65.220612,
+          71.411808,
+          75.494454,
+          76.965597,
+          75.66588,
+          71.819668,
+          65.994449,
+          58.990761,
+          51.69283,
+          44.918335,
+          39.30123,
+          35.227544,
+          32.82671,
+          32.006715,
+          32.514077,
+          33.999817,
+          36.077967,
+          38.37017,
+          40.535906,
+          42.291207,
+          43.419441,
+          43.776844,
+          43.293991,
+          41.973281,
+          39.882121,
+          37.141781,
+          33.912615,
+          30.377041,
+          26.722168,
+          23.124032,
+          19.735048,
+          16.675701
+        ],
+        [
+          17.255074,
+          18.472752,
+          20.394136,
+          23.241898,
+          27.184785,
+          32.278959,
+          38.411808,
+          45.265892,
+          52.320834,
+          58.904432,
+          64.291371,
+          67.832327,
+          69.083535,
+          67.902737,
+          64.48448,
+          59.324355,
+          53.122126,
+          46.650415,
+          40.622797,
+          35.591233,
+          31.890351,
+          29.630725,
+          28.730711,
+          28.969943,
+          30.047755,
+          31.634538,
+          33.410311,
+          35.090157,
+          36.439145,
+          37.280134,
+          37.497055,
+          37.034979,
+          35.897231,
+          34.139376,
+          31.860052,
+          29.18913,
+          26.274229,
+          23.267009,
+          20.31071,
+          17.530185,
+          15.02519
+        ],
+        [
+          17.443218,
+          18.385134,
+          19.901322,
+          22.184045,
+          25.38065,
+          29.543826,
+          34.583934,
+          40.23831,
+          46.072603,
+          51.523657,
+          55.982601,
+          58.903604,
+          59.913068,
+          58.890477,
+          55.998116,
+          51.650901,
+          46.434731,
+          40.995895,
+          35.930138,
+          31.696629,
+          28.571574,
+          26.643246,
+          25.839515,
+          25.973528,
+          26.793299,
+          28.025033,
+          29.40531,
+          30.70185,
+          31.725172,
+          32.334129,
+          32.437677,
+          31.994144,
+          31.008332,
+          29.526391,
+          27.628435,
+          25.419214,
+          23.017613,
+          20.545994,
+          18.120482,
+          15.843138,
+          13.796581
+        ],
+        [
+          17.632262,
+          18.287761,
+          19.383105,
+          21.078988,
+          23.500554,
+          26.696936,
+          30.602435,
+          35.011411,
+          39.579068,
+          43.855824,
+          47.354201,
+          49.636496,
+          50.402845,
+          49.556424,
+          47.227397,
+          43.748524,
+          39.589263,
+          35.266585,
+          31.255625,
+          27.920572,
+          25.477687,
+          23.99184,
+          23.399303,
+          23.545127,
+          24.223541,
+          25.213076,
+          26.302467,
+          27.30711,
+          28.077987,
+          28.505547,
+          28.520555,
+          28.093004,
+          27.229469,
+          25.968868,
+          24.376626,
+          22.537439,
+          20.547199,
+          18.5048,
+          16.504648,
+          14.63054,
+          12.951362
+        ],
+        [
+          17.83982,
+          18.222285,
+          18.916453,
+          20.052935,
+          21.735724,
+          24.01059,
+          26.834704,
+          30.056866,
+          33.417771,
+          36.576289,
+          39.160933,
+          40.837452,
+          41.376779,
+          40.705339,
+          38.923494,
+          36.286659,
+          33.154378,
+          29.921473,
+          26.949157,
+          24.511908,
+          22.769277,
+          21.763683,
+          21.438525,
+          21.667549,
+          22.286454,
+          23.120297,
+          24.003618,
+          24.793107,
+          25.374309,
+          25.664357,
+          25.612316,
+          25.198053,
+          24.429974,
+          23.341617,
+          21.987107,
+          20.435609,
+          18.765164,
+          17.056438,
+          15.386955,
+          13.826316,
+          12.432732
+        ],
+        [
+          18.073547,
+          18.213908,
+          18.552352,
+          19.192814,
+          20.220548,
+          21.678353,
+          23.54371,
+          25.713735,
+          28.005005,
+          30.172661,
+          31.948222,
+          33.089393,
+          33.430178,
+          32.918001,
+          31.627281,
+          29.745417,
+          27.535124,
+          25.283566,
+          23.251554,
+          21.634505,
+          20.541939,
+          19.996281,
+          19.946741,
+          20.2915,
+          20.901523,
+          21.641167,
+          22.383307,
+          23.01882,
+          23.461566,
+          23.650333,
+          23.54896,
+          23.145345,
+          22.449597,
+          21.491367,
+          20.316337,
+          18.981992,
+          17.552919,
+          16.096034,
+          14.676122,
+          13.352073,
+          12.174039
+        ],
+        [
+          18.329948,
+          18.269035,
+          18.311747,
+          18.539848,
+          19.023012,
+          19.801584,
+          20.869941,
+          22.165396,
+          23.567648,
+          24.911934,
+          26.015499,
+          26.712615,
+          26.88989,
+          26.512422,
+          25.63333,
+          24.383784,
+          22.946357,
+          21.519078,
+          20.279636,
+          19.357988,
+          18.822203,
+          18.678042,
+          18.879252,
+          19.343768,
+          19.971028,
+          20.656963,
+          21.305038,
+          21.833191,
+          22.177511,
+          22.293663,
+          22.156956,
+          21.761555,
+          21.119035,
+          20.256305,
+          19.212916,
+          18.037814,
+          16.785735,
+          15.513517,
+          14.276607,
+          13.126039,
+          12.10606
+        ],
+        [
+          18.595755,
+          18.37716,
+          18.188192,
+          18.093244,
+          18.149792,
+          18.39626,
+          18.840271,
+          19.450642,
+          20.156544,
+          20.855995,
+          21.433445,
+          21.783215,
+          21.833211,
+          21.562493,
+          21.007633,
+          20.255922,
+          19.427331,
+          18.650259,
+          18.037452,
+          17.667732,
+          17.576771,
+          17.757246,
+          18.166311,
+          18.737077,
+          19.390839,
+          20.04769,
+          20.634377,
+          21.089326,
+          21.365344,
+          21.430725,
+          21.269337,
+          20.880035,
+          20.275566,
+          19.480957,
+          18.531421,
+          17.469832,
+          16.343915,
+          15.203325,
+          14.096854,
+          13.069941,
+          12.16262
+        ],
+        [
+          18.851018,
+          18.515613,
+          18.155019,
+          17.820763,
+          17.561282,
+          17.413582,
+          17.395102,
+          17.498002,
+          17.688113,
+          17.909976,
+          18.097847,
+          18.190563,
+          18.146666,
+          17.955612,
+          17.641783,
+          17.260046,
+          16.884091,
+          16.590822,
+          16.444969,
+          16.487543,
+          16.730248,
+          17.156061,
+          17.724584,
+          18.380028,
+          19.059669,
+          19.701214,
+          20.248337,
+          20.654293,
+          20.883945,
+          20.914655,
+          20.736422,
+          20.351477,
+          19.773445,
+          19.026083,
+          18.141614,
+          17.158717,
+          16.120254,
+          15.070908,
+          14.054857,
+          13.113659,
+          12.284431
+        ]
+      ],
+      "x_m": [
+        0.0,
+        125.0,
+        250.0,
+        375.0,
+        500.0,
+        625.0,
+        750.0,
+        875.0,
+        1000.0,
+        1125.0,
+        1250.0,
+        1375.0,
+        1500.0,
+        1625.0,
+        1750.0,
+        1875.0,
+        2000.0,
+        2125.0,
+        2250.0,
+        2375.0,
+        2500.0,
+        2625.0,
+        2750.0,
+        2875.0,
+        3000.0,
+        3125.0,
+        3250.0,
+        3375.0,
+        3500.0,
+        3625.0,
+        3750.0,
+        3875.0,
+        4000.0,
+        4125.0,
+        4250.0,
+        4375.0,
+        4500.0,
+        4625.0,
+        4750.0,
+        4875.0,
+        5000.0
+      ],
+      "y_m": [
+        0.0,
+        125.0,
+        250.0,
+        375.0,
+        500.0,
+        625.0,
+        750.0,
+        875.0,
+        1000.0,
+        1125.0,
+        1250.0,
+        1375.0,
+        1500.0,
+        1625.0,
+        1750.0,
+        1875.0,
+        2000.0,
+        2125.0,
+        2250.0,
+        2375.0,
+        2500.0,
+        2625.0,
+        2750.0,
+        2875.0,
+        3000.0,
+        3125.0,
+        3250.0,
+        3375.0,
+        3500.0,
+        3625.0,
+        3750.0,
+        3875.0,
+        4000.0,
+        4125.0,
+        4250.0,
+        4375.0,
+        4500.0,
+        4625.0,
+        4750.0,
+        4875.0,
+        5000.0
+      ]
+    },
+    "condition_multipliers": {
+      "energy": 1.2,
+      "risk": 1.5,
+      "time": 1.25
+    },
+    "dynamic_zones": [
+      {
+        "activation_notice_reception_s": 17280.0,
+        "active_from_s": 11520.0,
+        "active_to_s": 22320.0,
+        "center_x_m": 3450.0,
+        "center_y_m": 950.0,
+        "expiration_notice_reception_s": 23400.0,
+        "radius_m": 450.0,
+        "shape": "circle",
+        "zone_id": "TNFZ1",
+        "zone_type": "temporary_nfz"
+      },
+      {
+        "activation_notice_reception_s": 17640.0,
+        "active_from_s": 10440.0,
+        "active_to_s": 25200.0,
+        "center_x_m": 2000.0,
+        "center_y_m": 3400.0,
+        "expiration_notice_reception_s": 26280.0,
+        "intensity": 1.0,
+        "radius_x_m": 800.0,
+        "radius_y_m": 550.0,
+        "shape": "ellipse",
+        "zone_id": "HAZ1",
+        "zone_type": "hazard"
+      }
+    ],
+    "fine_cell_m": 25.0,
+    "height_m": 5000.0,
+    "minimum_horizontal_clearance_m": 50.0,
+    "minimum_vertical_clearance_m": 20.0,
+    "obstacles": [
+      {
+        "height_m": 70.0,
+        "max_x_m": 2050.0,
+        "max_y_m": 2850.0,
+        "min_x_m": 1550.0,
+        "min_y_m": 750.0,
+        "obstacle_id": "B1"
+      },
+      {
+        "height_m": 95.0,
+        "max_x_m": 3450.0,
+        "max_y_m": 4550.0,
+        "min_x_m": 2850.0,
+        "min_y_m": 2250.0,
+        "obstacle_id": "B2"
+      },
+      {
+        "height_m": 55.0,
+        "max_x_m": 1250.0,
+        "max_y_m": 3650.0,
+        "min_x_m": 650.0,
+        "min_y_m": 3000.0,
+        "obstacle_id": "B3"
+      }
+    ],
+    "permanent_nfz": [
+      {
+        "center_x_m": 2500.0,
+        "center_y_m": 2500.0,
+        "radius_m": 350.0,
+        "shape": "circle",
+        "zone_id": "PNFZ1"
+      }
+    ],
+    "risk_anchors": [
+      {
+        "infrastructure_peak": 0.306,
+        "node_id": "N1",
+        "population_peak": 3200.0,
+        "x_m": 1000.0,
+        "y_m": 4200.0
+      },
+      {
+        "infrastructure_peak": 0.306,
+        "node_id": "N2",
+        "population_peak": 3430.0,
+        "x_m": 2100.0,
+        "y_m": 1200.0
+      },
+      {
+        "infrastructure_peak": 0.34199999999999997,
+        "node_id": "N3",
+        "population_peak": 2740.0,
+        "x_m": 4300.0,
+        "y_m": 1000.0
+      },
+      {
+        "infrastructure_peak": 0.43799999999999994,
+        "node_id": "N4",
+        "population_peak": 2395.0,
+        "x_m": 4200.0,
+        "y_m": 4100.0
+      },
+      {
+        "infrastructure_peak": 0.258,
+        "node_id": "N5",
+        "population_peak": 2855.0,
+        "x_m": 2600.0,
+        "y_m": 3800.0
+      },
+      {
+        "infrastructure_peak": 0.31799999999999995,
+        "node_id": "N6",
+        "population_peak": 2165.0,
+        "x_m": 800.0,
+        "y_m": 2500.0
+      }
+    ],
+    "risk_reference_ranges": {
+      "dynamic_hazard_intensity": [
+        0.0,
+        1.5
+      ],
+      "infrastructure_index": [
+        0.0,
+        1.0
+      ],
+      "landing_difficulty_index": [
+        0.0,
+        1.0
+      ],
+      "population_people_per_km2": [
+        0.0,
+        5000.0
+      ],
+      "terrain_obstacle_index": [
+        0.0,
+        1.0
+      ]
+    },
+    "risk_weights": {
+      "dynamic_hazard": 0.25,
+      "infrastructure": 0.25,
+      "population": 0.3,
+      "terrain_obstacle": 0.2
+    },
+    "terrain_spec": {
+      "detail_phase": [
+        2.1444250460608085,
+        4.852938245302009
+      ],
+      "peaks": [
+        {
+          "amplitude_m": 80.0,
+          "sigma_m": 600.0,
+          "x_m": 1500.0,
+          "y_m": 3700.0
+        },
+        {
+          "amplitude_m": 110.0,
+          "sigma_m": 800.0,
+          "x_m": 3800.0,
+          "y_m": 2700.0
+        }
+      ],
+      "seeded_detail_amplitude_m": 8.0
+    },
+    "width_m": 5000.0
+  },
+  "metadata": {
+    "active_commodity_mask": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "canonical_units": {
+      "demand": "standardized_unit",
+      "distance": "metre",
+      "energy": "watt_hour",
+      "mass": "kilogram",
+      "time": "second"
+    },
+    "commodity_names": [
+      "medical",
+      "food",
+      "water",
+      "shelter"
+    ],
+    "configuration_hash": "0fd463c567316d3e115eb8b6346f1deef45351763894093e82b8c6d7021446f2",
+    "generator_version": "2.0.0",
+    "master_seed": 18427,
+    "schema_version": "2.0",
+    "substream_seeds": {
+      "corridors": [
+        3239301650,
+        873472071,
+        3498537403,
+        2575403824
+      ],
+      "demand": [
+        2750836143,
+        3536084309,
+        4281589106,
+        3538143452
+      ],
+      "geography": [
+        2717881565,
+        848840393,
+        2207326277,
+        760684243
+      ],
+      "hazards": [
+        438045287,
+        2347299927,
+        197655480,
+        2837585285
+      ],
+      "nfzs": [
+        2867963174,
+        3618264868,
+        259598612,
+        3947777282
+      ],
+      "node_placement": [
+        2195485604,
+        3765104679,
+        239743447,
+        446820245
+      ],
+      "p3_mutations": [
+        20739461,
+        1752684293,
+        866141556,
+        1207627339
+      ],
+      "p4_potential_outcomes": [
+        3554284323,
+        555879432,
+        304166544,
+        2022407301
+      ],
+      "replenishment": [
+        2320655859,
+        3159864257,
+        2228234589,
+        4112096856
+      ],
+      "reports": [
+        3254336166,
+        152799541,
+        3186006814,
+        4024373514
+      ],
+      "vulnerability": [
+        4282991672,
+        1529342554,
+        549467903,
+        3489240675
+      ],
+      "wind": [
+        2875644310,
+        3043485803,
+        1603801814,
+        3191530771
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "initially_known": true,
+      "node_id": "N1",
+      "onset_time_s": 0.0,
+      "reported_vulnerability": 1.2,
+      "true_vulnerability": 1.3,
+      "x_m": 1000.0,
+      "y_m": 4200.0
+    },
+    {
+      "initially_known": true,
+      "node_id": "N2",
+      "onset_time_s": 0.0,
+      "reported_vulnerability": 1.2,
+      "true_vulnerability": 1.3,
+      "x_m": 2100.0,
+      "y_m": 1200.0
+    },
+    {
+      "initially_known": true,
+      "node_id": "N3",
+      "onset_time_s": 0.0,
+      "reported_vulnerability": 1.5,
+      "true_vulnerability": 1.6,
+      "x_m": 4300.0,
+      "y_m": 1000.0
+    },
+    {
+      "initially_known": true,
+      "node_id": "N4",
+      "onset_time_s": 0.0,
+      "reported_vulnerability": 2.1,
+      "true_vulnerability": 2.4,
+      "x_m": 4200.0,
+      "y_m": 4100.0
+    },
+    {
+      "initially_known": true,
+      "node_id": "N5",
+      "onset_time_s": 5400.0,
+      "reported_vulnerability": 1.0,
+      "true_vulnerability": 0.9,
+      "x_m": 2600.0,
+      "y_m": 3800.0
+    },
+    {
+      "initially_known": false,
+      "node_id": "N6",
+      "onset_time_s": 2520.0,
+      "reported_vulnerability": 1.3,
+      "true_vulnerability": 1.4,
+      "x_m": 800.0,
+      "y_m": 2500.0
+    }
+  ],
+  "operational_initial_cohorts": [
+    {
+      "cohort_id": "N1_medical_reported_initial",
+      "commodity": "medical",
+      "commodity_index": 0,
+      "node_id": "N1",
+      "quantity": 7.0,
+      "reported_onset_time_s": 0.0
+    },
+    {
+      "cohort_id": "N1_water_reported_initial",
+      "commodity": "water",
+      "commodity_index": 2,
+      "node_id": "N1",
+      "quantity": 10.0,
+      "reported_onset_time_s": 0.0
+    },
+    {
+      "cohort_id": "N2_medical_reported_initial",
+      "commodity": "medical",
+      "commodity_index": 0,
+      "node_id": "N2",
+      "quantity": 4.0,
+      "reported_onset_time_s": 0.0
+    },
+    {
+      "cohort_id": "N2_water_reported_initial",
+      "commodity": "water",
+      "commodity_index": 2,
+      "node_id": "N2",
+      "quantity": 11.0,
+      "reported_onset_time_s": 0.0
+    },
+    {
+      "cohort_id": "N3_medical_reported_initial",
+      "commodity": "medical",
+      "commodity_index": 0,
+      "node_id": "N3",
+      "quantity": 8.0,
+      "reported_onset_time_s": 0.0
+    },
+    {
+      "cohort_id": "N3_water_reported_initial",
+      "commodity": "water",
+      "commodity_index": 2,
+      "node_id": "N3",
+      "quantity": 6.0,
+      "reported_onset_time_s": 0.0
+    },
+    {
+      "cohort_id": "N4_medical_reported_initial",
+      "commodity": "medical",
+      "commodity_index": 0,
+      "node_id": "N4",
+      "quantity": 5.0,
+      "reported_onset_time_s": 0.0
+    },
+    {
+      "cohort_id": "N4_water_reported_initial",
+      "commodity": "water",
+      "commodity_index": 2,
+      "node_id": "N4",
+      "quantity": 9.0,
+      "reported_onset_time_s": 0.0
+    }
+  ],
+  "p4_potential_outcomes": [
+    {
+      "confidence": 1.0,
+      "node_id": "N3",
+      "noise_by_commodity": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "report_delay_s": 1152.0,
+      "report_lost": false,
+      "service_visit_index": 1,
+      "source_seed_stream": "p4_potential_outcomes",
+      "will_generate": true
+    }
+  ],
+  "true_initial_cohorts": [
+    {
+      "cohort_id": "N1_medical_initial",
+      "commodity": "medical",
+      "commodity_index": 0,
+      "node_id": "N1",
+      "onset_time_s": 0.0,
+      "quantity": 8.0
+    },
+    {
+      "cohort_id": "N1_water_initial",
+      "commodity": "water",
+      "commodity_index": 2,
+      "node_id": "N1",
+      "onset_time_s": 0.0,
+      "quantity": 12.0
+    },
+    {
+      "cohort_id": "N2_medical_initial",
+      "commodity": "medical",
+      "commodity_index": 0,
+      "node_id": "N2",
+      "onset_time_s": 0.0,
+      "quantity": 4.0
+    },
+    {
+      "cohort_id": "N2_water_initial",
+      "commodity": "water",
+      "commodity_index": 2,
+      "node_id": "N2",
+      "onset_time_s": 0.0,
+      "quantity": 18.0
+    },
+    {
+      "cohort_id": "N3_medical_initial",
+      "commodity": "medical",
+      "commodity_index": 0,
+      "node_id": "N3",
+      "onset_time_s": 0.0,
+      "quantity": 10.0
+    },
+    {
+      "cohort_id": "N3_water_initial",
+      "commodity": "water",
+      "commodity_index": 2,
+      "node_id": "N3",
+      "onset_time_s": 0.0,
+      "quantity": 6.0
+    },
+    {
+      "cohort_id": "N4_medical_initial",
+      "commodity": "medical",
+      "commodity_index": 0,
+      "node_id": "N4",
+      "onset_time_s": 0.0,
+      "quantity": 5.0
+    },
+    {
+      "cohort_id": "N4_water_initial",
+      "commodity": "water",
+      "commodity_index": 2,
+      "node_id": "N4",
+      "onset_time_s": 0.0,
+      "quantity": 8.0
+    },
+    {
+      "cohort_id": "N5_medical_initial",
+      "commodity": "medical",
+      "commodity_index": 0,
+      "node_id": "N5",
+      "onset_time_s": 5400.0,
+      "quantity": 3.0
+    },
+    {
+      "cohort_id": "N5_water_initial",
+      "commodity": "water",
+      "commodity_index": 2,
+      "node_id": "N5",
+      "onset_time_s": 5400.0,
+      "quantity": 14.0
+    },
+    {
+      "cohort_id": "N6_medical_initial",
+      "commodity": "medical",
+      "commodity_index": 0,
+      "node_id": "N6",
+      "onset_time_s": 2520.0,
+      "quantity": 4.0
+    },
+    {
+      "cohort_id": "N6_water_initial",
+      "commodity": "water",
+      "commodity_index": 2,
+      "node_id": "N6",
+      "onset_time_s": 2520.0,
+      "quantity": 7.0
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          3450.0,
+          950.0
+        ],
+        "type": "Point"
+      },
+      "id": "TNFZ1",
+      "properties": {
+        "activation_notice_reception_s": 17280.0,
+        "active_from_s": 11520.0,
+        "active_to_s": 22320.0,
+        "center_x_m": 3450.0,
+        "center_y_m": 950.0,
+        "expiration_notice_reception_s": 23400.0,
+        "radius_m": 450.0,
+        "shape": "circle",
+        "zone_id": "TNFZ1",
+        "zone_type": "temporary_nfz"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          2000.0,
+          3400.0
+        ],
+        "type": "Point"
+      },
+      "id": "HAZ1",
+      "properties": {
+        "activation_notice_reception_s": 17640.0,
+        "active_from_s": 10440.0,
+        "active_to_s": 25200.0,
+        "center_x_m": 2000.0,
+        "center_y_m": 3400.0,
+        "expiration_notice_reception_s": 26280.0,
+        "intensity": 1.0,
+        "radius_x_m": 800.0,
+        "radius_y_m": 550.0,
+        "shape": "ellipse",
+        "zone_id": "HAZ1",
+        "zone_type": "hazard"
+      },
+      "type": "Feature"
+    }
+  ],
+  "type": "FeatureCollection"
+}

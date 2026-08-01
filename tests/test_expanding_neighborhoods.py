@@ -103,6 +103,7 @@ def test_expanding_neighborhood_hierarchy() -> None:
 
     trace = ImpactTrace(
         event_kind="demand_correction",
+        locality_class="information",
         changed_resources={"demand:0"},
         hard=set(),
         direct={u0_first},
@@ -157,6 +158,7 @@ def test_full_replan_baseline_has_one_level() -> None:
 
     trace = ImpactTrace(
         event_kind="demand_correction",
+        locality_class="information",
         changed_resources={"demand:0"},
         hard=set(),
         direct={u0_first},
@@ -195,6 +197,7 @@ def test_duplicate_neighborhoods_are_removed() -> None:
 
     trace = ImpactTrace(
         event_kind="demand_correction",
+        locality_class="information",
         changed_resources={"demand:0"},
         hard=set(),
         direct={only},

@@ -1,0 +1,22 @@
+protocol:
+  short_mission_horizon_hours: 1.0
+  short_alns_iterations: 10
+  training_seed_count: 5
+
+thresholds:
+  constant_std_epsilon: 1.0e-8
+  near_constant_range: 1.0e-3
+  missing_dominated_fraction: 0.8
+  clipped_dominated_fraction: 0.8
+  prior_coverage_minimum: 0.2
+  mostly_masked_fraction: 0.5
+  gate_close_to_fixed_abs_difference: 0.05
+  saturation_fraction: 0.8
+  negligible_logit_shift: 0.05
+  measurable_policy_kl: 1.0e-6
+  near_zero_argmax_change_rate: 0.01
+  gate_gradient_epsilon: 1.0e-8
+  gate_relative_update_epsilon: 1.0e-6
+  minimum_prior_bearing_decisions: 50
+  minimum_ppo_updates: 10
+  unique_value_tolerance_decimals: 8

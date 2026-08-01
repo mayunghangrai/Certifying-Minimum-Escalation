@@ -1,0 +1,50 @@
+{
+  "fixed_scenario_seed": 18428,
+  "modes": {
+    "graph_mappo": {
+      "actions": {
+        "0": 3
+      },
+      "checkpoint": "results\\method_smoke\\graph\\models\\graph_mappo.pt",
+      "checkpoint_sha256": "78447f9d0e3dd61096bec69a40c25af0e18078d4914d68079828ace5a311916f",
+      "model_version": 2,
+      "passed": true,
+      "saved_mode": "graph_mappo",
+      "value": -1.998676061630249
+    },
+    "graph_mappo_adaptive_alns": {
+      "actions": {
+        "0": 3
+      },
+      "checkpoint": "results\\method_smoke\\adaptive\\models\\graph_mappo_adaptive_alns.pt",
+      "checkpoint_sha256": "ad478a443ef54e03e80da5ec962979f9f17bd68156d2de40a15420d536b6c729",
+      "model_version": 2,
+      "passed": true,
+      "saved_mode": "graph_mappo_adaptive_alns",
+      "value": -2.0225830078125
+    },
+    "graph_mappo_fixed_alns": {
+      "actions": {
+        "0": 3
+      },
+      "checkpoint": "results\\method_smoke\\fixed\\models\\graph_mappo_fixed_alns.pt",
+      "checkpoint_sha256": "7dbf1ba1cca21c2ffe23b08d630e2fe53e656bb1c05ff853e3ac50caa89b5894",
+      "model_version": 2,
+      "passed": true,
+      "saved_mode": "graph_mappo_fixed_alns",
+      "value": -2.022582769393921
+    },
+    "vanilla_mappo": {
+      "actions": {
+        "0": 77
+      },
+      "checkpoint": "results\\method_smoke\\vanilla\\models\\vanilla_mappo.pt",
+      "checkpoint_sha256": "7ba4057e28e9e785963069c9ecc7f8432db8cb0db0b4b80c428bd722e42c16bc",
+      "model_version": 2,
+      "passed": true,
+      "saved_mode": "vanilla_mappo",
+      "value": -4.32592248916626
+    }
+  },
+  "passed": true
+}

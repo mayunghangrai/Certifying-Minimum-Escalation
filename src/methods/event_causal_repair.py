@@ -56,6 +56,7 @@ class PlanDecision:
     node: int
     predecessor_node: int
     resources: FrozenSet[str]
+    payload: Tuple[float, ...] = field(default_factory=tuple)
 
 
 @dataclass
@@ -95,12 +96,14 @@ class PlanBeliefDependencyGraph:
                         if amount <= 1e-9:
                             continue
                         resources.add(f"cohort:{visit.node}:{k}")
-                        resources.add(f"inventory:{k}")
+                        # inventory:{k} is intentionally NOT added here;
+                        # reservation/slack logic limits depot-resource impact.
                     decision = PlanDecision(
                         key=key,
                         node=visit.node,
                         predecessor_node=predecessor,
                         resources=frozenset(resources),
+                        payload=tuple(float(x) for x in visit.x_plan),
                     )
                     graph.decisions[key] = decision
                     sortie_keys.add(key)
@@ -122,6 +125,7 @@ class PlanBeliefDependencyGraph:
                         predecessor_node=previous.predecessor_node,
                         resources=frozenset({
                             *previous.resources, return_resource}),
+                        payload=previous.payload,
                     )
                     graph.resource_to_decisions.setdefault(
                         return_resource, set()).add(last_key)
@@ -133,6 +137,39 @@ class PlanBeliefDependencyGraph:
         affected: Set[DecisionKey] = set()
         for resource in resources:
             affected.update(self.resource_to_decisions.get(resource, set()))
+        return affected
+
+    def inventory_reservations(self, scaffold: Scaffold) -> Dict[int, float]:
+        """Total depot stock reserved by planned future sortie payloads."""
+        reserved: Dict[int, float] = {}
+        for sorties in scaffold.plans.values():
+            for sortie in sorties:
+                for k, amount in enumerate(sortie.y):
+                    if amount > 1e-9:
+                        reserved[k] = reserved.get(k, 0.0) + float(amount)
+        return reserved
+
+    def affected_by_inventory_deficits(
+        self, deficits: Dict[int, float],
+    ) -> Set[DecisionKey]:
+        """Select just enough high-payload visits to cover each deficit."""
+        affected: Set[DecisionKey] = set()
+        for commodity, deficit in deficits.items():
+            if deficit <= 1e-9:
+                continue
+            candidates = []
+            for key, decision in self.decisions.items():
+                if commodity < len(decision.payload):
+                    amount = decision.payload[commodity]
+                    if amount > 1e-9:
+                        candidates.append((amount, key))
+            candidates.sort(key=lambda x: -x[0])
+            remaining = deficit
+            for amount, key in candidates:
+                affected.add(key)
+                remaining -= amount
+                if remaining <= 1e-9:
+                    break
         return affected
 
     def downstream_closure(
@@ -196,6 +233,7 @@ class OperationalChanges:
     demand_nodes: Set[int] = field(default_factory=set)
     demand_commodities: Set[Tuple[int, int]] = field(default_factory=set)
     inventory_commodities: Set[int] = field(default_factory=set)
+    loading_consumption_commodities: Set[int] = field(default_factory=set)
     inventory_delta: Dict[int, float] = field(default_factory=dict)
     closed_corridors: Set[Tuple[int, int]] = field(default_factory=set)
     reopened_corridors: Set[Tuple[int, int]] = field(default_factory=set)
@@ -224,9 +262,24 @@ class OperationalChanges:
         new_inventory = np.asarray(after.inventory)
         for k in np.flatnonzero(np.abs(new_inventory - old_inventory) > atol):
             commodity = int(k)
+            delta = float(new_inventory[k] - old_inventory[k])
+            if delta < -atol:
+                # Detect inventory decreases explained by normal UAV loading:
+                # the inventory drop should match the total payload increase.
+                total_payload_increase = 0.0
+                for u in range(len(before.uav_payload)):
+                    old_ell = before.uav_payload[u][commodity]
+                    new_ell = after.uav_payload[u][commodity]
+                    if new_ell > old_ell + atol:
+                        total_payload_increase += float(new_ell - old_ell)
+                if abs(total_payload_increase + delta) <= atol * max(
+                    1.0, abs(delta)
+                ):
+                    changes.loading_consumption_commodities.add(commodity)
+                    changes.inventory_delta[commodity] = delta
+                    continue
             changes.inventory_commodities.add(commodity)
-            changes.inventory_delta[commodity] = float(
-                new_inventory[k] - old_inventory[k])
+            changes.inventory_delta[commodity] = delta
         for edge in before.corridors.keys() & after.corridors.keys():
             old, new = before.corridors[edge], after.corridors[edge]
             if old and not new:
@@ -245,11 +298,11 @@ class OperationalChanges:
         )
 
     def resources(self) -> Set[str]:
+        # Inventory dependencies are handled via reservation/slack, not via a
+        # global commodity broadcast to every visit.
         resources = {f"demand:{node}" for node in self.demand_nodes}
         resources.update(
             f"cohort:{node}:{k}" for node, k in self.demand_commodities)
-        resources.update(
-            f"inventory:{k}" for k in self.inventory_commodities)
         resources.update(
             corridor_resource(i, j)
             for i, j in self.closed_corridors | self.reopened_corridors)
@@ -267,6 +320,7 @@ class OperationalChanges:
 @dataclass
 class ImpactTrace:
     event_kind: str
+    locality_class: str
     changed_resources: Set[str]
     hard: Set[DecisionKey]
     direct: Set[DecisionKey]
@@ -285,6 +339,9 @@ def _event_kind(
     if changes.inventory_commodities:
         return "depot_resource_change"
 
+    if changes.loading_consumption_commodities:
+        return "loading_consumption"
+
     if changes.new_nodes:
         return "newly_revealed_demand"
 
@@ -294,6 +351,27 @@ def _event_kind(
         return "demand_correction"
 
     return "feasibility_change"
+
+
+def _locality_class(
+    event_type: Optional[EventType],
+    changes: OperationalChanges,
+    hard: Set[DecisionKey],
+) -> str:
+    if changes.loading_consumption_commodities:
+        return "loading_consumption"
+    if changes.inventory_commodities:
+        return "depot_genuine"
+    if event_type in (
+        EventType.UAV_ARRIVAL,
+        EventType.SERVICE_COMPLETE,
+        EventType.DEPOT_ARRIVAL,
+        EventType.LOAD_COMPLETE,
+    ):
+        return "fleet_service"
+    if hard and not changes.has_relevant_change:
+        return "feasibility"
+    return "information"
 
 
 def _hard_infeasible_decisions(
@@ -371,18 +449,31 @@ def trace_impacts(
     env, dependency_graph: PlanBeliefDependencyGraph,
     changes: OperationalChanges,
     event_type: Optional[EventType],
+    after_inventory: Optional[Tuple[float, ...]] = None,
 ) -> ImpactTrace:
     resources = changes.resources()
     hard = _hard_infeasible_decisions(
         env, env.scaffold, dependency_graph)
     direct = dependency_graph.affected_by(resources)
+    # Reservation/slack handling for genuine (non-loading) inventory changes.
+    if changes.inventory_commodities and after_inventory is not None:
+        reservations = dependency_graph.inventory_reservations(env.scaffold)
+        deficits: Dict[int, float] = {}
+        for k in changes.inventory_commodities:
+            slack = after_inventory[k] - reservations.get(k, 0.0)
+            if slack < -1e-8:
+                deficits[k] = -slack
+        if deficits:
+            direct.update(
+                dependency_graph.affected_by_inventory_deficits(deficits))
     opportunity = _opportunity_competitors(
         env, dependency_graph, changes)
     mutable = dependency_graph.downstream_closure(
         hard | direct | opportunity)
     frozen = set(dependency_graph.decisions) - mutable
     return ImpactTrace(
-        event_kind=_event_kind(event_type,changes),
+        event_kind=_event_kind(event_type, changes),
+        locality_class=_locality_class(event_type, changes, hard),
         changed_resources=resources,
         hard=hard,
         direct=direct,
@@ -645,10 +736,16 @@ class EventCausalRepairController:
         proxy_threshold_fraction: float = 0.0,
         screen_soft_events: bool = True,
         shadow_audit_screened_events: bool = False,
+        trigger_mode: str = "both",
     ):
         self.selective_repair = bool(selective_repair)
         self.solve_cost = solve_cost
         self.screen_soft_events = bool(screen_soft_events)
+        self.trigger_mode = str(trigger_mode).lower()
+        if self.trigger_mode not in {"certificate", "proxy", "both"}:
+            raise ValueError(
+                "trigger_mode must be 'certificate', 'proxy', or 'both'"
+            )
 
         self.shadow_audit_screened_events = bool(
             shadow_audit_screened_events
@@ -1050,6 +1147,7 @@ class EventCausalRepairController:
             dependency_graph,
             changes,
             event_type,
+            after_inventory=current.inventory,
         )
         ctx = env._plan_context()
         current_value = (
@@ -1096,6 +1194,7 @@ class EventCausalRepairController:
         record: Dict[str, object] = {
             "time_h": float(env.t),
             "event_kind": trace.event_kind,
+            "locality_class": trace.locality_class,
             "event_type": (
                 event_type.name
                 if event_type is not None
@@ -1169,6 +1268,17 @@ class EventCausalRepairController:
             "outcome": "",
         }
 
+        # Trigger-mode screening.  Hard impacts always bypass the screen.
+        certificate_screen_pass = (
+            bool(trace.hard)
+            or potential_gain_bound > solve_cost + 1e-9
+        )
+        proxy_screen_pass = (
+            bool(trace.hard)
+            or event_impact_proxy
+            > proxy_activation_threshold + 1e-9
+        )
+
         if not trace.hard and not trace.changed_resources:
             record["outcome"] = (
                 "continue_no_relevant_change"
@@ -1177,6 +1287,25 @@ class EventCausalRepairController:
         elif (
             self.screen_soft_events
             and not trace.hard
+            and self.trigger_mode == "certificate"
+            and not certificate_screen_pass
+        ):
+            record["outcome"] = "certified_continue"
+
+        elif (
+            self.screen_soft_events
+            and not trace.hard
+            and self.trigger_mode == "proxy"
+            and not proxy_screen_pass
+        ):
+            record["outcome"] = (
+                "continue_event_impact_below_threshold"
+            )
+
+        elif (
+            self.screen_soft_events
+            and not trace.hard
+            and self.trigger_mode == "both"
             and potential_gain_bound
             <= solve_cost + 1e-9
         ):
@@ -1185,6 +1314,7 @@ class EventCausalRepairController:
         elif (
             self.screen_soft_events
             and not trace.hard
+            and self.trigger_mode == "both"
             and event_impact_proxy
             <= proxy_activation_threshold + 1e-9
         ):

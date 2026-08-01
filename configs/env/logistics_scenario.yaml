@@ -1,0 +1,16 @@
+# Environment and Physical Logistics Parameters
+# These define the UA-MTVRP-IU scenario physics, fleet composition, and "fog of disaster" maps.
+
+num_uavs: 3
+grid_size: [100, 100]
+num_nodes: 20
+max_battery: 5000.0
+max_payload: 20.0
+uav_speed: 4.0
+seed: 42
+
+# Idea 1: Energy Model Config
+uav_weight: 10.0
+energy_coeff: 0.18
+hover_coeff: 1.0
+vertical_energy: 5.0

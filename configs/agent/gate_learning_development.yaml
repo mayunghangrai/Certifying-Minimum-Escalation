@@ -1,0 +1,55 @@
+protocol:
+  planned_episodes: 200
+  minimum_episodes: 200
+  absolute_maximum_episodes: 1000
+  evaluation_interval: 25
+  stable_evaluations_required: 8
+  validation_on_all_seeds: true
+  final_validation_all_regimes: true
+  final_validation_repeats_per_seed: 1
+  checkpoint_interval: 25
+
+development_runtime:
+  mission_horizon_hours: 1.0
+  alns_iterations: 10
+  rationale: >-
+    Recorded methodology-development runtime bounds. The unmodified 12-hour,
+    60-iteration CPU benchmark exceeded 604 seconds for one incomplete
+    episode. These bounds do not alter rewards, PPO, actor/critic/gate
+    architecture, ALNS operators, event transition rules, or information
+    boundaries. All regime and prior-count acceptance conditions remain
+    mandatory and must be extended rather than waived when unmet.
+
+gate_training:
+  directional_regularization_coefficient: 0.10
+  directional_margin: 0.10
+  minimum_fresh_prior_bearing_training_decisions: 100
+  minimum_fresh_prior_bearing_validation_decisions: 100
+  rationale: >-
+    PPO return remains the primary actor objective. The paired hinge term
+    encodes the methodology requirement that a fresh, feasible incumbent
+    receive at least 0.10 more gate weight than each adverse observable
+    plan-status probe. It uses only the canonical ten operational plan
+    features and adds neither regime labels nor latent truth to policy inputs.
+
+analysis:
+  bootstrap_samples: 2000
+  confidence_level: 0.95
+  minimum_prior_coverage: 0.30
+  minimum_prior_bearing_validation_decisions: 1000
+  practical_minimum_per_regime: 100
+  maximum_matched_states: 2000
+  original_gate_standard_deviation: 0.010593
+  original_mean_abs_gate_minus_fixed: 0.011860
+  meaningful_gate_standard_deviation: 0.03
+  meaningful_mean_abs_gate_minus_fixed: 0.03
+  meaningful_paired_effect: 0.05
+  meaningful_prior_median_tv: 0.003
+  meaningful_prior_argmax_rate: 0.01
+  collapse_tolerance_fraction: 0.15
+
+reproducibility:
+  master_seed: 18439
+  branch_random_seed: 29439
+  deterministic_algorithms: true
+  canonical_float_digits: 12

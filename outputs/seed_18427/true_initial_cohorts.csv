@@ -1,0 +1,13 @@
+node_id,commodity_index,commodity,cohort_id,onset_time_s,quantity
+N1,0,medical,N1_medical_initial,0.0,8.0
+N1,2,water,N1_water_initial,0.0,12.0
+N2,0,medical,N2_medical_initial,0.0,4.0
+N2,2,water,N2_water_initial,0.0,18.0
+N3,0,medical,N3_medical_initial,0.0,10.0
+N3,2,water,N3_water_initial,0.0,6.0
+N4,0,medical,N4_medical_initial,0.0,5.0
+N4,2,water,N4_water_initial,0.0,8.0
+N5,0,medical,N5_medical_initial,5400.0,3.0
+N5,2,water,N5_water_initial,5400.0,14.0
+N6,0,medical,N6_medical_initial,2520.0,4.0
+N6,2,water,N6_water_initial,2520.0,7.0

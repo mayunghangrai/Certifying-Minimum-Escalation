@@ -1,0 +1,447 @@
+{
+  "method_order": [
+    "Event-Causal Belief-Repair ALNS",
+    "Regret-Gated Full Replan ALNS",
+    "Full Event Replan ALNS",
+    "Initial Plan Only"
+  ],
+  "seeds": [
+    100,
+    101
+  ],
+  "environment": {
+    "physics": {
+      "W_max": 2.5,
+      "m0": 4.0,
+      "B_max": 230.0,
+      "e_c": 3.125,
+      "e_v": 2.5,
+      "beta_safe": 23.0,
+      "v_uav": 60.0
+    },
+    "commodities": {
+      "w_k": [
+        0.25,
+        0.5,
+        1.0,
+        2.5
+      ],
+      "lambda_k": [
+        4.0,
+        2.0,
+        3.0,
+        1.0
+      ],
+      "alpha_k": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "kappa_k": [
+        0.35,
+        0.2,
+        0.3,
+        0.1
+      ]
+    },
+    "belief": {
+      "rho": 1.0,
+      "sigma_obs": 3.0,
+      "K_gain_mode": "kalman",
+      "belief_age_mode": "oldest",
+      "sigma0_frac": 0.55,
+      "gamma0_range": [
+        0.4,
+        0.8
+      ],
+      "init_report_noise_frac": 0.45
+    },
+    "events": {
+      "p1_rate": 0.1,
+      "p2_reveal_window": [
+        0.15,
+        0.75
+      ],
+      "p3_rate": 0.16,
+      "p3_gamma_shape": 2.5,
+      "p3_gamma_scale": 2.5,
+      "p_P4": 0.65,
+      "delta_P4_mean": 0.25,
+      "sigma_P4": 2.0,
+      "avail_closure_rate": 0.0,
+      "avail_closure_dur": [
+        0.75,
+        3.0
+      ],
+      "avail_hazard_threshold": 0.08
+    },
+    "hybrid": {
+      "K_max": 6,
+      "omega": [
+        1.0,
+        1.0,
+        2.0,
+        2.0,
+        0.25
+      ],
+      "xi_E": 0.01,
+      "xi_R": 0.1,
+      "xi_C": 5.0,
+      "P_viol": 50.0,
+      "mu_E": 0.01,
+      "mu_R": 0.1,
+      "alns_iterations": 4,
+      "alns_removal_frac": 0.3,
+      "route_depth": 4
+    },
+    "map": {
+      "region_km": 12.0,
+      "n_nodes": 8,
+      "n_hidden": 2,
+      "n_clusters": 4,
+      "cluster_std_km": 0.9,
+      "feasible_frac": 0.98,
+      "min_node_sep_km": 0.35,
+      "nu_range": [
+        0.8,
+        3.5
+      ],
+      "demand_mean_k": [
+        3.0,
+        4.0,
+        3.5,
+        1.0
+      ],
+      "n_hazard_bumps": [
+        3,
+        4
+      ],
+      "hazard_amp_range": [
+        0.8,
+        1.8
+      ],
+      "hazard_radius_range": [
+        1.5,
+        3.5
+      ],
+      "alpha_h": 1.0,
+      "alpha_w": 0.3,
+      "path_mode": "euclidean",
+      "astar_grid": 48
+    },
+    "mission": {
+      "T": 2.0,
+      "M": 3,
+      "T_load": 0.15,
+      "T_charge": 0.5,
+      "n_depot_bays": 2,
+      "stock_mult": 0.85,
+      "n_replenish": 1,
+      "replenish_frac": 0.5,
+      "gamma_hour": 0.98,
+      "terminate_on_belief_zero": true
+    }
+  },
+  "method": {
+    "solve_cost": null,
+    "proxy_threshold_fraction": 0.3,
+    "repair_budget": 6,
+    "alns_iterations": 4
+  },
+  "aggregate": {
+    "Event-Causal Belief-Repair ALNS": {
+      "episodes": 2,
+      "J_dep_true": {
+        "mean": 309.8675496532662,
+        "std": 51.6962995474335,
+        "median": 309.8675496532662,
+        "min": 273.3127456810249,
+        "max": 346.42235362550747
+      },
+      "J_composite": {
+        "mean": 343.6216782598623,
+        "std": 41.37945846835098,
+        "median": 343.6216782598623,
+        "min": 314.3619825750642,
+        "max": 372.88137394466037
+      },
+      "fill_rate": {
+        "mean": 0.27448275862068966,
+        "std": 0.007802557585506763,
+        "median": 0.27448275862068966,
+        "min": 0.2689655172413793,
+        "max": 0.28
+      },
+      "n_resolves": {
+        "mean": 3.5,
+        "std": 2.1213203435596424,
+        "median": 3.5,
+        "min": 2.0,
+        "max": 5.0
+      },
+      "repair_solver_calls": {
+        "mean": 4.0,
+        "std": 2.8284271247461903,
+        "median": 4.0,
+        "min": 2.0,
+        "max": 6.0
+      },
+      "repair_wall_time_s": {
+        "mean": 0.022351049818098545,
+        "std": 0.009701575617202682,
+        "median": 0.022351049818098545,
+        "min": 0.015490999910980463,
+        "max": 0.029211099725216627
+      },
+      "mean_repair_wall_time_s": {
+        "mean": 0.006307008288179835,
+        "std": 0.0020343344252710493,
+        "median": 0.006307008288179835,
+        "min": 0.004868516620869438,
+        "max": 0.0077454999554902315
+      },
+      "episode_wall_time_s": {
+        "mean": 0.1646895499434322,
+        "std": 0.018555259704581675,
+        "median": 0.1646895499434322,
+        "min": 0.151568999979645,
+        "max": 0.1778100999072194
+      },
+      "violations": {
+        "mean": 0.0,
+        "std": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "reward": {
+        "mean": -494.9800651725654,
+        "std": 1.9774457446468412,
+        "median": -494.9800651725654,
+        "min": -496.37833046803365,
+        "max": -493.5817998770971
+      }
+    },
+    "Regret-Gated Full Replan ALNS": {
+      "episodes": 2,
+      "J_dep_true": {
+        "mean": 315.0422112270652,
+        "std": 59.01437612579099,
+        "median": 315.0422112270652,
+        "min": 273.3127456810249,
+        "max": 356.7716767731055
+      },
+      "J_composite": {
+        "mean": 351.5445641230133,
+        "std": 52.58411110915316,
+        "median": 351.5445641230133,
+        "min": 314.3619825750642,
+        "max": 388.72714567096233
+      },
+      "fill_rate": {
+        "mean": 0.2711494252873563,
+        "std": 0.0030885123775964154,
+        "median": 0.2711494252873563,
+        "min": 0.2689655172413793,
+        "max": 0.2733333333333333
+      },
+      "n_resolves": {
+        "mean": 4.0,
+        "std": 1.4142135623730951,
+        "median": 4.0,
+        "min": 3.0,
+        "max": 5.0
+      },
+      "repair_solver_calls": {
+        "mean": 4.0,
+        "std": 1.4142135623730951,
+        "median": 4.0,
+        "min": 3.0,
+        "max": 5.0
+      },
+      "repair_wall_time_s": {
+        "mean": 0.029823250020854175,
+        "std": 0.00022054639108728567,
+        "median": 0.029823250020854175,
+        "min": 0.029667300172150135,
+        "max": 0.029979199869558215
+      },
+      "mean_repair_wall_time_s": {
+        "mean": 0.007942470015647511,
+        "std": 0.002752950605945768,
+        "median": 0.007942470015647511,
+        "min": 0.005995839973911643,
+        "max": 0.009889100057383379
+      },
+      "episode_wall_time_s": {
+        "mean": 0.18547189992386848,
+        "std": 0.009893130903415046,
+        "median": 0.18547189992386848,
+        "min": 0.1784763999748975,
+        "max": 0.19246739987283945
+      },
+      "violations": {
+        "mean": 0.0,
+        "std": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "reward": {
+        "mean": -510.38564103203635,
+        "std": 19.809328571984576,
+        "median": -510.38564103203635,
+        "min": -524.3929515960391,
+        "max": -496.37833046803365
+      }
+    },
+    "Full Event Replan ALNS": {
+      "episodes": 2,
+      "J_dep_true": {
+        "mean": 325.2072391222715,
+        "std": 52.354479203438764,
+        "median": 325.2072391222715,
+        "min": 288.18703185202986,
+        "max": 362.2274463925131
+      },
+      "J_composite": {
+        "mean": 368.9924243104598,
+        "std": 50.59933038196027,
+        "median": 368.9924243104598,
+        "min": 333.2132946738772,
+        "max": 404.77155394704243
+      },
+      "fill_rate": {
+        "mean": 0.21655172413793103,
+        "std": 0.033160869738403605,
+        "median": 0.21655172413793103,
+        "min": 0.19310344827586207,
+        "max": 0.24
+      },
+      "n_resolves": {
+        "mean": 6.0,
+        "std": 0.0,
+        "median": 6.0,
+        "min": 6.0,
+        "max": 6.0
+      },
+      "repair_solver_calls": {
+        "mean": 6.0,
+        "std": 0.0,
+        "median": 6.0,
+        "min": 6.0,
+        "max": 6.0
+      },
+      "repair_wall_time_s": {
+        "mean": 0.08906119980383664,
+        "std": 0.013013451759494829,
+        "median": 0.08906119980383664,
+        "min": 0.07985929981805384,
+        "max": 0.09826309978961945
+      },
+      "mean_repair_wall_time_s": {
+        "mean": 0.014843533300639441,
+        "std": 0.0021689086265824723,
+        "median": 0.014843533300639441,
+        "min": 0.013309883303008974,
+        "max": 0.01637718329826991
+      },
+      "episode_wall_time_s": {
+        "mean": 0.2358555500395596,
+        "std": 0.0004486594585712928,
+        "median": 0.2358555500395596,
+        "min": 0.23553829989396036,
+        "max": 0.23617280018515885
+      },
+      "violations": {
+        "mean": 0.0,
+        "std": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "reward": {
+        "mean": -562.4997591089182,
+        "std": 68.80323960132567,
+        "median": -562.4997591089182,
+        "min": -611.1509963986184,
+        "max": -513.848521819218
+      }
+    },
+    "Initial Plan Only": {
+      "episodes": 2,
+      "J_dep_true": {
+        "mean": 334.38922883468365,
+        "std": 51.96202879895249,
+        "median": 334.38922883468365,
+        "min": 297.6465259067337,
+        "max": 371.13193176263366
+      },
+      "J_composite": {
+        "mean": 350.3170884224818,
+        "std": 52.37038531916784,
+        "median": 350.3170884224818,
+        "min": 313.2856338299458,
+        "max": 387.3485430150178
+      },
+      "fill_rate": {
+        "mean": 0.2504597701149425,
+        "std": 0.03234810332324664,
+        "median": 0.2504597701149425,
+        "min": 0.22758620689655173,
+        "max": 0.2733333333333333
+      },
+      "n_resolves": {
+        "mean": 0.0,
+        "std": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "repair_solver_calls": {
+        "mean": 0.0,
+        "std": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "repair_wall_time_s": {
+        "mean": 0.0,
+        "std": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "mean_repair_wall_time_s": {
+        "mean": 0.0,
+        "std": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "episode_wall_time_s": {
+        "mean": 0.08241014997474849,
+        "std": 0.002165938728048242,
+        "median": 0.08241014997474849,
+        "min": 0.08087860001251101,
+        "max": 0.08394169993698597
+      },
+      "violations": {
+        "mean": 0.0,
+        "std": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "reward": {
+        "mean": -551.7650044105509,
+        "std": 71.75049181960536,
+        "median": -551.7650044105509,
+        "min": -602.5002637296637,
+        "max": -501.02974509143803
+      }
+    }
+  },
+  "diagnostic_rows": 164
+}

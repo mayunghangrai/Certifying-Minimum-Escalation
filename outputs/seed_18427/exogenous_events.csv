@@ -1,0 +1,14 @@
+event_id,event_type,physical_occurrence_time_s,report_generation_time_s,report_reception_time_s,affected_entity,commodity,magnitude_or_mark,visible_to_controller,report_lost,source_seed_stream
+E_N6_P2,P2_NODE_REVEAL,2520.0,16200.0,18000.0,N6,,"{""reported_demand"":[4.0,0.0,7.0,0.0],""reported_vulnerability"":1.3}",False,False,reports
+E_N5_ONSET,ORDINARY_DEMAND_ONSET,5400.0,,,N5,,"{""demand"":[3.0,0.0,14.0,0.0]}",False,False,demand
+E_N5_P1,P1_REPORT,6120.0,6120.0,7560.0,N5,,"{""reported_demand"":[3.0,0.0,14.0,0.0],""reported_vulnerability"":1.0}",False,False,reports
+E_N4_LOST_P1,P1_REPORT,7920.0,7920.0,,N4,,"{""reported_demand"":[5.0,0.0,8.0,0.0]}",False,True,reports
+E_N2_DELAYED_P1,P1_REPORT,8640.0,8640.0,11160.0,N2,,"{""reported_demand"":[4.0,0.0,12.0,0.0],""reported_vulnerability"":1.2}",False,False,reports
+E_HAZ1_ACTIVATE,HAZARD_ACTIVATE,10440.0,12240.0,17640.0,HAZ1,,"{""intensity"":1.0}",False,False,hazards
+E_TNFZ1_ACTIVATE,TEMP_NFZ_ACTIVATE,11520.0,12600.0,17280.0,TNFZ1,,"{""active"":true}",False,False,nfzs
+E_N3_P3,P3_MUTATION,12960.0,,,N3,water,"{""delta"":[0.0,0.0,10.0,0.0]}",False,False,p3_mutations
+E_CORRIDOR_OBS,CORRIDOR_CONDITION_REPORT,13320.0,14400.0,18720.0,corridor_n1_n5_hazard_outbound,,"{""condition"":""DEGRADED""}",False,False,reports
+E_N3_P1,P1_REPORT,16560.0,16560.0,18360.0,N3,,"{""confidence"":1.0,""reported_cohorts"":[{""commodity_index"":0,""onset_time_s"":0.0,""quantity"":10.0},{""commodity_index"":2,""onset_time_s"":0.0,""quantity"":6.0},{""commodity_index"":2,""onset_time_s"":12960.0,""quantity"":10.0}],""reported_vulnerability"":1.5}",False,False,reports
+E_REPLENISH,DEPOT_REPLENISHMENT,20880.0,20880.0,20880.0,DEPOT,,"{""quantity"":[10.0,0.0,20.0,0.0]}",True,False,replenishment
+E_TNFZ1_EXPIRE,TEMP_NFZ_EXPIRE,22320.0,22680.0,23400.0,TNFZ1,,"{""active"":false}",False,False,nfzs
+E_HAZ1_DEACTIVATE,HAZARD_DEACTIVATE,25200.0,25560.0,26280.0,HAZ1,,"{""intensity"":0.0}",False,False,hazards

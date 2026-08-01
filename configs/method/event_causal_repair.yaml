@@ -1,0 +1,18 @@
+# Event-Causal Belief-Repair ALNS experiment defaults.
+#
+# The mathematically valid continuation certificate uses xi_C from the
+# environment when solve_cost is null.  The event-impact quantity logged by
+# the controller is a secondary activation proxy, not a claimed bound. Soft
+# events must exceed proxy_threshold_fraction times the current optimistic
+# relief-value upper bound. Hard infeasibility bypasses this proxy screen.
+
+method:
+  repair_budget: 24
+  alns_iterations: 60
+  solve_cost: null
+  # Calibrated against the hard-event family.  A value of 0.30 screens out
+  # the vast majority of soft events (shadow audits show most are false
+  # negatives), so the controller under-repairs.  0.10 triggers repairs on
+  # meaningful demand/corridor changes without falling back to every-event
+  # replanning.
+  proxy_threshold_fraction: 0.10

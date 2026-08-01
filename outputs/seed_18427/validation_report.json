@@ -1,0 +1,250 @@
+{
+  "checks": {
+    "commodity_mapping": {
+      "active_mask": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "names": [
+        "medical",
+        "food",
+        "water",
+        "shelter"
+      ],
+      "passed": true
+    },
+    "controller_truth_exclusion": {
+      "forbidden_keys": [
+        "active_hazard_ids",
+        "active_temporary_nfz_ids",
+        "latent_demand",
+        "physical_corridor_conditions",
+        "true_demand",
+        "true_vulnerability",
+        "unreceived_events"
+      ],
+      "passed": true
+    },
+    "directional_asymmetry": [
+      {
+        "forward": "corridor_depot_n3_north_alternative",
+        "forward_time_s": 213.79785,
+        "reverse": "corridor_depot_n3_north_alternative_reverse",
+        "reverse_time_s": 324.94342
+      },
+      {
+        "forward": "corridor_depot_n3_south_outbound",
+        "forward_time_s": 187.892161,
+        "reverse": "corridor_depot_n3_south_reverse",
+        "reverse_time_s": 299.656817
+      },
+      {
+        "forward": "corridor_n1_n5_hazard_outbound",
+        "forward_time_s": 105.236956,
+        "reverse": "corridor_n1_n5_hazard_reverse",
+        "reverse_time_s": 147.741134
+      },
+      {
+        "forward": "corridor_n1_n5_north_alternative",
+        "forward_time_s": 148.212696,
+        "reverse": "corridor_n1_n5_north_alternative_reverse",
+        "reverse_time_s": 191.224919
+      }
+    ],
+    "event_integrity": {
+      "entity_references": true,
+      "event_count": 13,
+      "timestamp_ordering": true
+    },
+    "exogenous_random_draws_after_replay_start": 0,
+    "mandatory_figures": [
+      "truth_map_t4_2.png",
+      "controller_map_t4_2.png",
+      "truth_vs_controller.png",
+      "event_timeline.png",
+      "corridor_status_timeline.png",
+      "selected_node_truth_vs_reported_demand.png",
+      "urgency_evolution.png"
+    ],
+    "named_corridors_at_t4_2": {
+      "corridor_depot_n3_south_outbound": {
+        "operational": "NORMAL",
+        "true": "CLOSED"
+      },
+      "corridor_n1_n5_hazard_outbound": {
+        "operational": "NORMAL",
+        "true": "DEGRADED"
+      }
+    },
+    "nominal_graph": {
+      "directed_edges": 18,
+      "nodes": 7,
+      "strongly_connected": true
+    },
+    "observation_contract": {
+      "block_order": [
+        "own",
+        "nodes",
+        "fleet",
+        "event"
+      ],
+      "feature_lengths": {
+        "event": 15,
+        "fleet": 11,
+        "node": 20,
+        "own": 17
+      },
+      "new_spatial_fields_in_tensor": [],
+      "node_feature_order": [
+        "position_x",
+        "position_y",
+        "known",
+        "belief_mu_medical",
+        "belief_mu_food",
+        "belief_mu_water",
+        "belief_mu_shelter",
+        "belief_sigma_medical",
+        "belief_sigma_food",
+        "belief_sigma_water",
+        "belief_sigma_shelter",
+        "report_confidence",
+        "report_age",
+        "reported_vulnerability",
+        "risk_adjusted_payload_mass",
+        "oldest_believed_age",
+        "log_believed_urgency",
+        "in_scaffold",
+        "next_scaffold_node",
+        "believed_availability"
+      ],
+      "passed": true
+    },
+    "scenario_excludes_audit_actions": true,
+    "static_corridor_feasibility": {
+      "building_and_permanent_nfz_clearance": true,
+      "corridor_count": 54,
+      "terrain_clearance": true,
+      "vehicle_payload_and_energy_reserve": true
+    },
+    "truth_information_mismatch_at_t4_2": {
+      "hazard_active_unreported": true,
+      "n3_operational_water": 6.0,
+      "n3_true_water": 16.0,
+      "passed": true,
+      "temporary_nfz_active_unreported": true,
+      "unknown_node": "N6"
+    },
+    "urgency_checkpoints": [
+      {
+        "operational_leader": "N4",
+        "operational_ranking": [
+          "N4",
+          "N3",
+          "N1",
+          "N2",
+          "N5"
+        ],
+        "passed": true,
+        "time_s": 12600.0,
+        "true_leader": "N4",
+        "true_ranking": [
+          "N4",
+          "N3",
+          "N1",
+          "N2",
+          "N6",
+          "N5"
+        ]
+      },
+      {
+        "operational_leader": "N4",
+        "operational_ranking": [
+          "N4",
+          "N3",
+          "N1",
+          "N2",
+          "N5"
+        ],
+        "passed": true,
+        "time_s": 13320.0,
+        "true_leader": "N3",
+        "true_ranking": [
+          "N3",
+          "N4",
+          "N1",
+          "N2",
+          "N6",
+          "N5"
+        ]
+      },
+      {
+        "operational_leader": "N3",
+        "operational_ranking": [
+          "N3",
+          "N4",
+          "N1",
+          "N2",
+          "N6",
+          "N5"
+        ],
+        "passed": true,
+        "time_s": 18720.0,
+        "true_leader": "N3",
+        "true_ranking": [
+          "N3",
+          "N4",
+          "N1",
+          "N2",
+          "N6",
+          "N5"
+        ]
+      },
+      {
+        "operational_leader": "N4",
+        "operational_ranking": [
+          "N4",
+          "N3",
+          "N1",
+          "N2",
+          "N6",
+          "N5"
+        ],
+        "passed": true,
+        "time_s": 21960.0,
+        "true_leader": "N4",
+        "true_ranking": [
+          "N4",
+          "N1",
+          "N2",
+          "N3",
+          "N6",
+          "N5"
+        ]
+      }
+    ],
+    "usable_alternatives_at_t4_2": {
+      "DEPOT->N3": [
+        "corridor_depot_n3_north_alternative"
+      ],
+      "N1->N5": [
+        "corridor_n1_n5_astar_1_forward",
+        "corridor_n1_n5_north_alternative"
+      ]
+    },
+    "vulnerability_domain": {
+      "existing_domain": [
+        0.5,
+        3.0
+      ],
+      "passed": true,
+      "scenario_max": 2.4,
+      "scenario_min": 0.9
+    }
+  },
+  "generator_version": "2.0.0",
+  "master_seed": 18427,
+  "passed": true,
+  "scenario_hash": "e255c0ef84864d7985bd72a07a9d9969f5c8b835b04fd6694b64041392efa68a"
+}

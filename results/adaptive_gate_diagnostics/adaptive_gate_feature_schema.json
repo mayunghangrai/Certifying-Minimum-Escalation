@@ -1,0 +1,112 @@
+[
+  {
+    "clipping_rule": "clip to [0,1]",
+    "definition": "Elapsed time since incumbent creation divided by mission horizon.",
+    "index": 0,
+    "missing_value_rule": "never missing while an incumbent Scaffold exists",
+    "name": "plan_age",
+    "normalization_rule": "(t - created_t) / T",
+    "operational_information_guarantee": "Uses received belief/controller, observable fleet/depot state, operational corridor belief, and incumbent snapshots only.",
+    "source_state": "Scaffold.created_t and operational decision time",
+    "units": "mission-horizon ratio"
+  },
+  {
+    "clipping_rule": "clip to [0,1]",
+    "definition": "L1 change in received belief means since incumbent creation.",
+    "index": 1,
+    "missing_value_rule": "default zero when the incumbent demand snapshot is empty",
+    "name": "operational_demand_change",
+    "normalization_rule": "sum(abs(mu-current - mu-plan)) / max(sum(abs(mu-plan)),1)",
+    "operational_information_guarantee": "Uses received belief/controller, observable fleet/depot state, operational corridor belief, and incumbent snapshots only.",
+    "source_state": "BeliefState and Scaffold.mu_snapshot",
+    "units": "dimensionless L1 ratio"
+  },
+  {
+    "clipping_rule": "clip to [0,1]",
+    "definition": "L1 depot-inventory change since incumbent creation.",
+    "index": 2,
+    "missing_value_rule": "default zero only for a missing/empty legacy snapshot",
+    "name": "operational_inventory_change",
+    "normalization_rule": "sum(abs(S-current - S-plan)) / max(sum(abs(S-plan)),1)",
+    "operational_information_guarantee": "Uses received belief/controller, observable fleet/depot state, operational corridor belief, and incumbent snapshots only.",
+    "source_state": "DepotInventory and Scaffold.inventory_snapshot",
+    "units": "dimensionless L1 ratio"
+  },
+  {
+    "clipping_rule": "clip to [0,1]",
+    "definition": "Fraction of affected nodes revealed since incumbent creation.",
+    "index": 3,
+    "missing_value_rule": "default zero when the known-node snapshot is empty",
+    "name": "newly_known_fraction",
+    "normalization_rule": "new known node count / configured node capacity",
+    "operational_information_guarantee": "Uses received belief/controller, observable fleet/depot state, operational corridor belief, and incumbent snapshots only.",
+    "source_state": "BeliefState.known and Scaffold.known_snapshot",
+    "units": "node fraction"
+  },
+  {
+    "clipping_rule": "clip to [0,1]",
+    "definition": "Fraction of incumbent legs now believed unavailable.",
+    "index": 4,
+    "missing_value_rule": "default zero when the plan contains no legs",
+    "name": "invalid_planned_corridor_fraction",
+    "normalization_rule": "believed-invalid legs / max(planned legs,1)",
+    "operational_information_guarantee": "Uses received belief/controller, observable fleet/depot state, operational corridor belief, and incumbent snapshots only.",
+    "source_state": "Scaffold visits and operational ReliefGraph availability",
+    "units": "planned-leg fraction"
+  },
+  {
+    "clipping_rule": "clip to [0,1]",
+    "definition": "Fraction of initially planned visits removed/completed.",
+    "index": 5,
+    "missing_value_rule": "default zero when the incumbent had no services",
+    "name": "completed_planned_service_fraction",
+    "normalization_rule": "max(initial - remaining,0) / max(initial,1)",
+    "operational_information_guarantee": "Uses received belief/controller, observable fleet/depot state, operational corridor belief, and incumbent snapshots only.",
+    "source_state": "Scaffold.planned_service_count and remaining visits",
+    "units": "planned-service fraction"
+  },
+  {
+    "clipping_rule": "clip to [0,1]",
+    "definition": "Whether a committed UAV destination differs from incumbent next visit.",
+    "index": 6,
+    "missing_value_rule": "zero when no committed flight comparison is applicable",
+    "name": "execution_deviation",
+    "normalization_rule": "already in {0,1}",
+    "operational_information_guarantee": "Uses received belief/controller, observable fleet/depot state, operational corridor belief, and incumbent snapshots only.",
+    "source_state": "Observable UAV mode/destination and Scaffold.peek_next",
+    "units": "binary"
+  },
+  {
+    "clipping_rule": "clip to [0,1]",
+    "definition": "Whether the repository's ALNS solve is currently executing.",
+    "index": 7,
+    "missing_value_rule": "never fabricated; normally zero for synchronous ALNS",
+    "name": "solver_active",
+    "normalization_rule": "already in {0,1}",
+    "operational_information_guarantee": "Uses received belief/controller, observable fleet/depot state, operational corridor belief, and incumbent snapshots only.",
+    "source_state": "UAMTVRPIUEnv.alns_solving",
+    "units": "binary"
+  },
+  {
+    "clipping_rule": "clip to [0,1]",
+    "definition": "Age of an outstanding ALNS request divided by mission horizon.",
+    "index": 8,
+    "missing_value_rule": "default zero when no synchronous request is outstanding",
+    "name": "solver_request_age",
+    "normalization_rule": "(t - request_t) / T",
+    "operational_information_guarantee": "Uses received belief/controller, observable fleet/depot state, operational corridor belief, and incumbent snapshots only.",
+    "source_state": "UAMTVRPIUEnv.alns_request_t and operational time",
+    "units": "mission-horizon ratio"
+  },
+  {
+    "clipping_rule": "clip to [0,1]",
+    "definition": "Whether the incumbent next visit passes current operational leg checks.",
+    "index": 9,
+    "missing_value_rule": "default zero when no next incumbent visit exists",
+    "name": "next_action_operationally_feasible",
+    "normalization_rule": "already in {0,1}",
+    "operational_information_guarantee": "Uses received belief/controller, observable fleet/depot state, operational corridor belief, and incumbent snapshots only.",
+    "source_state": "Scaffold.peek_next and operational C1/C2/C5 checks",
+    "units": "binary"
+  }
+]

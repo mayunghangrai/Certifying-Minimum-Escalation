@@ -1,0 +1,87 @@
+# =============================================================================
+# UA-MTVRP-IU environment parameters — named after the manuscript symbols
+# (manuscript/sections/system_model.tex). Units: km, hours, Wh, kg.
+# This file mirrors the defaults in src/env/params.py; edit here to run
+# variants without touching code (pass via --config to scripts).
+# =============================================================================
+
+physics:
+  W_max: 2.5          # payload capacity [kg]              (eq:payload_capacity)
+  m0: 4.0             # empty airframe mass [kg]
+  B_max: 230.0        # battery capacity [Wh]
+  e_c: 3.125          # propulsion energy [Wh/km/kg]       (eq:flight_energy)
+  e_v: 2.5            # delivery maneuver energy [Wh]      (eq:service_energy)
+  beta_safe: 23.0     # safety reserve [Wh] (10% of B_max) (eq:safe_return_constraint)
+  v_uav: 60.0         # cruise speed [km/h]
+
+commodities:          # K = {medical, food, water, shelter}
+  w_k:      [0.25, 0.5, 1.0, 2.5]    # unit masses [kg]     (eq:payload_mass)
+  lambda_k: [4.0, 2.0, 3.0, 1.0]     # criticality          (eq:true_deprivation)
+  alpha_k:  [1.0, 1.0, 1.0, 1.0]     # waiting-cost scale   (eq:waiting_cost_function)
+  kappa_k:  [0.35, 0.20, 0.30, 0.10] # waiting-cost growth [1/h]
+
+belief:
+  rho: 1.0                 # uncertainty aversion (eq:risk_adjusted_demand)
+  sigma_obs: 2.0           # P1 report noise std [units]
+  K_gain_mode: kalman      # K = sigma^2 / (sigma^2 + sigma_obs^2/gamma)  (eq:p1_update)
+  belief_age_mode: oldest  # f_hat age approximation: oldest | mean (sec: urgency)
+  sigma0_frac: 0.4
+  gamma0_range: [0.5, 0.9]
+  init_report_noise_frac: 0.3
+
+events:
+  p1_rate: 0.15            # P1 corrections per known node [1/h]
+  p2_reveal_window: [0.05, 0.6]   # P2 reveal times as fraction of T
+  p3_rate: 0.08            # P3 compound-Poisson rate per node [1/h]
+  p3_gamma_shape: 2.0      # Gamma mark parameters (eq:p3_mutation)
+  p3_gamma_scale: 2.0
+  p_P4: 0.8                # P4 report probability (eq:p4_report)
+  delta_P4_mean: 0.1       # mean P4 communication delay [h]
+  sigma_P4: 1.0            # P4 report noise std; set p_P4=1, delta=0, sigma=0
+                           # for the exact-sync special case (eq:p4_exact_case)
+  avail_closure_rate: 0.35
+  avail_closure_dur: [0.5, 2.0]
+  avail_hazard_threshold: 0.15
+
+hybrid:
+  K_max: 3                 # re-optimization budget (eq:resolve_budget)
+  omega: [1.0, 1.0, 2.0, 2.0, 0.25]   # Delta_plan weights (eq:plan_divergence)
+  xi_E: 0.01               # reward weights (eq:event_reward)
+  xi_R: 0.1
+  xi_C: 5.0
+  P_viol: 50.0
+  mu_E: 0.01               # assignment-value weights (eq:assignment_value)
+  mu_R: 0.1
+  alns_iterations: 60
+  alns_removal_frac: 0.3
+  route_depth: 3
+
+map:
+  region_km: 12.0          # physics-consistent ~12x12 km region
+  n_nodes: 20
+  n_hidden: 4              # revealed via P2
+  n_clusters: 3
+  cluster_std_km: 0.9
+  feasible_frac: 0.95      # nodes within feasible_frac * r_max of the depot
+  min_node_sep_km: 0.35
+  nu_range: [0.5, 3.0]
+  demand_mean_k: [2.0, 3.0, 2.5, 0.8]
+  n_hazard_bumps: [2, 3]
+  hazard_amp_range: [0.5, 1.5]
+  hazard_radius_range: [1.5, 3.5]
+  alpha_h: 1.0             # path functional weights (eq:feasible_path)
+  alpha_w: 0.3
+  path_mode: euclidean     # euclidean | field_astar
+  astar_grid: 48
+
+mission:
+  T: 12.0                  # planning horizon [h]
+  M: 3                     # fleet size
+  T_load: 0.15             # (eq:turnaround_time)
+  T_charge: 0.5            # full-recharge duration [h]
+  n_depot_bays: 2
+  stock_mult: 1.2          # S0_k(0) = ceil(mult * total initial demand_k)
+  n_replenish: 2
+  replenish_frac: 0.35
+  gamma_hour: 0.98         # SMDP discount per hour (gamma_eff = gamma_hour^dt)
+  terminate_on_belief_zero: true

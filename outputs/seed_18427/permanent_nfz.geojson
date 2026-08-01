@@ -1,0 +1,23 @@
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          2500.0,
+          2500.0
+        ],
+        "type": "Point"
+      },
+      "id": "PNFZ1",
+      "properties": {
+        "center_x_m": 2500.0,
+        "center_y_m": 2500.0,
+        "radius_m": 350.0,
+        "shape": "circle",
+        "zone_id": "PNFZ1"
+      },
+      "type": "Feature"
+    }
+  ],
+  "type": "FeatureCollection"
+}

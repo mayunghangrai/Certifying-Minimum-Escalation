@@ -1,0 +1,49 @@
+{
+  "modes": {
+    "graph_mappo": {
+      "all_selected_actions_operationally_valid": true,
+      "checkpoint": "results\\method_smoke\\graph\\models\\graph_mappo.pt",
+      "decision_count": 65,
+      "deviated_from_alns_count": 27,
+      "finite_losses": true,
+      "followed_alns_count": 0,
+      "gate_max": 0.0,
+      "gate_min": 0.0,
+      "passed": true
+    },
+    "graph_mappo_adaptive_alns": {
+      "all_selected_actions_operationally_valid": true,
+      "checkpoint": "results\\method_smoke\\adaptive\\models\\graph_mappo_adaptive_alns.pt",
+      "decision_count": 66,
+      "deviated_from_alns_count": 24,
+      "finite_losses": true,
+      "followed_alns_count": 3,
+      "gate_max": 0.5227527618408203,
+      "gate_min": 0.47385677695274353,
+      "passed": true
+    },
+    "graph_mappo_fixed_alns": {
+      "all_selected_actions_operationally_valid": true,
+      "checkpoint": "results\\method_smoke\\fixed\\models\\graph_mappo_fixed_alns.pt",
+      "decision_count": 66,
+      "deviated_from_alns_count": 24,
+      "finite_losses": true,
+      "followed_alns_count": 3,
+      "gate_max": 0.5,
+      "gate_min": 0.5,
+      "passed": true
+    },
+    "vanilla_mappo": {
+      "all_selected_actions_operationally_valid": true,
+      "checkpoint": "results\\method_smoke\\vanilla\\models\\vanilla_mappo.pt",
+      "decision_count": 92,
+      "deviated_from_alns_count": 0,
+      "finite_losses": true,
+      "followed_alns_count": 0,
+      "gate_max": 0.0,
+      "gate_min": 0.0,
+      "passed": true
+    }
+  },
+  "passed": true
+}

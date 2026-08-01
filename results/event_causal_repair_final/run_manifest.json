@@ -1,0 +1,21 @@
+{
+  "command": "scripts/run_event_causal_repair_experiment.py --config configs/env/event_causal_hard.yaml --method-config configs/method/event_causal_repair.yaml --seed-start 200 --n-seeds 40 --output-dir results/event_causal_repair_final --plot",
+  "config": "configs\\env\\event_causal_hard.yaml",
+  "method_config": "configs\\method\\event_causal_repair.yaml",
+  "output_dir": "D:\\Post-disaster Logistics\\code\\results\\event_causal_repair_final",
+  "smoke": false,
+  "method": {
+    "solve_cost": null,
+    "proxy_threshold_fraction": 0.1,
+    "repair_budget": 24,
+    "alns_iterations": 60,
+    "shadow_audit_screened_events": false
+  },
+  "files": [
+    "episode_metrics.csv",
+    "repair_diagnostics.csv",
+    "paired_comparisons.csv",
+    "counterfactual_screen_audit.csv",
+    "summary.json"
+  ]
+}

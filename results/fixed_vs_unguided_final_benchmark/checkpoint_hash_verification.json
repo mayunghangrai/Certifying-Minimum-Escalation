@@ -1,0 +1,17 @@
+{
+  "adaptive_checkpoint_loaded": false,
+  "candidates": {
+    "fixed_guidance": {
+      "expected": "d730f89ea92a8a3c9af41a0d0706594e1753afaa9d6808f1ba32fc073e72ce15",
+      "observed": "d730f89ea92a8a3c9af41a0d0706594e1753afaa9d6808f1ba32fc073e72ce15",
+      "passed": true
+    },
+    "unguided_graph_mappo": {
+      "expected": "bd0928d702e4a719d75c25df66bc11250423dec9306a090671cbea4bdb1e2a3b",
+      "observed": "bd0928d702e4a719d75c25df66bc11250423dec9306a090671cbea4bdb1e2a3b",
+      "passed": true
+    }
+  },
+  "verified_before_evaluation": true,
+  "verified_utc": "2026-07-29T08:14:30.904774+00:00"
+}

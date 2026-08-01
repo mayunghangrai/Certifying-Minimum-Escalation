@@ -1,0 +1,88 @@
+# Hard event-driven evaluation family for Event-Causal Belief-Repair ALNS.
+#
+# Relative to manuscript.yaml, this family has more initially hidden demand,
+# later revelations, faster latent demand mutation, scarcer initial stock,
+# stronger replenishment shocks. The static scaffold is therefore guaranteed
+# to omit positive-demand hidden nodes and becomes materially obsolete as
+# those nodes are revealed. Corridor closures are disabled in this family so
+# mandatory feasibility repairs do not confound trigger calibration.
+
+physics:
+  W_max: 2.5
+  m0: 4.0
+  B_max: 230.0
+  e_c: 3.125
+  e_v: 2.5
+  beta_safe: 23.0
+  v_uav: 60.0
+
+commodities:
+  w_k:      [0.25, 0.5, 1.0, 2.5]
+  lambda_k: [4.0, 2.0, 3.0, 1.0]
+  alpha_k:  [1.0, 1.0, 1.0, 1.0]
+  kappa_k:  [0.35, 0.20, 0.30, 0.10]
+
+belief:
+  rho: 1.0
+  sigma_obs: 3.0
+  K_gain_mode: kalman
+  belief_age_mode: oldest
+  sigma0_frac: 0.55
+  gamma0_range: [0.4, 0.8]
+  init_report_noise_frac: 0.45
+
+events:
+  p1_rate: 0.10
+  p2_reveal_window: [0.15, 0.75]
+  p3_rate: 0.16
+  p3_gamma_shape: 2.5
+  p3_gamma_scale: 2.5
+  p_P4: 0.65
+  delta_P4_mean: 0.25
+  sigma_P4: 2.0
+  avail_closure_rate: 0.0
+  avail_closure_dur: [0.75, 3.0]
+  avail_hazard_threshold: 0.08
+
+hybrid:
+  K_max: 24
+  omega: [1.0, 1.0, 2.0, 2.0, 0.25]
+  xi_E: 0.01
+  xi_R: 0.1
+  xi_C: 5.0
+  P_viol: 50.0
+  mu_E: 0.01
+  mu_R: 0.1
+  alns_iterations: 60
+  alns_removal_frac: 0.3
+  route_depth: 4
+
+map:
+  region_km: 12.0
+  n_nodes: 24
+  n_hidden: 8
+  n_clusters: 4
+  cluster_std_km: 0.9
+  feasible_frac: 0.98
+  min_node_sep_km: 0.35
+  nu_range: [0.8, 3.5]
+  demand_mean_k: [3.0, 4.0, 3.5, 1.0]
+  n_hazard_bumps: [3, 4]
+  hazard_amp_range: [0.8, 1.8]
+  hazard_radius_range: [1.5, 3.5]
+  alpha_h: 1.0
+  alpha_w: 0.3
+  path_mode: euclidean
+  astar_grid: 48
+
+mission:
+  T: 12.0
+  M: 3
+  T_load: 0.15
+  T_charge: 0.5
+  n_depot_bays: 2
+  stock_mult: 0.85
+  n_replenish: 3
+  replenish_frac: 0.50
+  gamma_hour: 0.98
+  terminate_on_belief_zero: true

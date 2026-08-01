@@ -1,0 +1,16 @@
+clipped_dominated_fraction: 0.8
+constant_std_epsilon: 1.0e-08
+gate_close_to_fixed_abs_difference: 0.05
+gate_gradient_epsilon: 1.0e-08
+gate_relative_update_epsilon: 1.0e-06
+measurable_policy_kl: 1.0e-06
+minimum_ppo_updates: 10
+minimum_prior_bearing_decisions: 50
+missing_dominated_fraction: 0.8
+mostly_masked_fraction: 0.5
+near_constant_range: 0.001
+near_zero_argmax_change_rate: 0.01
+negligible_logit_shift: 0.05
+prior_coverage_minimum: 0.2
+saturation_fraction: 0.8
+unique_value_tolerance_decimals: 8

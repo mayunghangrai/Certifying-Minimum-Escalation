@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local scratch and reproducibility copies.
+results/*_dryrun/
+results/*_repro/
+results/*_ci_run/
+outputs/*_repro*/
+outputs/*_repeat*/
+
+# Editor and operating-system clutter.
+.DS_Store
+Thumbs.db

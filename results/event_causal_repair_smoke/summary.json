@@ -1,0 +1,329 @@
+{
+  "method_order": [
+    "Event-Causal Belief-Repair ALNS",
+    "Regret-Gated Full Replan ALNS",
+    "Full Event Replan ALNS",
+    "Initial Plan Only"
+  ],
+  "seeds": [
+    17,
+    18
+  ],
+  "environment": {
+    "physics": {
+      "W_max": 2.5,
+      "m0": 4.0,
+      "B_max": 230.0,
+      "e_c": 3.125,
+      "e_v": 2.5,
+      "beta_safe": 23.0,
+      "v_uav": 60.0
+    },
+    "commodities": {
+      "w_k": [
+        0.25,
+        0.5,
+        1.0,
+        2.5
+      ],
+      "lambda_k": [
+        4.0,
+        2.0,
+        3.0,
+        1.0
+      ],
+      "alpha_k": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "kappa_k": [
+        0.35,
+        0.2,
+        0.3,
+        0.1
+      ]
+    },
+    "belief": {
+      "rho": 1.0,
+      "sigma_obs": 2.0,
+      "K_gain_mode": "kalman",
+      "belief_age_mode": "oldest",
+      "sigma0_frac": 0.4,
+      "gamma0_range": [
+        0.5,
+        0.9
+      ],
+      "init_report_noise_frac": 0.3
+    },
+    "events": {
+      "p1_rate": 0.15,
+      "p2_reveal_window": [
+        0.05,
+        0.6
+      ],
+      "p3_rate": 0.08,
+      "p3_gamma_shape": 2.0,
+      "p3_gamma_scale": 2.0,
+      "p_P4": 0.8,
+      "delta_P4_mean": 0.1,
+      "sigma_P4": 1.0,
+      "avail_closure_rate": 0.35,
+      "avail_closure_dur": [
+        0.5,
+        2.0
+      ],
+      "avail_hazard_threshold": 0.15
+    },
+    "hybrid": {
+      "K_max": 6,
+      "omega": [
+        1.0,
+        1.0,
+        2.0,
+        2.0,
+        0.25
+      ],
+      "xi_E": 0.01,
+      "xi_R": 0.1,
+      "xi_C": 5.0,
+      "P_viol": 50.0,
+      "mu_E": 0.01,
+      "mu_R": 0.1,
+      "alns_iterations": 4,
+      "alns_removal_frac": 0.3,
+      "route_depth": 3
+    },
+    "map": {
+      "region_km": 12.0,
+      "n_nodes": 8,
+      "n_hidden": 2,
+      "n_clusters": 3,
+      "cluster_std_km": 0.9,
+      "feasible_frac": 0.95,
+      "min_node_sep_km": 0.35,
+      "nu_range": [
+        0.5,
+        3.0
+      ],
+      "demand_mean_k": [
+        2.0,
+        3.0,
+        2.5,
+        0.8
+      ],
+      "n_hazard_bumps": [
+        2,
+        3
+      ],
+      "hazard_amp_range": [
+        0.5,
+        1.5
+      ],
+      "hazard_radius_range": [
+        1.5,
+        3.5
+      ],
+      "alpha_h": 1.0,
+      "alpha_w": 0.3,
+      "path_mode": "euclidean",
+      "astar_grid": 48
+    },
+    "mission": {
+      "T": 2.0,
+      "M": 3,
+      "T_load": 0.15,
+      "T_charge": 0.5,
+      "n_depot_bays": 2,
+      "stock_mult": 1.2,
+      "n_replenish": 1,
+      "replenish_frac": 0.35,
+      "gamma_hour": 0.98,
+      "terminate_on_belief_zero": true
+    }
+  },
+  "aggregate": {
+    "Event-Causal Belief-Repair ALNS": {
+      "episodes": 2,
+      "J_dep_true": {
+        "mean": 136.89413479469002,
+        "std": 73.71019722742737,
+        "median": 136.89413479469002,
+        "min": 84.77315449257827,
+        "max": 189.01511509680176
+      },
+      "J_composite": {
+        "mean": 182.44374013057137,
+        "std": 75.27694561103746,
+        "median": 182.44374013057137,
+        "min": 129.21490142199588,
+        "max": 235.6725788391469
+      },
+      "fill_rate": {
+        "mean": 0.31914404049700873,
+        "std": 0.11779689589946168,
+        "median": 0.31914404049700873,
+        "min": 0.2358490566037736,
+        "max": 0.4024390243902439
+      },
+      "n_resolves": {
+        "mean": 6.0,
+        "std": 0.0,
+        "median": 6.0,
+        "min": 6.0,
+        "max": 6.0
+      },
+      "violations": {
+        "mean": 0.0,
+        "std": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "reward": {
+        "mean": -228.3748065583817,
+        "std": 80.98185280162188,
+        "median": -228.3748065583817,
+        "min": -285.6376238274593,
+        "max": -171.11198928930403
+      }
+    },
+    "Regret-Gated Full Replan ALNS": {
+      "episodes": 2,
+      "J_dep_true": {
+        "mean": 134.48187052865597,
+        "std": 81.94917411408409,
+        "median": 134.48187052865597,
+        "min": 76.53505379995002,
+        "max": 192.4286872573619
+      },
+      "J_composite": {
+        "mean": 173.83528845377015,
+        "std": 89.76600767724476,
+        "median": 173.83528845377015,
+        "min": 110.3611357051467,
+        "max": 237.3094412023936
+      },
+      "fill_rate": {
+        "mean": 0.34157846295444083,
+        "std": 0.18954887254540445,
+        "median": 0.34157846295444083,
+        "min": 0.20754716981132076,
+        "max": 0.47560975609756095
+      },
+      "n_resolves": {
+        "mean": 5.0,
+        "std": 1.4142135623730951,
+        "median": 5.0,
+        "min": 4.0,
+        "max": 6.0
+      },
+      "violations": {
+        "mean": 0.0,
+        "std": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "reward": {
+        "mean": -221.51910569703892,
+        "std": 93.42850642444513,
+        "median": -221.51910569703892,
+        "min": -287.583036145895,
+        "max": -155.45517524818285
+      }
+    },
+    "Full Event Replan ALNS": {
+      "episodes": 2,
+      "J_dep_true": {
+        "mean": 150.6516102175226,
+        "std": 53.26327633996345,
+        "median": 150.6516102175226,
+        "min": 112.98878632932147,
+        "max": 188.31443410572376
+      },
+      "J_composite": {
+        "mean": 188.65646387184017,
+        "std": 50.52560218354604,
+        "median": 188.65646387184017,
+        "min": 152.92946794432095,
+        "max": 224.38345979935943
+      },
+      "fill_rate": {
+        "mean": 0.18189139438564197,
+        "std": 0.07045035348683275,
+        "median": 0.18189139438564197,
+        "min": 0.1320754716981132,
+        "max": 0.23170731707317074
+      },
+      "n_resolves": {
+        "mean": 6.0,
+        "std": 0.0,
+        "median": 6.0,
+        "min": 6.0,
+        "max": 6.0
+      },
+      "violations": {
+        "mean": 0.0,
+        "std": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "reward": {
+        "mean": -240.55900499780424,
+        "std": 54.716317639703156,
+        "median": -240.55900499780424,
+        "min": -279.24928424239545,
+        "max": -201.86872575321303
+      }
+    },
+    "Initial Plan Only": {
+      "episodes": 2,
+      "J_dep_true": {
+        "mean": 134.2840656509141,
+        "std": 59.889251491941415,
+        "median": 134.2840656509141,
+        "min": 91.93596980077575,
+        "max": 176.63216150105242
+      },
+      "J_composite": {
+        "mean": 144.60489547343744,
+        "std": 57.259432126640576,
+        "median": 144.60489547343744,
+        "min": 104.11636272979904,
+        "max": 185.09342821707585
+      },
+      "fill_rate": {
+        "mean": 0.3063736769443166,
+        "std": 0.1531034240903224,
+        "median": 0.3063736769443166,
+        "min": 0.19811320754716982,
+        "max": 0.4146341463414634
+      },
+      "n_resolves": {
+        "mean": 0.0,
+        "std": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "violations": {
+        "mean": 0.0,
+        "std": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "reward": {
+        "mean": -192.41210760451577,
+        "std": 55.743231819599906,
+        "median": -192.41210760451577,
+        "min": -231.8285248294086,
+        "max": -152.99569037962294
+      }
+    }
+  },
+  "diagnostic_rows": 151
+}
