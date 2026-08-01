@@ -462,6 +462,22 @@ class UAMTVRPIUEnv:
             return [u]
         return []
 
+    def _consume_served_visit(self, u: int, node: int) -> None:
+        """Remove a just-served node from the UAV's current scaffold sortie."""
+        ss = self.scaffold.plans.get(u)
+        if not ss:
+            return
+        sortie = ss[0]
+        for vi, visit in enumerate(sortie.visits):
+            if visit.node == node:
+                sortie.visits.pop(vi)
+                sortie.y = np.sum(
+                    [v.x_plan for v in sortie.visits], axis=0
+                ) if sortie.visits else np.zeros(N_COMMODITIES)
+                if not sortie.visits:
+                    ss.pop(0)
+                return
+
     # -- arrival / delivery ------------------------------------------------
     def _handle_arrival(self, ev: Event) -> List[int]:
         u = ev.payload["uav"]
@@ -490,6 +506,10 @@ class UAMTVRPIUEnv:
         self.metrics.J_energy += service_energy(self.p.physics)
         self.metrics.delivered_units += x_served
         self.belief.apply_delivery(node, x_served, ev.t)
+
+        # Consume the served visit from the incumbent scaffold so the
+        # controller does not treat the rest of the sortie as hard infeasible.
+        self._consume_served_visit(u, node)
 
         # P4: delivery-triggered situational report (policy-dependent, online)
         if self._rng_p4.random() < self.p.events.p_P4:

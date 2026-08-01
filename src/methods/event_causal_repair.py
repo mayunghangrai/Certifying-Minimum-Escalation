@@ -1726,3 +1726,85 @@ class EveryEventFullReplanController(
             screen_soft_events=False,
         )
 
+
+class PeriodicFullReplanController(EventCausalRepairController):
+    """Full-fleet replan on a fixed wall-clock or budget-paced schedule."""
+
+    name = "Periodic Full Replan ALNS"
+
+    def __init__(
+        self,
+        solve_cost: Optional[float] = None,
+        period_hours: float = 2.0,
+    ):
+        super().__init__(
+            selective_repair=False,
+            solve_cost=solve_cost,
+            proxy_threshold_fraction=0.0,
+            screen_soft_events=True,
+        )
+        self.period_hours = float(period_hours)
+        self._next_replan_t = 0.0
+
+    def reset(self) -> None:
+        super().reset()
+        self._next_replan_t = 0.0
+
+    def act(self, env, obs, masks, deciders):
+        if env.t + 1e-9 >= self._next_replan_t and deciders:
+            self._next_replan_t = env.t + self.period_hours
+            # Force a repair by temporarily disabling the valid screen.
+            old_screen = self.screen_soft_events
+            self.screen_soft_events = False
+            actions = super().act(env, obs, masks, deciders)
+            self.screen_soft_events = old_screen
+            return actions
+        return {u: env.A_FOLLOW for u in deciders}
+
+
+class EventPriorityHeuristicController(EventCausalRepairController):
+    """Replan only for high-priority events up to a per-episode budget."""
+
+    name = "Event-Priority Heuristic ALNS"
+
+    # Events that justify a repair, in priority order.
+    _PRIORITY_EVENTS = frozenset({
+        EventType.P2_REVEAL,
+        EventType.AVAIL_CHANGE,
+        EventType.REPLENISH,
+    })
+
+    def __init__(
+        self,
+        solve_cost: Optional[float] = None,
+        budget: int = 6,
+    ):
+        super().__init__(
+            selective_repair=True,
+            solve_cost=solve_cost,
+            proxy_threshold_fraction=0.0,
+            screen_soft_events=True,
+        )
+        self.budget = int(budget)
+        self._repairs_used = 0
+
+    def reset(self) -> None:
+        super().reset()
+        self._repairs_used = 0
+
+    def act(self, env, obs, masks, deciders):
+        event_type = getattr(env, "last_decision_event_type", None)
+        if (
+            event_type in self._PRIORITY_EVENTS
+            and self._repairs_used < self.budget
+            and deciders
+        ):
+            self._repairs_used += 1
+            # Bypass the optimistic-bound screen for priority events.
+            old_screen = self.screen_soft_events
+            self.screen_soft_events = False
+            actions = super().act(env, obs, masks, deciders)
+            self.screen_soft_events = old_screen
+            return actions
+        return {u: env.A_FOLLOW for u in deciders}
+

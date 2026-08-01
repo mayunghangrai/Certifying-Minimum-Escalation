@@ -1,0 +1,93 @@
+{
+  "git_commit": "20e0f5c8aa0614546058b17e2b0d6e632f1ea11b",
+  "command": "scripts/run_event_causal_repair_experiment.py --smoke",
+  "output_dir": "D:\\Post-disaster Logistics\\code\\results\\event_causal_repair",
+  "seeds": [
+    400,
+    401
+  ],
+  "method": {
+    "solve_cost": null,
+    "proxy_threshold_fraction": 0.1,
+    "repair_budget": 6,
+    "alns_iterations": 4,
+    "trigger_mode": "both",
+    "periodic_replan_period": 2.0,
+    "event_priority_budget": 6,
+    "shadow_audit_screened_events": false,
+    "seeds": [
+      400,
+      401
+    ]
+  },
+  "files": {
+    "controller": {
+      "path": "D:\\Post-disaster Logistics\\code\\src\\methods\\event_causal_repair.py",
+      "sha256": "9771469620163ea70c4bd0a3004e8bc0068a4ca93b8169bbbf39cc00eed37977"
+    },
+    "runner": {
+      "path": "D:\\Post-disaster Logistics\\code\\scripts\\run_event_causal_repair_experiment.py",
+      "sha256": "06c4f91172ddfe1f6aa6e4b5a89ee8835156b10270b6a83bd614077772a6d5e7"
+    },
+    "scenario_generator": {
+      "path": "D:\\Post-disaster Logistics\\code\\src\\env\\scenario_generator.py",
+      "sha256": "3dc341afd51baf29011950aa0d0645af912f6e542a966572920d2932048d9112"
+    },
+    "env_uav_env": {
+      "path": "D:\\Post-disaster Logistics\\code\\src\\env\\uav_env.py",
+      "sha256": "0d1bba72a54521cbef73b47c8b469fd3888a966792d91e7144b710206283117c"
+    },
+    "env_alns_scaffold": {
+      "path": "D:\\Post-disaster Logistics\\code\\src\\env\\alns_scaffold.py",
+      "sha256": "ffbece99b1b48b1ac79a3835d333db84d2ee22cd9f21e4f7369d048ba9644bec"
+    },
+    "env_belief": {
+      "path": "D:\\Post-disaster Logistics\\code\\src\\env\\belief.py",
+      "sha256": "0a437176fb386208021803448f228e82c469fb996ecbe7e9d232afb106dfa519"
+    },
+    "env_entities": {
+      "path": "D:\\Post-disaster Logistics\\code\\src\\env\\entities.py",
+      "sha256": "56b8b0987954fcff5fd1034cc476f26e0e2ac579d2b03b7f30f2819fdc1eb579"
+    },
+    "env_graph": {
+      "path": "D:\\Post-disaster Logistics\\code\\src\\env\\graph.py",
+      "sha256": "4a8eac79d2de4e649c1eecd1651916a1a899c9632e1850a24c4cb6a624999957"
+    },
+    "env_events": {
+      "path": "D:\\Post-disaster Logistics\\code\\src\\env\\events.py",
+      "sha256": "3d52886e946bc09b80dc3a0887e1ba2587c86499151ed7dcdae9a5bc1f46db51"
+    },
+    "env_params": {
+      "path": "D:\\Post-disaster Logistics\\code\\src\\env\\params.py",
+      "sha256": "0a368cf8c48ec167902f11f1df8d838f3915d945ec348ac4993170a683f3ad0c"
+    },
+    "env_scenario": {
+      "path": "D:\\Post-disaster Logistics\\code\\src\\env\\scenario.py",
+      "sha256": "18f09ad7941e8521593aff425d5aa46ea658867d4fe2df64ec1ca16d68d3d026"
+    },
+    "env_metrics": {
+      "path": "D:\\Post-disaster Logistics\\code\\src\\env\\metrics.py",
+      "sha256": "e24f28cd0fe6e9a183c079a6a852c3dee3eabf0eb7f049f5b64ad368aa087274"
+    },
+    "env_energy": {
+      "path": "D:\\Post-disaster Logistics\\code\\src\\env\\energy.py",
+      "sha256": "e036c5edd49ac5d771712daad005110180608b1dd4f1dd1ce2cfb1ae083d4f3c"
+    },
+    "env_deprivation": {
+      "path": "D:\\Post-disaster Logistics\\code\\src\\env\\deprivation.py",
+      "sha256": "7e4c2e7793830a81fe836b415aaa9de677df26f4f2563b2d76f0a76fea4163e4"
+    },
+    "env_units": {
+      "path": "D:\\Post-disaster Logistics\\code\\src\\env\\units.py",
+      "sha256": "18fd415ac6a8caf11a3f61252829ef2904468841174eac6cae77b6c99a4754df"
+    },
+    "env_observation_contract": {
+      "path": "D:\\Post-disaster Logistics\\code\\src\\env\\observation_contract.py",
+      "sha256": "c7ba2c8067941a53d71d560e6a3142f9a26e2dfe7b9279e50999f7ceb97fba3b"
+    },
+    "method_config": {
+      "path": "D:\\Post-disaster Logistics\\code\\configs\\method\\event_causal_repair.yaml",
+      "sha256": "4b02b45613a0b2a71147fbcef95b9946ef710a98d6b52abd11349abd5d20476e"
+    }
+  }
+}
