@@ -79,22 +79,32 @@ class FollowInitialPlanController:
 #         return actions
 
 
-def _controllers(solve_cost=None, proxy_threshold_fraction=0.0):
+def _controllers(
+    solve_cost=None,
+    proxy_threshold_fraction=0.0,
+    shadow_audit_screened_events=False,
+):
     return (
         EventCausalRepairController(
             solve_cost=solve_cost,
-            proxy_threshold_fraction=proxy_threshold_fraction,
+            proxy_threshold_fraction=(
+                proxy_threshold_fraction
+            ),
+            shadow_audit_screened_events=(
+                shadow_audit_screened_events
+            ),
         ),
         OptimisticBoundScreenedFullReplanController(
             solve_cost=solve_cost,
-            proxy_threshold_fraction=proxy_threshold_fraction,
+            proxy_threshold_fraction=(
+                proxy_threshold_fraction
+            ),
         ),
         EveryEventFullReplanController(
             solve_cost=solve_cost,
         ),
         FollowInitialPlanController(),
     )
-
 
 # def _run_episode(env, scenario, controller):
 #     episode_started = time.perf_counter()
@@ -235,6 +245,13 @@ def _run_episode(env, scenario, controller):
     repair_wall_time_s = float(
         env.repair_solver_wall_time_s
     )
+    shadow_audit_solver_calls = int(
+    env.shadow_audit_solver_calls
+    )
+
+    shadow_audit_wall_time_s = float(
+    env.shadow_audit_wall_time_s
+    )
 
     episode_wall_time_s = (
         time.perf_counter() - episode_started
@@ -293,6 +310,12 @@ def _run_episode(env, scenario, controller):
         "termination": metrics[
             "termination_reason"
         ],
+        "shadow_audit_solver_calls": (
+            shadow_audit_solver_calls
+        ),
+        "shadow_audit_wall_time_s": (
+            shadow_audit_wall_time_s
+        ),
     }
 
     diagnostics = []
@@ -308,7 +331,42 @@ def _run_episode(env, scenario, controller):
             **record,
         })
 
-    return row, diagnostics
+
+    shadow_audit_rows = []
+
+    for record in getattr(
+        controller,
+        "shadow_audit_records",
+        [],
+    ):
+        shadow_audit_rows.append({
+            "method": controller.name,
+            "seed": int(scenario.seed),
+            **record,
+        })
+
+
+    recorded_shadow_calls = sum(
+        int(record.get(
+            "shadow_audit_solver_calls",
+            0,
+        ))
+        for record in shadow_audit_rows
+    )
+
+    if recorded_shadow_calls != (
+        shadow_audit_solver_calls
+    ):
+        raise RuntimeError(
+            "Shadow-audit solver-call accounting mismatch: "
+            f"environment={shadow_audit_solver_calls}, "
+            f"records={recorded_shadow_calls}"
+        )
+
+
+    return row, diagnostics, shadow_audit_rows
+
+    
 
 
 def _write_csv(path: Path, rows: Sequence[Dict[str, object]]) -> None:
@@ -330,7 +388,8 @@ def _aggregate(rows: Sequence[Dict[str, object]]) -> Dict[str, object]:
     metrics = (
         "J_dep_true", "J_composite", "fill_rate", "n_resolves",
         "repair_solver_calls", "repair_wall_time_s",
-        "mean_repair_wall_time_s", "episode_wall_time_s",
+        "mean_repair_wall_time_s", "shadow_audit_solver_calls",
+    "shadow_audit_wall_time_s","episode_wall_time_s",
         "violations", "reward",
     )
     summary: Dict[str, object] = {}
@@ -434,8 +493,24 @@ def main():
     parser.add_argument(
         "--output-dir", type=Path,
         default=Path("results/event_causal_repair"))
-    parser.add_argument("--smoke", action="store_true")
-    parser.add_argument("--plot", action="store_true")
+    parser.add_argument(
+    "--shadow-audit-screened-events",
+    action="store_true",
+    help=(
+        "Counterfactually evaluate proxy-screened events "
+        "without modifying the executed episode."
+    ),
+)
+
+    parser.add_argument(
+        "--smoke",
+        action="store_true",
+    )
+
+    parser.add_argument(
+        "--plot",
+        action="store_true",
+    )
     args = parser.parse_args()
 
     params = (
@@ -484,8 +559,17 @@ def main():
 
     seeds = _resolve_seeds(args)
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    episode_rows: List[Dict[str, object]] = []
-    diagnostic_rows: List[Dict[str, object]] = []
+    episode_rows: List[
+        Dict[str, object]
+    ] = []
+
+    diagnostic_rows: List[
+        Dict[str, object]
+    ] = []
+
+    shadow_audit_rows: List[
+        Dict[str, object]
+    ] = []
     print(
         f"event-causal ALNS experiment: {len(seeds)} paired seeds, "
         f"K_max={params.hybrid.K_max}, "
@@ -496,13 +580,27 @@ def main():
         scenario = generate_scenario(seed, params)
         for controller in _controllers(
             solve_cost=solve_cost,
-            proxy_threshold_fraction=proxy_threshold_fraction,
+            proxy_threshold_fraction=(
+                proxy_threshold_fraction
+            ),
+            shadow_audit_screened_events=(
+                args.shadow_audit_screened_events
+            ),
         ):
             env = UAMTVRPIUEnv(params)
-            row, diagnostics = _run_episode(
-                env, scenario, controller)
+            row, diagnostics, episode_audit_rows = (
+                _run_episode(
+                    env,
+                    scenario,
+                    controller,
+                )
+            )
+
             episode_rows.append(row)
             diagnostic_rows.extend(diagnostics)
+            shadow_audit_rows.extend(
+                episode_audit_rows
+            )
             print(
                 f"  seed {seed:5d} [{seed_index}/{len(seeds)}] "
                 f"{controller.name:<34} "
@@ -516,6 +614,11 @@ def main():
     _write_csv(args.output_dir / "episode_metrics.csv", episode_rows)
     _write_csv(args.output_dir / "repair_diagnostics.csv", diagnostic_rows)
     _write_csv(args.output_dir / "paired_comparisons.csv", paired)
+    _write_csv(
+    args.output_dir
+    / "counterfactual_screen_audit.csv",
+    shadow_audit_rows,
+)
     summary = {
         "method_order": list(METHOD_ORDER),
         "seeds": seeds,
@@ -528,6 +631,9 @@ def main():
         },
         "aggregate": _aggregate(episode_rows),
         "diagnostic_rows": len(diagnostic_rows),
+        "shadow_audit_rows": len(
+        shadow_audit_rows
+        ),      
     }
     with (args.output_dir / "summary.json").open(
         "w", encoding="utf-8",
@@ -547,11 +653,15 @@ def main():
             "proxy_threshold_fraction": proxy_threshold_fraction,
             "repair_budget": params.hybrid.K_max,
             "alns_iterations": params.hybrid.alns_iterations,
+            "shadow_audit_screened_events": bool(
+    args.shadow_audit_screened_events
+),
         },
         "files": [
             "episode_metrics.csv",
             "repair_diagnostics.csv",
             "paired_comparisons.csv",
+            "counterfactual_screen_audit.csv",
             "summary.json",
         ],
     }

@@ -161,6 +161,13 @@ class UAMTVRPIUEnv:
         self.queue = EventQueue()
         self._rng_p4 = np.random.default_rng(scenario.p4_seed)
         self._rng_alns = np.random.default_rng(scenario.seed + 2000)
+        # Independent deterministic RNG for counterfactual audit solves.
+# It must never affect the operational ALNS RNG.
+        self._rng_shadow_audit = np.random.default_rng(
+            np.random.SeedSequence(
+                [int(scenario.seed), 9001]
+            )
+        )
         self._corridor_report_generation: Dict[Tuple[int, int], float] = {}
         for n in scenario.nodes:
             if n.onset_time <= 0.0:
@@ -213,13 +220,23 @@ class UAMTVRPIUEnv:
 
         # hybrid planning interface ------------------------------------------------
         self.K_rem = self.p.hybrid.K_max
+ 
+        # Operational planner used by installed repair transactions.
         self.planner = ALNSPlanner(self.p)
+
+        # Independent planner instance used only for counterfactual
+        # evaluation of screened events.
+        self._shadow_audit_planner = ALNSPlanner(self.p)
         self.alns_solving = False
         self.alns_request_t: Optional[float] = None
         # Exact ALNS-only accounting. The initial scaffold construction is
         # deliberately excluded from repair statistics.
         self.repair_solver_calls = 0
         self.repair_solver_wall_time_s = 0.0
+        # Counterfactual audit accounting. These values must never be   
+# included in operational repair-time or repair-call metrics.
+        self.shadow_audit_solver_calls = 0
+        self.shadow_audit_wall_time_s = 0.0
 
         location_ids = [DEPOT] + list(range(self.N))
         self._operational_edge_risk = {
@@ -523,9 +540,8 @@ class UAMTVRPIUEnv:
                 return                 # already returning
             self._launch(u, DEPOT)
             return
-        # FOLLOW / SKIP / SWAP / REQUEST_RESOLVE resolve to plan-following.
-        # An en-route UAV keeps its current leg unless a global re-solve
-        # replaced the plan (then it diverts to the new intent).
+        # A leg already in execution is an operational commitment.
+        # Replanning may modify only the route suffix after that leg.
         if en_route :
             return
         self._follow(u)
@@ -890,6 +906,40 @@ class UAMTVRPIUEnv:
             respect_onboard=True,
             count_as_repair=True,
         )
+    def propose_shadow_scaffold_repair(
+        self,
+        ctx: PlanContext,
+        warm: Optional[Scaffold],frozen_nodes_by_uav: Optional[  Dict[int, Set[int]] ] = None,) -> Scaffold:
+        """Solve a non-invasive counterfactual repair candidate.
+
+        This method deliberately does not:
+
+        * decrement the repair budget;
+        * increment operational resolve statistics;
+        * increment operational solver counters;
+        * use or advance the operational ALNS RNG;
+        * install or stamp the resulting scaffold;
+        * change the simulator's operational solving state.
+
+        The supplied PlanContext must contain operational belief only.
+        """
+
+        started = time.perf_counter()
+
+        try:
+            return self._shadow_audit_planner.solve(
+                ctx,
+                self._rng_shadow_audit,
+                warm=warm,
+                frozen_nodes_by_uav=frozen_nodes_by_uav,
+                respect_onboard=True,
+            )
+
+        finally:
+            elapsed = time.perf_counter() - started
+
+            self.shadow_audit_solver_calls += 1
+            self.shadow_audit_wall_time_s += elapsed
 
     def install_scaffold_repair(self, scaffold: Scaffold) -> None:
         """Install an already-accounted repair candidate."""

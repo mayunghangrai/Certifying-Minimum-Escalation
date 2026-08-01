@@ -644,10 +644,15 @@ class EventCausalRepairController:
         solve_cost: Optional[float] = None,
         proxy_threshold_fraction: float = 0.0,
         screen_soft_events: bool = True,
+        shadow_audit_screened_events: bool = False,
     ):
         self.selective_repair = bool(selective_repair)
         self.solve_cost = solve_cost
         self.screen_soft_events = bool(screen_soft_events)
+
+        self.shadow_audit_screened_events = bool(
+            shadow_audit_screened_events
+        )
 
         if proxy_threshold_fraction < 0.0:
             raise ValueError(
@@ -663,6 +668,10 @@ class EventCausalRepairController:
         self.scenario_token: Optional[int] = None
         self.last_t = -np.inf
         self.diagnostics: List[Dict[str, object]] = []
+        self.shadow_audit_records: List[
+        Dict[str, object] ] = []
+        self._shadow_audit_event_index = 0
+
         self.repair_wall_time_s = 0.0
         self.repair_solver_calls = 0
 
@@ -671,6 +680,8 @@ class EventCausalRepairController:
         self.scenario_token = None
         self.last_t = -np.inf
         self.diagnostics = []
+        self.shadow_audit_records = []
+        self._shadow_audit_event_index = 0
         self.repair_wall_time_s = 0.0
         self.repair_solver_calls = 0
 
@@ -702,7 +713,297 @@ class EventCausalRepairController:
             return len(candidate_hard) < len(selected_hard)
 
         return candidate_value > selected_value + 1e-9
+    def _run_screen_shadow_audit(
+    self,
+    env,
+    dependency_graph: PlanBeliefDependencyGraph,
+    trace: ImpactTrace,
+    ctx,
+    current_value: float,
+    solve_cost: float,
+    operational_record: Dict[str, object],) -> Dict[str, object]:
+        """Counterfactually solve a screened soft event.
 
+            Two candidates are evaluated without changing the real episode:
+
+            1. the Level-1 causal neighborhood;
+            2. an unrestricted full-fleet replan.
+
+            The candidates are never installed and do not consume repair
+            budget or operational solver accounting.
+            """
+
+        self._shadow_audit_event_index += 1
+        audit_index = self._shadow_audit_event_index
+
+        audit_calls_before = int(
+            env.shadow_audit_solver_calls
+        )
+        audit_wall_before = float(
+            env.shadow_audit_wall_time_s
+        )
+
+        total_decisions = len(
+            dependency_graph.decisions
+        )
+
+        # --------------------------------------------------------------
+        # Level 1: causal decision neighborhood
+        # --------------------------------------------------------------
+        level1_mutable = set(trace.mutable)
+
+        level1_warm = _partial_warm_start(
+            env.scaffold,
+            level1_mutable,
+        )
+
+        level1_frozen = _frozen_nodes(
+            dependency_graph,
+            level1_mutable,
+        )
+
+        level1_candidate = (
+            env.propose_shadow_scaffold_repair(
+                ctx=ctx,
+                warm=level1_warm,
+                frozen_nodes_by_uav=level1_frozen,
+            )
+        )
+
+        level1_graph = (
+            PlanBeliefDependencyGraph.build(
+                env,
+                level1_candidate,
+            )
+        )
+
+        level1_hard = (
+            _hard_infeasible_decisions(
+                env,
+                level1_candidate,
+                level1_graph,
+            )
+        )
+
+        level1_value = (
+            env._shadow_audit_planner
+            .evaluate_belief_value(
+                level1_candidate,
+                ctx,
+            )
+        )
+
+        level1_improvement = (
+            level1_value - current_value
+        )
+
+        level1_feasible = not level1_hard
+
+        level1_net_beneficial = (
+            level1_feasible
+            and level1_improvement
+            > solve_cost + 1e-9
+        )
+
+        # --------------------------------------------------------------
+        # Full fleet: unrestricted counterfactual replan
+        # --------------------------------------------------------------
+        full_candidate = (
+            env.propose_shadow_scaffold_repair(
+                ctx=ctx,
+                warm=None,
+                frozen_nodes_by_uav=None,
+            )
+        )
+
+        full_graph = (
+            PlanBeliefDependencyGraph.build(
+                env,
+                full_candidate,
+            )
+        )
+
+        full_hard = (
+            _hard_infeasible_decisions(
+                env,
+                full_candidate,
+                full_graph,
+            )
+        )
+
+        full_value = (
+            env._shadow_audit_planner
+            .evaluate_belief_value(
+                full_candidate,
+                ctx,
+            )
+        )
+
+        full_improvement = (
+            full_value - current_value
+        )
+
+        full_feasible = not full_hard
+
+        full_net_beneficial = (
+            full_feasible
+            and full_improvement
+            > solve_cost + 1e-9
+        )
+
+        # A false negative means the proxy rejected the event even
+        # though a full repair would have produced positive net value.
+        screen_false_negative = bool(
+            full_net_beneficial
+        )
+
+        # Feasibility-based need for expansion.
+        expansion_was_needed = bool(
+            not level1_feasible
+            and full_feasible
+        )
+
+        # Value-based need for expansion: Level 1 would not qualify,
+        # while the full-fleet candidate would qualify.
+        expansion_net_benefit_needed = bool(
+            not level1_net_beneficial
+            and full_net_beneficial
+        )
+
+        expansion_extra_improvement = float(
+            full_improvement - level1_improvement
+        )
+
+        audit_solver_calls = (
+            int(env.shadow_audit_solver_calls)
+            - audit_calls_before
+        )
+
+        audit_wall_time_s = max(
+            float(env.shadow_audit_wall_time_s)
+            - audit_wall_before,
+            0.0,
+        )
+
+        level1_scope_fraction = (
+            len(level1_mutable) / total_decisions
+            if total_decisions
+            else 0.0
+        )
+
+        return {
+            "audit_event_index": audit_index,
+            "scenario_seed": int(
+                env.scenario.seed
+            ),
+            "time_h": float(
+                operational_record["time_h"]
+            ),
+            "event_kind": str(
+                operational_record["event_kind"]
+            ),
+            "event_type": str(
+                operational_record["event_type"]
+            ),
+            "changed_resources": str(
+                operational_record[
+                    "changed_resources"
+                ]
+            ),
+            "hard_impact_count": int(
+                operational_record[
+                    "hard_impact_count"
+                ]
+            ),
+            "current_plan_value": float(
+                current_value
+            ),
+            "optimistic_value_upper_bound": float(
+                operational_record[
+                    "optimistic_value_upper_bound"
+                ]
+            ),
+            "potential_gain_bound": float(
+                operational_record[
+                    "potential_gain_bound"
+                ]
+            ),
+            "event_impact_value_proxy": float(
+                operational_record[
+                    "event_impact_value_proxy"
+                ]
+            ),
+            "proxy_activation_threshold": float(
+                operational_record[
+                    "proxy_activation_threshold"
+                ]
+            ),
+            "proxy_threshold_fraction": float(
+                operational_record[
+                    "proxy_threshold_fraction"
+                ]
+            ),
+            "solve_cost": float(solve_cost),
+            "repair_budget_remaining": int(
+                env.K_rem
+            ),
+            "total_decision_count": int(
+                total_decisions
+            ),
+            "shadow_level1_mutable_count": int(
+                len(level1_mutable)
+            ),
+            "shadow_level1_scope_fraction": float(
+                level1_scope_fraction
+            ),
+            "shadow_level1_feasible": int(
+                level1_feasible
+            ),
+            "shadow_level1_hard_count": int(
+                len(level1_hard)
+            ),
+            "shadow_level1_value": float(
+                level1_value
+            ),
+            "shadow_level1_improvement": float(
+                level1_improvement
+            ),
+            "shadow_level1_net_beneficial": int(
+                level1_net_beneficial
+            ),
+            "shadow_full_feasible": int(
+                full_feasible
+            ),
+            "shadow_full_hard_count": int(
+                len(full_hard)
+            ),
+            "shadow_full_value": float(
+                full_value
+            ),
+            "shadow_full_improvement": float(
+                full_improvement
+            ),
+            "shadow_full_net_beneficial": int(
+                full_net_beneficial
+            ),
+            "screen_false_negative": int(
+                screen_false_negative
+            ),
+            "expansion_was_needed": int(
+                expansion_was_needed
+            ),
+            "expansion_net_benefit_needed": int(
+                expansion_net_benefit_needed
+            ),
+            "expansion_extra_improvement": float(
+                expansion_extra_improvement
+            ),
+            "shadow_audit_solver_calls": int(
+                audit_solver_calls
+            ),
+            "shadow_audit_wall_time_s": float(
+                audit_wall_time_s
+            ),}
     def act(self, env, obs, masks, deciders):
         del obs, masks
 
@@ -844,6 +1145,12 @@ class EventCausalRepairController:
             ),
             "attempted": 0,
             "installed": 0,
+            "shadow_audited": 0,
+            "shadow_screen_false_negative": 0,
+            "shadow_expansion_was_needed": 0,
+            "shadow_expansion_net_benefit_needed": 0,
+            "shadow_audit_solver_calls": 0,
+            "shadow_audit_wall_time_s": 0.0,
             "fallback_full_replan": 0,
             "full_fleet_attempted": 0,
             "neighborhood_attempt_count": 0,
@@ -884,6 +1191,67 @@ class EventCausalRepairController:
             record["outcome"] = (
                 "continue_event_impact_below_threshold"
             )
+
+            if self.shadow_audit_screened_events:
+                audit_record = (
+                    self._run_screen_shadow_audit(
+                        env=env,
+                        dependency_graph=(
+                            dependency_graph
+                        ),
+                        trace=trace,
+                        ctx=ctx,
+                        current_value=current_value,
+                        solve_cost=solve_cost,
+                        operational_record=record,
+                    )
+                )
+
+                self.shadow_audit_records.append(
+                    audit_record
+                )
+
+                record["shadow_audited"] = 1
+
+                record[
+                    "shadow_screen_false_negative"
+                ] = int(
+                    audit_record[
+                        "screen_false_negative"
+                    ]
+                )
+
+                record[
+                    "shadow_expansion_was_needed"
+                ] = int(
+                    audit_record[
+                        "expansion_was_needed"
+                    ]
+                )
+
+                record[
+                    "shadow_expansion_net_benefit_needed"
+                ] = int(
+                    audit_record[
+                        "expansion_net_benefit_needed"
+                    ]
+                )
+
+                record[
+                    "shadow_audit_solver_calls"
+                ] = int(
+                    audit_record[
+                        "shadow_audit_solver_calls"
+                    ]
+                )
+
+                record[
+                    "shadow_audit_wall_time_s"
+                ] = float(
+                    audit_record[
+                        "shadow_audit_wall_time_s"
+                    ]
+                )
 
         elif env.K_rem <= 0:
             record["outcome"] = (
