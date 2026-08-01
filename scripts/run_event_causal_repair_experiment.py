@@ -493,7 +493,7 @@ def _resolve_seeds(args) -> List[int]:
 def _resolve_calibration_seeds(args) -> List[int]:
     if args.calibration_seeds:
         return list(dict.fromkeys(args.calibration_seeds))
-    return list(range(300, 320))
+    return list(range(300, 310))
 
 
 def _sha256_file(path: Path) -> Optional[str]:
@@ -648,7 +648,7 @@ def main():
     )
     parser.add_argument(
         "--calibration-seeds", type=int, nargs="*", default=None,
-        help="Seeds used for threshold sensitivity (default 300-319).",
+        help="Seeds used for threshold sensitivity (default 300-309).",
     )
     parser.add_argument(
         "--output-dir", type=Path,
