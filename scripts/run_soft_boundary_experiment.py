@@ -234,6 +234,20 @@ def main() -> None:
     decays = [float(value) for value in payload["development_boundary_decays"]]
     gate_modes = [bool(value) for value in payload["development_gate_modes"]]
     randomize = bool(payload.get("randomize_method_order", True))
+    selected_decay = (
+        args.selected_decay
+        if args.selected_decay is not None
+        else payload.get("selected_boundary_decay")
+    )
+    selected_gate = (
+        args.selected_gate
+        if args.selected_gate is not None
+        else payload.get("selected_gate")
+    )
+    if selected_decay is not None:
+        selected_decay = float(selected_decay)
+    if selected_gate is not None:
+        selected_gate = bool(selected_gate)
     if any(not 0.0 < value <= 1.0 for value in decays):
         raise ValueError("development decays must be in (0, 1]")
     if args.n_seeds < 1:
@@ -255,8 +269,8 @@ def main() -> None:
             matched_periodic_target_count=matched_count,
             development_decays=decays,
             development_gate_modes=gate_modes,
-            selected_decay=args.selected_decay,
-            selected_gate=args.selected_gate,
+            selected_decay=selected_decay,
+            selected_gate=selected_gate,
         )
         if randomize and len(controllers) > 1:
             rng = np.random.default_rng(seed + 193_939)
@@ -303,8 +317,8 @@ def main() -> None:
         "matched_periodic_target_count": matched_count,
         "development_boundary_decays": decays,
         "development_gate_modes": gate_modes,
-        "selected_decay": args.selected_decay,
-        "selected_gate": args.selected_gate,
+        "selected_decay": selected_decay,
+        "selected_gate": selected_gate,
         "randomize_method_order": randomize,
     }
     summary = {
@@ -367,4 +381,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

@@ -1,0 +1,21 @@
+# Frozen after the predeclared seeds 600--609 screening stage.
+# Selection criterion: lowest family-balanced paired relative deprivation
+# delta versus the 18-call periodic reference across standard and mixed.
+
+method:
+  repair_budget: 18
+  alns_iterations: 60
+  solve_cost: null
+  proxy_threshold_fraction: 0.03
+  trigger_mode: proxy
+  budget_pacing: true
+  periodic_replan_period: 2.0
+  matched_periodic_target_count: 18
+
+  development_boundary_decays: [0.35, 0.65]
+  development_gate_modes: [false, true]
+  selected_boundary_decay: 0.65
+  selected_gate: false
+
+  randomize_method_order: true
+
