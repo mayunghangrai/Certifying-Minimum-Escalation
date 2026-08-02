@@ -837,7 +837,17 @@ class UAMTVRPIUEnv:
     # Hybrid interface
     # ------------------------------------------------------------------
 
-    def _run_planner(self,ctx: PlanContext,warm: Optional[Scaffold],frozen_nodes_by_uav: Optional[ Dict[int, Set[int]]],respect_onboard: bool,count_as_repair: bool,) -> Scaffold:
+    def _run_planner(
+        self,
+        ctx: PlanContext,
+        warm: Optional[Scaffold],
+        frozen_nodes_by_uav: Optional[Dict[int, Set[int]]],
+        removal_weights_by_uav_node: Optional[
+            Dict[Tuple[int, int], float]
+        ],
+        respect_onboard: bool,
+        count_as_repair: bool,
+    ) -> Scaffold:
         """Run ALNS through one instrumented interface."""
 
         started = time.perf_counter()
@@ -851,6 +861,9 @@ class UAMTVRPIUEnv:
                 self._rng_alns,
                 warm=warm,
                 frozen_nodes_by_uav=frozen_nodes_by_uav,
+                removal_weights_by_uav_node=(
+                    removal_weights_by_uav_node
+                ),
                 respect_onboard=respect_onboard,
             )
         finally:
@@ -873,6 +886,7 @@ class UAMTVRPIUEnv:
         ctx=ctx,
         warm=warm,
         frozen_nodes_by_uav=None,
+        removal_weights_by_uav_node=None,
         respect_onboard=not initial,
         count_as_repair=not initial,
         )
@@ -918,6 +932,9 @@ class UAMTVRPIUEnv:
         frozen_nodes_by_uav: Optional[
             Dict[int, Set[int]]
         ] = None,
+        removal_weights_by_uav_node: Optional[
+            Dict[Tuple[int, int], float]
+        ] = None,
         ) -> Scaffold:
         """Solve a belief-consistent candidate without installing it."""
 
@@ -927,13 +944,21 @@ class UAMTVRPIUEnv:
             ctx=ctx,
             warm=warm,
             frozen_nodes_by_uav=frozen_nodes_by_uav,
+            removal_weights_by_uav_node=(
+                removal_weights_by_uav_node
+            ),
             respect_onboard=True,
             count_as_repair=True,
         )
     def propose_shadow_scaffold_repair(
         self,
         ctx: PlanContext,
-        warm: Optional[Scaffold],frozen_nodes_by_uav: Optional[  Dict[int, Set[int]] ] = None,) -> Scaffold:
+        warm: Optional[Scaffold],
+        frozen_nodes_by_uav: Optional[Dict[int, Set[int]]] = None,
+        removal_weights_by_uav_node: Optional[
+            Dict[Tuple[int, int], float]
+        ] = None,
+    ) -> Scaffold:
         """Solve a non-invasive counterfactual repair candidate.
 
         This method deliberately does not:
@@ -956,6 +981,9 @@ class UAMTVRPIUEnv:
                 self._rng_shadow_audit,
                 warm=warm,
                 frozen_nodes_by_uav=frozen_nodes_by_uav,
+                removal_weights_by_uav_node=(
+                    removal_weights_by_uav_node
+                ),
                 respect_onboard=True,
             )
 

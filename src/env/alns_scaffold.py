@@ -215,11 +215,17 @@ class ALNSPlanner:
     def solve(self, ctx: PlanContext, rng: np.random.Generator,
               warm: Optional[Scaffold] = None,
               frozen_nodes_by_uav: Optional[Dict[int, Set[int]]] = None,
+              removal_weights_by_uav_node: Optional[
+                  Dict[Tuple[int, int], float]
+              ] = None,
               respect_onboard: bool = False) -> Scaffold:
         """Greedy construction (optionally warm-started) + ALNS improvement.
 
         ``frozen_nodes_by_uav`` is an additive selective-repair contract: when
         supplied, destroy operators may not remove those future node decisions.
+        ``removal_weights_by_uav_node`` provides a soft alternative: every
+        positive-weight visit remains removable, while larger weights bias the
+        destroy operator toward causally related route regions.
         Legacy callers omit it and retain the original ALNS behavior.
         """
         best = self._construct(ctx, warm, respect_onboard=respect_onboard)
@@ -227,7 +233,12 @@ class ALNSPlanner:
         cur = best
         for _ in range(self.p.hybrid.alns_iterations):
             cand = self._destroy_repair(
-                cur, ctx, rng, frozen_nodes_by_uav=frozen_nodes_by_uav)
+                cur,
+                ctx,
+                rng,
+                frozen_nodes_by_uav=frozen_nodes_by_uav,
+                removal_weights_by_uav_node=removal_weights_by_uav_node,
+            )
             val = self._evaluate(cand, ctx)
             if val > best_val + 1e-9:
                 best, best_val = cand, val
@@ -432,20 +443,38 @@ class ALNSPlanner:
         self, scaffold: Scaffold, ctx: PlanContext,
         rng: np.random.Generator,
         frozen_nodes_by_uav: Optional[Dict[int, Set[int]]] = None,
+        removal_weights_by_uav_node: Optional[
+            Dict[Tuple[int, int], float]
+        ] = None,
     ) -> Scaffold:
         cand = scaffold.clone()
         all_visits: List[Tuple[int, int, int]] = []
+        removal_weights: List[float] = []
         for u, ss in cand.plans.items():
             for si, s in enumerate(ss):
                 for vi, visit in enumerate(s.visits):
                     if visit.node in (frozen_nodes_by_uav or {}).get(u, set()):
                         continue
+                    weight = 1.0
+                    if removal_weights_by_uav_node is not None:
+                        weight = max(
+                            float(removal_weights_by_uav_node.get(
+                                (u, visit.node), 0.0)),
+                            0.0,
+                        )
+                    if weight <= 0.0:
+                        continue
                     all_visits.append((u, si, vi))
+                    removal_weights.append(weight)
         if not all_visits:
             return cand
         n_remove = max(1, int(self.p.hybrid.alns_removal_frac * len(all_visits)))
+        probabilities = None
+        if removal_weights_by_uav_node is not None:
+            probabilities = np.asarray(removal_weights, dtype=float)
+            probabilities /= float(probabilities.sum())
         idxs = rng.choice(len(all_visits), size=min(n_remove, len(all_visits)),
-                          replace=False)
+                          replace=False, p=probabilities)
         removed: List[PlannedVisit] = []
         for u, si, vi in sorted((all_visits[i] for i in idxs), key=lambda m: -m[2]):
             removed.append(cand.plans[u][si].visits.pop(vi))

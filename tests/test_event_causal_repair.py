@@ -14,7 +14,9 @@ from methods.event_causal_repair import (
     OperationalSnapshot,
     PlanBeliefDependencyGraph,
     PeriodicFullReplanController,
+    SoftBoundaryEventCausalRepairController,
     corridor_resource,
+    soft_boundary_removal_weights,
     trace_impacts,
 )
 
@@ -77,6 +79,65 @@ def test_corridor_closure_traces_direct_decision_and_route_consequences():
     assert decision.key in trace.mutable
     assert trace.mutable.isdisjoint(trace.frozen)
     assert "corridor_leg_closed" in trace.hard_reasons[decision.key.label()]
+
+
+def test_soft_boundary_keeps_every_visit_removable_with_causal_bias():
+    env, _, _ = small_env()
+    before = OperationalSnapshot.capture(env)
+    graph = PlanBeliefDependencyGraph.build(env)
+    decision = first_decision(graph)
+    env.graph.set_available(
+        decision.predecessor_node, decision.node, False)
+    after = OperationalSnapshot.capture(env)
+    changes = OperationalChanges.between(before, after)
+    trace = trace_impacts(
+        env, graph, changes, EventType.AVAIL_CHANGE)
+    weights = soft_boundary_removal_weights(graph, trace, decay=0.5)
+    assert weights
+    assert all(weight > 0.0 for weight in weights.values())
+    assert weights[(decision.key.uav, decision.node)] == 1.0
+    noncausal = [
+        graph.decisions[key]
+        for key in trace.frozen
+        if (key.uav, graph.decisions[key].node) in weights
+    ]
+    if noncausal:
+        assert any(
+            weights[(item.key.uav, item.node)] < 1.0
+            for item in noncausal
+        )
+
+
+def test_soft_boundary_repair_uses_one_solver_call():
+    env, obs, info = small_env(seed=19)
+    captured_weights = []
+    propose = env.propose_scaffold_repair
+
+    def capture_proposal(warm, frozen, removal_weights=None):
+        captured_weights.append(removal_weights)
+        return propose(warm, frozen, removal_weights)
+
+    env.propose_scaffold_repair = capture_proposal
+    controller = SoftBoundaryEventCausalRepairController(
+        proxy_threshold_fraction=0.0,
+        boundary_decay=0.5,
+        budget_pacing=False,
+    )
+    controller.act(env, obs, info["masks"], info["deciders"])
+    node = sorted(env.belief.known)[0]
+    env.belief.entries[node].mu += np.array([10.0, 0.0, 0.0, 0.0])
+    env.last_decision_event_type = EventType.P1_REPORT
+    controller.act(env, obs, info["masks"], info["deciders"])
+    record = controller.diagnostics[-1]
+    assert record["attempted"] == 1
+    assert record["repair_policy"] == "soft_boundary"
+    assert record["neighborhood_levels_attempted"] == "soft_boundary"
+    assert record["repair_solver_calls"] == 1
+    assert record["soft_weighted_node_count"] > 0
+    assert record["causal_scope_fraction"] <= 1.0
+    assert len(captured_weights) == 1
+    assert captured_weights[0]
+    assert min(captured_weights[0].values()) > 0.0
 
 
 def test_routine_service_consumption_is_not_an_exogenous_change():

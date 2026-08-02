@@ -734,6 +734,50 @@ def expanding_repair_neighborhoods(
     return neighborhoods
 
 
+def soft_boundary_removal_weights(
+    dependency_graph: PlanBeliefDependencyGraph,
+    trace: ImpactTrace,
+    decay: float,
+) -> Dict[Tuple[int, int], float]:
+    """Return nested causal removal weights without freezing any visit.
+
+    Causal decisions receive weight 1.  Other decisions on affected UAV
+    routes receive ``decay``; routes connected through shared resources
+    receive ``decay**2``; all remaining fleet decisions retain the strictly
+    positive global exploration weight ``decay**3``.
+    """
+
+    decay = float(decay)
+    if not 0.0 < decay <= 1.0:
+        raise ValueError("soft-boundary decay must be in (0, 1]")
+
+    levels = expanding_repair_neighborhoods(
+        dependency_graph,
+        trace,
+        selective_repair=True,
+    )
+    level_weights = {
+        "causal_decisions": 1.0,
+        "affected_uav_routes": decay,
+        "shared_resource_uavs": decay ** 2,
+        "full_fleet": decay ** 3,
+    }
+    by_decision: Dict[DecisionKey, float] = {
+        key: decay ** 3 for key in dependency_graph.decisions
+    }
+    for neighborhood in reversed(levels):
+        weight = level_weights[neighborhood.name]
+        for key in neighborhood.mutable:
+            by_decision[key] = max(by_decision[key], weight)
+
+    weights: Dict[Tuple[int, int], float] = {}
+    for key, weight in by_decision.items():
+        decision = dependency_graph.decisions[key]
+        node_key = (key.uav, decision.node)
+        weights[node_key] = max(weights.get(node_key, 0.0), weight)
+    return weights
+
+
 def optimistic_value_upper_bound(env) -> float:
     """Capacity-aware relaxed upper bound on achievable belief-side value.
 
@@ -882,6 +926,7 @@ class EventCausalRepairController:
         trigger_mode: str = "both",
         gate_fleet_service_triggers: bool = False,
         budget_pacing: bool = False,
+        soft_boundary_decay: Optional[float] = None,
     ):
         self.selective_repair = bool(selective_repair)
         self.solve_cost = solve_cost
@@ -906,6 +951,16 @@ class EventCausalRepairController:
             gate_fleet_service_triggers
         )
         self.budget_pacing = bool(budget_pacing)
+        if (
+            soft_boundary_decay is not None
+            and not 0.0 < float(soft_boundary_decay) <= 1.0
+        ):
+            raise ValueError("soft_boundary_decay must be in (0, 1]")
+        self.soft_boundary_decay = (
+            None
+            if soft_boundary_decay is None
+            else float(soft_boundary_decay)
+        )
 
         self.shadow_audit_screened_events = bool(
             shadow_audit_screened_events
@@ -1422,6 +1477,24 @@ class EventCausalRepairController:
             "repair_scope_fraction": float(
                 initial_scope_fraction
             ),
+            "causal_scope_fraction": float(
+                initial_scope_fraction
+            ),
+            "repair_policy": (
+                "soft_boundary"
+                if self.soft_boundary_decay is not None
+                else (
+                    "hard_freeze"
+                    if self.selective_repair
+                    else "full_replan"
+                )
+            ),
+            "soft_boundary_decay": (
+                float(self.soft_boundary_decay)
+                if self.soft_boundary_decay is not None
+                else float("nan")
+            ),
+            "soft_weighted_node_count": 0,
             "current_plan_value": float(
                 current_value
             ),
@@ -1635,11 +1708,34 @@ class EventCausalRepairController:
                 env.repair_solver_wall_time_s
             )
 
-            neighborhoods = expanding_repair_neighborhoods(
-                dependency_graph,
-                trace,
-                selective_repair=self.selective_repair,
-            )
+            soft_removal_weights = None
+            if self.soft_boundary_decay is not None:
+                all_decisions = frozenset(
+                    dependency_graph.decisions
+                )
+                neighborhoods = [
+                    RepairNeighborhood(
+                        hierarchy_level=0,
+                        name="soft_boundary",
+                        mutable=all_decisions,
+                    )
+                ]
+                soft_removal_weights = (
+                    soft_boundary_removal_weights(
+                        dependency_graph,
+                        trace,
+                        self.soft_boundary_decay,
+                    )
+                )
+                record["soft_weighted_node_count"] = len(
+                    soft_removal_weights
+                )
+            else:
+                neighborhoods = expanding_repair_neighborhoods(
+                    dependency_graph,
+                    trace,
+                    selective_repair=self.selective_repair,
+                )
 
             attempted_names: List[str] = []
 
@@ -1660,7 +1756,15 @@ class EventCausalRepairController:
             ):
                 mutable = set(neighborhood.mutable)
 
-                if neighborhood.name == "full_fleet":
+                removal_weights = None
+                if neighborhood.name == "soft_boundary":
+                    warm = _partial_warm_start(
+                        env.scaffold,
+                        set(trace.mutable),
+                    )
+                    frozen = None
+                    removal_weights = soft_removal_weights
+                elif neighborhood.name == "full_fleet":
                     warm = None
                     frozen = None
                     record["full_fleet_attempted"] = 1
@@ -1681,6 +1785,7 @@ class EventCausalRepairController:
                 candidate = env.propose_scaffold_repair(
                     warm,
                     frozen,
+                    removal_weights,
                 )
                 solve_wall_time = max(
                     float(env.repair_solver_wall_time_s)
@@ -1951,6 +2056,36 @@ class OptimisticBoundScreenedFullReplanController(
             gate_fleet_service_triggers=gate_fleet_service_triggers,
             budget_pacing=budget_pacing,
         )
+
+
+class SoftBoundaryEventCausalRepairController(
+    EventCausalRepairController
+):
+    """Proxy-triggered ALNS with causal destroy bias and no hard freezing."""
+
+    name = "Soft-Boundary Event-Causal ALNS"
+
+    def __init__(
+        self,
+        solve_cost: Optional[float] = None,
+        proxy_threshold_fraction: float = 0.0,
+        boundary_decay: float = 0.55,
+        gate_fleet_service_triggers: bool = False,
+        budget_pacing: bool = True,
+        name: Optional[str] = None,
+    ):
+        super().__init__(
+            selective_repair=True,
+            solve_cost=solve_cost,
+            proxy_threshold_fraction=proxy_threshold_fraction,
+            screen_soft_events=True,
+            trigger_mode="proxy",
+            gate_fleet_service_triggers=gate_fleet_service_triggers,
+            budget_pacing=budget_pacing,
+            soft_boundary_decay=boundary_decay,
+        )
+        if name is not None:
+            self.name = str(name)
 
 
 class EveryEventFullReplanController(
