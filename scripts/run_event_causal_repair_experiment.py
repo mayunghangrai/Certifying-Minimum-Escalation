@@ -506,7 +506,62 @@ def _sha256_file(path: Path) -> Optional[str]:
     return digest.hexdigest()
 
 
+def _find_git_dir(start: Path) -> Optional[Path]:
+    """Locate the .git directory by walking up from ``start``."""
+    current = start.resolve()
+    for candidate in (current, *current.parents):
+        git_path = candidate / ".git"
+        if git_path.is_dir():
+            return git_path
+        if git_path.is_file():
+            # Worktree/submodule pointer: "gitdir: <path>"
+            try:
+                text = git_path.read_text(encoding="utf-8").strip()
+            except OSError:
+                return None
+            if text.startswith("gitdir:"):
+                target = Path(text.split(":", 1)[1].strip())
+                if not target.is_absolute():
+                    target = (candidate / target).resolve()
+                return target if target.is_dir() else None
+    return None
+
+
+def _read_head_from_disk(git_dir: Path) -> Optional[str]:
+    """Resolve HEAD without invoking git (bulletproof provenance)."""
+    try:
+        head = (git_dir / "HEAD").read_text(encoding="utf-8").strip()
+    except OSError:
+        return None
+    if not head.startswith("ref:"):
+        return head if head else None  # detached HEAD
+    ref = head.split(":", 1)[1].strip()
+    ref_file = git_dir / ref
+    try:
+        return ref_file.read_text(encoding="utf-8").strip() or None
+    except OSError:
+        pass
+    # Ref may only exist in packed-refs.
+    try:
+        for line in (git_dir / "packed-refs").read_text(
+            encoding="utf-8", errors="replace"
+        ).splitlines():
+            if line.startswith("#") or line.startswith("^"):
+                continue
+            parts = line.split(" ", 1)
+            if len(parts) == 2 and parts[1].strip() == ref:
+                return parts[0].strip()
+    except OSError:
+        pass
+    return None
+
+
 def _git_commit_hash() -> Optional[str]:
+    git_dir = _find_git_dir(Path(__file__).resolve().parent)
+    if git_dir is not None:
+        commit = _read_head_from_disk(git_dir)
+        if commit:
+            return commit
     try:
         result = subprocess.run(
             ["git", "rev-parse", "HEAD"],
@@ -518,6 +573,27 @@ def _git_commit_hash() -> Optional[str]:
         return result.stdout.strip()
     except Exception:
         return None
+
+
+def _git_dirty_source_files() -> List[str]:
+    """Dirty/untracked files under source dirs (results excluded)."""
+    code_root = Path(__file__).resolve().parent.parent
+    tracked_roots = ("src/", "scripts/", "configs/", "tests/")
+    try:
+        result = subprocess.run(
+            ["git", "status", "--porcelain", "--", *tracked_roots],
+            capture_output=True,
+            text=True,
+            check=True,
+            cwd=code_root,
+        )
+    except Exception:
+        return []
+    dirty: List[str] = []
+    for line in result.stdout.splitlines():
+        if len(line) > 3:
+            dirty.append(line[3:].strip())
+    return dirty
 
 
 def _provenance_manifest(
@@ -559,8 +635,11 @@ def _provenance_manifest(
                 "path": str(path.resolve()),
                 "sha256": digest,
             }
+    dirty_source = _git_dirty_source_files()
     return {
         "git_commit": _git_commit_hash(),
+        "git_tree_clean": len(dirty_source) == 0,
+        "git_dirty_source_files": dirty_source,
         "command": " ".join(sys.argv),
         "output_dir": str(output_dir.resolve()),
         "seeds": seeds,
@@ -859,7 +938,38 @@ def main():
     ) as handle:
         json.dump(provenance, handle, indent=2)
 
-    # Legacy run manifest for backward compatibility.
+    if args.plot:
+        from plot_event_causal_repair import plot
+
+        figures = plot(args.output_dir)
+        print("figures:")
+        for figure in figures:
+            print(f"  {figure}")
+
+    # Legacy run manifest for backward compatibility. Only list files
+    # that actually exist on disk.
+    candidate_outputs = [
+        "episode_metrics.csv",
+        "repair_diagnostics.csv",
+        "paired_comparisons.csv",
+        "counterfactual_screen_audit.csv",
+        "threshold_sensitivity.csv",
+        "summary.json",
+        "resolved_config.yaml",
+        "provenance.json",
+    ]
+    existing_files = [
+        name
+        for name in candidate_outputs
+        if (args.output_dir / name).exists()
+    ]
+    figures_dir = args.output_dir / "figures"
+    if figures_dir.is_dir():
+        existing_files.extend(
+            f"figures/{path.name}"
+            for path in sorted(figures_dir.iterdir())
+            if path.is_file()
+        )
     manifest = {
         "command": " ".join(sys.argv),
         "config": str(args.config) if args.config is not None else None,
@@ -870,30 +980,12 @@ def main():
         "output_dir": str(args.output_dir.resolve()),
         "smoke": bool(args.smoke),
         "method": method_settings,
-        "files": [
-            "episode_metrics.csv",
-            "repair_diagnostics.csv",
-            "paired_comparisons.csv",
-            "counterfactual_screen_audit.csv",
-            "summary.json",
-            "resolved_config.yaml",
-            "provenance.json",
-        ],
+        "files": existing_files,
     }
-    if not args.skip_threshold_sensitivity:
-        manifest["files"].append("threshold_sensitivity.csv")
     with (args.output_dir / "run_manifest.json").open(
         "w", encoding="utf-8",
     ) as handle:
         json.dump(manifest, handle, indent=2)
-
-    if args.plot:
-        from plot_event_causal_repair import plot
-
-        figures = plot(args.output_dir)
-        print("figures:")
-        for figure in figures:
-            print(f"  {figure}")
     print(f"results -> {args.output_dir.resolve()}")
 
 

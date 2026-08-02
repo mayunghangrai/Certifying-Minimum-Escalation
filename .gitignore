@@ -11,6 +11,13 @@ results/*_ci_run/
 outputs/*_repro*/
 outputs/*_repeat*/
 
+# Experiment outputs are artifacts, not source. Provenance for each run
+# lives in its own provenance.json (source hashes + git commit), so the
+# working tree stays clean and git_commit fully determines code state.
+# (Already-tracked legacy files remain tracked.)
+results/
+outputs/
+
 # Editor and operating-system clutter.
 .DS_Store
 Thumbs.db
