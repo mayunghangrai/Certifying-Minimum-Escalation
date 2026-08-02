@@ -28,15 +28,15 @@ METHOD_ORDER = (
     "Initial Plan Only",
 )
 SHORT_NAMES = {
-    "Event-Causal Belief-Repair ALNS": "Event-causal\nrepair",
-    "Certificate-Only Belief-Repair ALNS": "Certificate-\nonly",
-    "Proxy-Only Belief-Repair ALNS": "Proxy-only\nrepair",
-    "Optimistic-Bound-Screened Full Replan ALNS": "Bound-gated\nfull replan",
-    "Periodic Full Replan ALNS": "Periodic\nfull replan",
-    "Budget-Matched Periodic Full Replan ALNS": "Budget-matched\nperiodic",
-    "Event-Priority Heuristic ALNS": "Event-priority\nheuristic",
-    "Full Event Replan ALNS": "Every-event\nfull replan",
-    "Initial Plan Only": "Initial plan\nonly",
+    "Event-Causal Belief-Repair ALNS": "Event-causal",
+    "Certificate-Only Belief-Repair ALNS": "Certificate only",
+    "Proxy-Only Belief-Repair ALNS": "Proxy only",
+    "Optimistic-Bound-Screened Full Replan ALNS": "Screened full",
+    "Periodic Full Replan ALNS": "Periodic (2 h)",
+    "Budget-Matched Periodic Full Replan ALNS": "Periodic (K=18)",
+    "Event-Priority Heuristic ALNS": "Event priority",
+    "Full Event Replan ALNS": "Every event",
+    "Initial Plan Only": "Initial only",
 }
 COLORS = (
     "#176B87", "#2E86AB", "#6EB5C0", "#64CCC5", "#DAA520",
@@ -103,7 +103,7 @@ def _performance_figure(
         method: [row for row in episode_rows if row["method"] == method]
         for method in METHOD_ORDER
     }
-    fig, axes = plt.subplots(1, 2, figsize=(10.6, 4.2))
+    fig, axes = plt.subplots(1, 2, figsize=(13.8, 4.8))
     x = np.arange(len(METHOD_ORDER))
     labels = [SHORT_NAMES[method] for method in METHOD_ORDER]
     for ax, metric, ylabel in (
@@ -117,7 +117,8 @@ def _performance_figure(
         ax.bar(
             x, means, yerr=errors, capsize=4, width=0.7,
             color=COLORS, edgecolor="#333333", linewidth=0.6)
-        ax.set_xticks(x, labels)
+        ax.set_xticks(x, labels, rotation=28, ha="right")
+        ax.tick_params(axis="x", labelsize=8)
         ax.set_ylabel(ylabel)
         _style_axis(ax)
     axes[0].set_title("(a) Operational objective")
@@ -125,7 +126,7 @@ def _performance_figure(
     axes[1].set_ylim(
         0.0, min(1.05, max(1.0, axes[1].get_ylim()[1])))
     fig.suptitle("Paired-seed comparison of repair architectures", y=1.02)
-    fig.tight_layout()
+    fig.tight_layout(pad=1.2)
     return _save(fig, figures_dir, FIGURE_STEMS[0])
 
 
@@ -204,7 +205,7 @@ def _outcomes_figure(
     diagnostic_rows: Sequence[Dict[str, str]],
     figures_dir: Path,
 ) -> List[Path]:
-    fig, axes = plt.subplots(1, 3, figsize=(13.8, 4.2))
+    fig, axes = plt.subplots(1, 3, figsize=(16.0, 4.8))
     event_outcomes = defaultdict(Counter)
     for row in diagnostic_rows:
         if row.get("method") != METHOD_ORDER[0]:
@@ -263,7 +264,9 @@ def _outcomes_figure(
         x, means, yerr=errors, capsize=4, width=0.7,
         color=COLORS, edgecolor="#333333", linewidth=0.6)
     axes[1].set_xticks(
-        x, [SHORT_NAMES[method] for method in METHOD_ORDER])
+        x, [SHORT_NAMES[method] for method in METHOD_ORDER],
+        rotation=28, ha="right")
+    axes[1].tick_params(axis="x", labelsize=7.5)
     axes[1].set_ylabel("ALNS invocations per episode")
     axes[1].set_title("(b) Repair invocations")
     _style_axis(axes[1])
@@ -276,11 +279,13 @@ def _outcomes_figure(
         x, time_means, yerr=time_errors, capsize=4, width=0.7,
         color=COLORS, edgecolor="#333333", linewidth=0.6)
     axes[2].set_xticks(
-        x, [SHORT_NAMES[method] for method in METHOD_ORDER])
+        x, [SHORT_NAMES[method] for method in METHOD_ORDER],
+        rotation=28, ha="right")
+    axes[2].tick_params(axis="x", labelsize=7.5)
     axes[2].set_ylabel("Online repair wall time per episode [s]")
     axes[2].set_title("(c) Measured repair time")
     _style_axis(axes[2])
-    fig.tight_layout()
+    fig.tight_layout(pad=1.2)
     return _save(fig, figures_dir, FIGURE_STEMS[2])
 
 
