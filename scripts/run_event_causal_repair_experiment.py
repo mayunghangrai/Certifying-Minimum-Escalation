@@ -17,10 +17,12 @@ from __future__ import annotations
 
 import argparse
 import csv
+from datetime import datetime, timezone
 import hashlib
 import json
 import math
 import os
+import platform
 import statistics
 import subprocess
 import sys
@@ -38,6 +40,7 @@ from env.params import EnvParams  # noqa: E402
 from env.scenario_generator import generate_scenario  # noqa: E402
 from env.uav_env import UAMTVRPIUEnv  # noqa: E402
 from methods.event_causal_repair import (
+    HARD_REASON_CODES,
     EventCausalRepairController,
     EventPriorityHeuristicController,
     EveryEventFullReplanController,
@@ -49,8 +52,11 @@ from methods.event_causal_repair import (
 MAX_STEPS = 6000
 METHOD_ORDER = (
     "Event-Causal Belief-Repair ALNS",
+    "Certificate-Only Belief-Repair ALNS",
+    "Proxy-Only Belief-Repair ALNS",
     "Optimistic-Bound-Screened Full Replan ALNS",
     "Periodic Full Replan ALNS",
+    "Budget-Matched Periodic Full Replan ALNS",
     "Event-Priority Heuristic ALNS",
     "Full Event Replan ALNS",
     "Initial Plan Only",
@@ -92,8 +98,13 @@ def _controllers(
     trigger_mode="both",
     periodic_replan_period=2.0,
     event_priority_budget=6,
+    gate_fleet_service_triggers=False,
+    budget_pacing=False,
+    matched_periodic_target_count=None,
+    include_trigger_ablations=False,
 ):
-    return (
+    controllers = []
+    controllers.append(
         EventCausalRepairController(
             solve_cost=solve_cost,
             proxy_threshold_fraction=(
@@ -103,12 +114,33 @@ def _controllers(
                 shadow_audit_screened_events
             ),
             trigger_mode=trigger_mode,
-        ),
+            gate_fleet_service_triggers=(
+                gate_fleet_service_triggers
+            ),
+            budget_pacing=budget_pacing,
+        )
+    )
+    if include_trigger_ablations:
+        for ablation_mode in ("certificate", "proxy"):
+            controllers.append(
+                EventCausalRepairController(
+                    solve_cost=solve_cost,
+                    proxy_threshold_fraction=proxy_threshold_fraction,
+                    shadow_audit_screened_events=False,
+                    trigger_mode=ablation_mode,
+                    gate_fleet_service_triggers=gate_fleet_service_triggers,
+                    budget_pacing=budget_pacing,
+                )
+            )
+    controllers.extend([
         OptimisticBoundScreenedFullReplanController(
             solve_cost=solve_cost,
             proxy_threshold_fraction=(
                 proxy_threshold_fraction
             ),
+            trigger_mode=trigger_mode,
+            gate_fleet_service_triggers=gate_fleet_service_triggers,
+            budget_pacing=budget_pacing,
         ),
         PeriodicFullReplanController(
             solve_cost=solve_cost,
@@ -122,7 +154,18 @@ def _controllers(
             solve_cost=solve_cost,
         ),
         FollowInitialPlanController(),
-    )
+    ])
+    if matched_periodic_target_count is not None:
+        controllers.append(
+            PeriodicFullReplanController(
+                solve_cost=solve_cost,
+                target_count=int(
+                    matched_periodic_target_count
+                ),
+                name="Budget-Matched Periodic Full Replan ALNS",
+            )
+        )
+    return tuple(controllers)
 
 # def _run_episode(env, scenario, controller):
 #     episode_started = time.perf_counter()
@@ -281,11 +324,18 @@ def _run_episode(env, scenario, controller):
         else 0.0
     )
 
-    composite = (
+    operational_base = (
         metrics["J_dep_true"]
         + env.p.hybrid.xi_E * metrics["J_energy"]
         + env.p.hybrid.xi_R * metrics["J_risk"]
+    )
+    composite_transactions = (
+        operational_base
         + env.p.hybrid.xi_C * metrics["n_resolves"]
+    )
+    composite_solver_calls = (
+        operational_base
+        + env.p.hybrid.xi_C * repair_solver_calls
     )
 
     row = {
@@ -306,7 +356,11 @@ def _run_episode(env, scenario, controller):
         "J_fair_max": float(
             metrics["J_fair_max"]
         ),
-        "J_composite": float(composite),
+        # Primary compute-aware objective: each actual ALNS invocation is
+        # charged, including expanding-neighborhood retries.
+        "J_composite": float(composite_solver_calls),
+        "J_composite_solver_calls": float(composite_solver_calls),
+        "J_composite_transactions": float(composite_transactions),
         "fill_rate": float(metrics["fill_rate"]),
         "n_resolves": int(
             metrics["n_resolves"]
@@ -348,6 +402,31 @@ def _run_episode(env, scenario, controller):
             "seed": int(scenario.seed),
             **record,
         })
+
+    # Per-episode hard-infeasibility reason aggregates (item 1).
+    fleet_service_types = {
+        "LOAD_COMPLETE", "SERVICE_COMPLETE",
+        "UAV_ARRIVAL", "DEPOT_ARRIVAL",
+    }
+    row["n_hard_decisions"] = sum(
+        int(record.get("hard_impact_count", 0))
+        for record in diagnostics
+    )
+    for code in HARD_REASON_CODES:
+        row[f"n_hard_{code}"] = sum(
+            int(record.get(f"hard_reason_{code}", 0))
+            for record in diagnostics
+        )
+    row["n_hard_fired_by_fleet_service"] = sum(
+        1 for record in diagnostics
+        if record.get("event_type") in fleet_service_types
+        and int(record.get("hard_impact_count", 0)) > 0
+    )
+    row["n_repairs_fired_by_fleet_service"] = sum(
+        1 for record in diagnostics
+        if record.get("event_type") in fleet_service_types
+        and int(record.get("attempted", 0)) > 0
+    )
 
 
     shadow_audit_rows = []
@@ -404,7 +483,8 @@ def _write_csv(path: Path, rows: Sequence[Dict[str, object]]) -> None:
 
 def _aggregate(rows: Sequence[Dict[str, object]]) -> Dict[str, object]:
     metrics = (
-        "J_dep_true", "J_composite", "fill_rate", "n_resolves",
+        "J_dep_true", "J_composite", "J_composite_solver_calls",
+        "J_composite_transactions", "fill_rate", "n_resolves",
         "repair_solver_calls", "repair_wall_time_s",
         "mean_repair_wall_time_s", "shadow_audit_solver_calls",
     "shadow_audit_wall_time_s","episode_wall_time_s",
@@ -441,7 +521,9 @@ def _paired_rows(rows: Sequence[Dict[str, object]]) -> List[Dict[str, object]]:
     for seed in seeds:
         p = by_key[(proposed, seed)]
         for comparator in METHOD_ORDER[1:]:
-            c = by_key[(comparator, seed)]
+            c = by_key.get((comparator, seed))
+            if c is None:
+                continue
             baseline_j = float(c["J_composite"])
             delta = float(p["J_composite"]) - baseline_j
             paired.append({
@@ -575,7 +657,7 @@ def _git_commit_hash() -> Optional[str]:
         return None
 
 
-def _git_dirty_source_files() -> List[str]:
+def _git_dirty_source_files() -> Optional[List[str]]:
     """Dirty/untracked files under source dirs (results excluded)."""
     code_root = Path(__file__).resolve().parent.parent
     tracked_roots = ("src/", "scripts/", "configs/", "tests/")
@@ -588,7 +670,7 @@ def _git_dirty_source_files() -> List[str]:
             cwd=code_root,
         )
     except Exception:
-        return []
+        return None
     dirty: List[str] = []
     for line in result.stdout.splitlines():
         if len(line) > 3:
@@ -638,8 +720,13 @@ def _provenance_manifest(
     dirty_source = _git_dirty_source_files()
     return {
         "git_commit": _git_commit_hash(),
-        "git_tree_clean": len(dirty_source) == 0,
+        "git_status_available": dirty_source is not None,
+        "git_tree_clean": (
+            None if dirty_source is None else len(dirty_source) == 0
+        ),
         "git_dirty_source_files": dirty_source,
+        "python_version": platform.python_version(),
+        "platform": platform.platform(),
         "command": " ".join(sys.argv),
         "output_dir": str(output_dir.resolve()),
         "seeds": seeds,
@@ -653,10 +740,10 @@ def _run_threshold_sensitivity(
     solve_cost: Optional[float],
     calibration_seeds: List[int],
     trigger_mode: str,
-    output_dir: Path,
+    gate_fleet_service_triggers: bool,
+    budget_pacing: bool,
 ) -> List[Dict[str, object]]:
     """Run Event-Causal across thresholds on calibration seeds."""
-    rows: List[Dict[str, object]] = []
     rows: List[Dict[str, object]] = []
     thresholds = [0.05, 0.10, 0.20, 0.30]
     print(
@@ -671,6 +758,8 @@ def _run_threshold_sensitivity(
                 proxy_threshold_fraction=threshold,
                 shadow_audit_screened_events=True,
                 trigger_mode=trigger_mode,
+                gate_fleet_service_triggers=gate_fleet_service_triggers,
+                budget_pacing=budget_pacing,
             )
             env = UAMTVRPIUEnv(params)
             row, _, audit_rows = _run_episode(env, scenario, controller)
@@ -695,6 +784,7 @@ def _run_threshold_sensitivity(
 
 
 def main():
+    started_at = datetime.now(timezone.utc).isoformat()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, default=None)
     parser.add_argument(
@@ -713,16 +803,16 @@ def main():
         ),
     )
     parser.add_argument(
-        "--trigger-mode", type=str, default="both",
+        "--trigger-mode", type=str, default=None,
         choices=["certificate", "proxy", "both"],
         help="Event-Causal trigger mode: certificate, proxy, or both.",
     )
     parser.add_argument(
-        "--periodic-replan-period", type=float, default=2.0,
+        "--periodic-replan-period", type=float, default=None,
         help="Period in hours for the periodic full-replan baseline.",
     )
     parser.add_argument(
-        "--event-priority-budget", type=int, default=6,
+        "--event-priority-budget", type=int, default=None,
         help="Per-episode repair budget for the event-priority heuristic.",
     )
     parser.add_argument(
@@ -744,6 +834,60 @@ def main():
         "--skip-threshold-sensitivity",
         action="store_true",
         help="Skip the calibration-seed threshold sensitivity sweep.",
+    )
+    parser.add_argument(
+        "--gate-fleet-service-triggers",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help=(
+            "Only allow soft repair triggering from operational events "
+            "(P1/P2/P4 reports, corridor changes, replenishment); "
+            "hard infeasibility always bypasses the gate."
+        ),
+    )
+    parser.add_argument(
+        "--budget-pacing",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help=(
+            "Reserve repairs for later periods via a cumulative linear "
+            "budget schedule min(K_max, floor((K_max+1)t/T)); hard "
+            "repairs exempt "
+            "(item 4)."
+        ),
+    )
+    parser.add_argument(
+        "--matched-periodic-target-count",
+        type=int,
+        default=None,
+        help=(
+            "Add a budget-matched periodic baseline that replans exactly "
+            "N evenly spaced times per episode (item 7)."
+        ),
+    )
+    parser.add_argument(
+        "--methods",
+        type=str,
+        default=None,
+        help=(
+            "Comma-separated subset of method names to run "
+            "(must match METHOD_ORDER entries exactly)."
+        ),
+    )
+    parser.add_argument(
+        "--include-trigger-ablations",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help="Run certificate-only and proxy-only selective-repair ablations.",
+    )
+    parser.add_argument(
+        "--randomize-method-order",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help=(
+            "Use a deterministic seed-specific method permutation to avoid "
+            "systematic timing bias from a fixed execution order."
+        ),
     )
 
     parser.add_argument(
@@ -784,6 +928,78 @@ def main():
     if proxy_threshold_fraction < 0.0:
         raise ValueError(
             "--proxy-threshold-fraction must be nonnegative")
+    trigger_mode = (
+        args.trigger_mode
+        if args.trigger_mode is not None
+        else str(method_payload.get("trigger_mode", "both"))
+    )
+    periodic_replan_period = (
+        args.periodic_replan_period
+        if args.periodic_replan_period is not None
+        else float(method_payload.get("periodic_replan_period", 2.0))
+    )
+    event_priority_budget = (
+        args.event_priority_budget
+        if args.event_priority_budget is not None
+        else int(method_payload.get("event_priority_budget", 6))
+    )
+    gate_fleet_service_triggers = bool(
+        args.gate_fleet_service_triggers
+        if args.gate_fleet_service_triggers is not None
+        else method_payload.get("gate_fleet_service_triggers", False)
+    )
+    budget_pacing = bool(
+        args.budget_pacing
+        if args.budget_pacing is not None
+        else method_payload.get("budget_pacing", False)
+    )
+    include_trigger_ablations = bool(
+        args.include_trigger_ablations
+        if args.include_trigger_ablations is not None
+        else method_payload.get("include_trigger_ablations", False)
+    )
+    randomize_method_order = bool(
+        args.randomize_method_order
+        if args.randomize_method_order is not None
+        else method_payload.get("randomize_method_order", True)
+    )
+    if trigger_mode not in {"certificate", "proxy", "both"}:
+        raise ValueError(
+            "trigger_mode must be certificate, proxy, or both"
+        )
+    if periodic_replan_period <= 0.0:
+        raise ValueError("periodic_replan_period must be positive")
+    if event_priority_budget < 0:
+        raise ValueError("event_priority_budget must be nonnegative")
+    if args.matched_periodic_target_count is not None:
+        if args.matched_periodic_target_count < 1:
+            raise ValueError(
+                "--matched-periodic-target-count must be positive")
+    selected_methods: Optional[set] = None
+    if args.methods is not None:
+        selected_methods = {
+            name.strip()
+            for name in args.methods.split(",")
+            if name.strip()
+        }
+        unknown = selected_methods - set(METHOD_ORDER)
+        if unknown:
+            raise ValueError(
+                f"--methods entries not in METHOD_ORDER: {sorted(unknown)}"
+            )
+        if selected_methods & {
+            "Certificate-Only Belief-Repair ALNS",
+            "Proxy-Only Belief-Repair ALNS",
+        }:
+            include_trigger_ablations = True
+        if (
+            "Budget-Matched Periodic Full Replan ALNS" in selected_methods
+            and args.matched_periodic_target_count is None
+        ):
+            raise ValueError(
+                "Budget-matched periodic method requires "
+                "--matched-periodic-target-count"
+            )
     if repair_budget is not None:
         if repair_budget < 0:
             raise ValueError("--repair-budget must be nonnegative")
@@ -823,11 +1039,11 @@ def main():
         f"K_max={params.hybrid.K_max}, "
         f"ALNS iterations={params.hybrid.alns_iterations}, "
         f"proxy threshold={proxy_threshold_fraction:.3f} of upper bound, "
-        f"trigger_mode={args.trigger_mode}"
+        f"trigger_mode={trigger_mode}"
     )
     for seed_index, seed in enumerate(seeds, start=1):
         scenario = generate_scenario(seed, params)
-        for controller in _controllers(
+        controllers = list(_controllers(
             solve_cost=solve_cost,
             proxy_threshold_fraction=(
                 proxy_threshold_fraction
@@ -835,10 +1051,27 @@ def main():
             shadow_audit_screened_events=(
                 args.shadow_audit_screened_events
             ),
-            trigger_mode=args.trigger_mode,
-            periodic_replan_period=args.periodic_replan_period,
-            event_priority_budget=args.event_priority_budget,
-        ):
+            trigger_mode=trigger_mode,
+            periodic_replan_period=periodic_replan_period,
+            event_priority_budget=event_priority_budget,
+            gate_fleet_service_triggers=(
+                gate_fleet_service_triggers
+            ),
+            budget_pacing=budget_pacing,
+            matched_periodic_target_count=(
+                args.matched_periodic_target_count
+            ),
+            include_trigger_ablations=include_trigger_ablations,
+        ))
+        if selected_methods is not None:
+            controllers = [
+                controller for controller in controllers
+                if controller.name in selected_methods
+            ]
+        if randomize_method_order and len(controllers) > 1:
+            order_rng = np.random.default_rng(seed + 91_173)
+            order_rng.shuffle(controllers)
+        for execution_index, controller in enumerate(controllers, start=1):
             env = UAMTVRPIUEnv(params)
             row, diagnostics, episode_audit_rows = (
                 _run_episode(
@@ -849,6 +1082,7 @@ def main():
             )
 
             episode_rows.append(row)
+            row["execution_order"] = execution_index
             diagnostic_rows.extend(diagnostics)
             shadow_audit_rows.extend(
                 episode_audit_rows
@@ -880,8 +1114,9 @@ def main():
             params=params,
             solve_cost=solve_cost,
             calibration_seeds=calibration_seeds,
-            trigger_mode=args.trigger_mode,
-            output_dir=args.output_dir,
+            trigger_mode=trigger_mode,
+            gate_fleet_service_triggers=gate_fleet_service_triggers,
+            budget_pacing=budget_pacing,
         )
         _write_csv(
             args.output_dir / "threshold_sensitivity.csv",
@@ -897,9 +1132,16 @@ def main():
             "proxy_threshold_fraction": proxy_threshold_fraction,
             "repair_budget": params.hybrid.K_max,
             "alns_iterations": params.hybrid.alns_iterations,
-            "trigger_mode": args.trigger_mode,
-            "periodic_replan_period": args.periodic_replan_period,
-            "event_priority_budget": args.event_priority_budget,
+            "trigger_mode": trigger_mode,
+            "periodic_replan_period": periodic_replan_period,
+            "event_priority_budget": event_priority_budget,
+            "gate_fleet_service_triggers": gate_fleet_service_triggers,
+            "budget_pacing": budget_pacing,
+            "matched_periodic_target_count": (
+                args.matched_periodic_target_count
+            ),
+            "include_trigger_ablations": include_trigger_ablations,
+            "randomize_method_order": randomize_method_order,
             "shadow_audit_screened_events": bool(
                 args.shadow_audit_screened_events
             ),
@@ -933,6 +1175,10 @@ def main():
         seeds=seeds,
         method_settings=method_settings,
     )
+    provenance["started_at_utc"] = started_at
+    provenance["completed_at_utc"] = datetime.now(
+        timezone.utc
+    ).isoformat()
     with (args.output_dir / "provenance.json").open(
         "w", encoding="utf-8",
     ) as handle:
@@ -981,6 +1227,10 @@ def main():
         "smoke": bool(args.smoke),
         "method": method_settings,
         "files": existing_files,
+        "file_sha256": {
+            name: _sha256_file(args.output_dir / name)
+            for name in existing_files
+        },
     }
     with (args.output_dir / "run_manifest.json").open(
         "w", encoding="utf-8",

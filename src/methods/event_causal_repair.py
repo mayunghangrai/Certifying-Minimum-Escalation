@@ -15,6 +15,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Dict, FrozenSet, Iterable, List, Optional, Set, Tuple
 
+import math
+
 import numpy as np
 
 from env.alns_scaffold import Scaffold, Sortie, sortie_energy_exact
@@ -31,6 +33,17 @@ OPERATIONAL_REPAIR_EVENTS = frozenset({
     EventType.AVAIL_CHANGE,
     EventType.REPLENISH,
 })
+
+
+# Reason codes assigned by _hard_infeasible_decisions; also used as
+# diagnostics column suffixes (hard_reason_<code>).
+HARD_REASON_CODES = (
+    "unknown_node",
+    "corridor_leg_closed",
+    "return_path_failure",
+    "payload_exceeds_wmax",
+    "energy_exceeds_battery",
+)
 
 
 def corridor_resource(i: int, j: int) -> str:
@@ -234,6 +247,7 @@ class OperationalChanges:
     demand_commodities: Set[Tuple[int, int]] = field(default_factory=set)
     inventory_commodities: Set[int] = field(default_factory=set)
     loading_consumption_commodities: Set[int] = field(default_factory=set)
+    service_consumption_nodes: Set[int] = field(default_factory=set)
     inventory_delta: Dict[int, float] = field(default_factory=dict)
     closed_corridors: Set[Tuple[int, int]] = field(default_factory=set)
     reopened_corridors: Set[Tuple[int, int]] = field(default_factory=set)
@@ -241,6 +255,7 @@ class OperationalChanges:
     @classmethod
     def between(
         cls, before: OperationalSnapshot, after: OperationalSnapshot,
+        event_type: Optional[EventType] = None,
         atol: float = 1e-8,
     ):
         changes = cls()
@@ -258,6 +273,46 @@ class OperationalChanges:
             changes.demand_commodities.update(
                 (node, k) for k, amount in enumerate(after.demand[node])
                 if amount > atol)
+
+        # A successful own-fleet delivery decreases command-center belief and
+        # onboard payload by the same amount.  This is routine execution of
+        # the incumbent, not an exogenous demand correction.  A fulfillment
+        # shortfall resets additional belief mass and therefore does not pass
+        # this equality check; it remains a relevant service observation.
+        if event_type == EventType.SERVICE_COMPLETE and changes.demand_nodes:
+            service_candidates = (
+                changes.demand_nodes - changes.new_nodes
+            )
+            demand_drop = np.zeros(N_COMMODITIES)
+            only_decreases = bool(service_candidates)
+            for node in service_candidates:
+                old = np.asarray(before.demand[node])
+                new = np.asarray(after.demand[node])
+                if np.any(new > old + atol):
+                    only_decreases = False
+                    break
+                demand_drop += np.maximum(old - new, 0.0)
+            payload_drop = np.zeros(N_COMMODITIES)
+            for u in range(len(before.uav_payload)):
+                payload_drop += np.maximum(
+                    np.asarray(before.uav_payload[u])
+                    - np.asarray(after.uav_payload[u]),
+                    0.0,
+                )
+            if only_decreases and np.allclose(
+                demand_drop, payload_drop, atol=atol, rtol=1e-8,
+            ):
+                changes.service_consumption_nodes.update(
+                    service_candidates
+                )
+                changes.demand_nodes.difference_update(
+                    service_candidates
+                )
+                changes.demand_commodities = {
+                    (node, k)
+                    for node, k in changes.demand_commodities
+                    if node not in service_candidates
+                }
         old_inventory = np.asarray(before.inventory)
         new_inventory = np.asarray(after.inventory)
         for k in np.flatnonzero(np.abs(new_inventory - old_inventory) > atol):
@@ -327,6 +382,8 @@ class ImpactTrace:
     opportunity_seeds: Set[DecisionKey]
     mutable: Set[DecisionKey]
     frozen: Set[DecisionKey]
+    # decision label -> reason codes (HARD_REASON_CODES) for each hard key
+    hard_reasons: Dict[str, List[str]] = field(default_factory=dict)
 
 
 def _event_kind(
@@ -341,6 +398,9 @@ def _event_kind(
 
     if changes.loading_consumption_commodities:
         return "loading_consumption"
+
+    if changes.service_consumption_nodes:
+        return "service_consumption"
 
     if changes.new_nodes:
         return "newly_revealed_demand"
@@ -360,6 +420,8 @@ def _locality_class(
 ) -> str:
     if changes.loading_consumption_commodities:
         return "loading_consumption"
+    if changes.service_consumption_nodes:
+        return "service_consumption"
     if changes.inventory_commodities:
         return "depot_genuine"
     if event_type in (
@@ -376,8 +438,15 @@ def _locality_class(
 
 def _hard_infeasible_decisions(
     env, scaffold: Scaffold, graph: PlanBeliefDependencyGraph,
+    reasons_out: Optional[Dict[DecisionKey, List[str]]] = None,
 ) -> Set[DecisionKey]:
     hard: Set[DecisionKey] = set()
+
+    def _flag(key: DecisionKey, code: str) -> None:
+        hard.add(key)
+        if reasons_out is not None:
+            reasons_out.setdefault(key, []).append(code)
+
     starts = {start.uav: start for start in env._plan_context().uav_starts}
     w_k = np.asarray(env.p.commodities.w_k)
     for u, sorties in scaffold.plans.items():
@@ -388,14 +457,16 @@ def _hard_infeasible_decisions(
             for vi, visit in enumerate(sortie.visits):
                 key = DecisionKey(u, si, vi)
                 if not env.belief.is_known(visit.node):
-                    hard.add(key)
+                    _flag(key, "unknown_node")
                 elif not env.graph.A(predecessor, visit.node):
-                    hard.add(key)
+                    _flag(key, "corridor_leg_closed")
                 predecessor = visit.node
             if sortie.visits and not env.graph.A(predecessor, DEPOT):
-                hard.add(DecisionKey(u, si, len(sortie.visits) - 1))
+                _flag(DecisionKey(u, si, len(sortie.visits) - 1),
+                      "return_path_failure")
             if float(np.dot(w_k, sortie.y)) > env.p.physics.W_max + 1e-8:
-                hard.update(keys)
+                for key in keys:
+                    _flag(key, "payload_exceeds_wmax")
             known_visits = [
                 visit for visit in sortie.visits
                 if env.belief.is_known(visit.node)
@@ -412,7 +483,8 @@ def _hard_infeasible_decisions(
             energy = sortie_energy_exact(
                 start_pos, node_pos, xs, onboard, env.depot_pos, w_k, env.p)
             if energy + env.p.physics.beta_safe > battery + 1e-8:
-                hard.update(keys)
+                for key in keys:
+                    _flag(key, "energy_exceeds_battery")
     return hard
 
 
@@ -452,8 +524,9 @@ def trace_impacts(
     after_inventory: Optional[Tuple[float, ...]] = None,
 ) -> ImpactTrace:
     resources = changes.resources()
+    reasons: Dict[DecisionKey, List[str]] = {}
     hard = _hard_infeasible_decisions(
-        env, env.scaffold, dependency_graph)
+        env, env.scaffold, dependency_graph, reasons_out=reasons)
     direct = dependency_graph.affected_by(resources)
     # Reservation/slack handling for genuine (non-loading) inventory changes.
     if changes.inventory_commodities and after_inventory is not None:
@@ -480,6 +553,9 @@ def trace_impacts(
         opportunity_seeds=opportunity,
         mutable=mutable,
         frozen=frozen,
+        hard_reasons={
+            key.label(): list(codes) for key, codes in reasons.items()
+        },
     )
 
 
@@ -659,15 +735,82 @@ def expanding_repair_neighborhoods(
 
 
 def optimistic_value_upper_bound(env) -> float:
-    """Relaxed value upper bound: immediate, free, unconstrained service."""
+    """Capacity-aware relaxed upper bound on achievable belief-side value.
+
+    Demand is served instantaneously and without energy, risk, travel, bay,
+    or corridor costs.  Unlike the former all-demand bound, the relaxation
+    respects currently available commodity units and an optimistic upper
+    bound on the payload mass that the fleet can load before the horizon.
+    The resulting fractional-knapsack value remains optimistic but is much
+    tighter, making the continuation certificate operationally useful.
+    """
     ctx = env._plan_context()
-    _, lambda_k, alpha_k, kappa_k = env.p.commodities.as_arrays()
+    w_k, lambda_k, alpha_k, kappa_k = env.p.commodities.as_arrays()
     horizon = max(ctx.T - ctx.t, 0.0)
-    total = 0.0
+    if horizon <= 0.0:
+        return 0.0
+
+    onboard = np.sum(
+        [start.ell for start in ctx.uav_starts],
+        axis=0,
+    ) if ctx.uav_starts else np.zeros(N_COMMODITIES)
+    available_units = np.maximum(ctx.stock + onboard, 0.0)
+
+    turnaround = max(
+        float(env.p.mission.T_load + env.p.mission.T_charge),
+        1e-9,
+    )
+    future_loads = 0
+    for start in ctx.uav_starts:
+        remaining = max(ctx.T - float(start.ready_time), 0.0)
+        if remaining <= 1e-9:
+            continue
+        if start.uses_onboard_payload:
+            future_loads += int(math.floor(remaining / turnaround))
+        else:
+            future_loads += 1 + int(math.floor(remaining / turnaround))
+
+    onboard_mass = float(np.dot(w_k, onboard))
+    stock_mass = float(np.dot(w_k, np.maximum(ctx.stock, 0.0)))
+    loadable_stock_mass = min(
+        stock_mass,
+        future_loads * float(env.p.physics.W_max),
+    )
+    mass_remaining = onboard_mass + loadable_stock_mass
+
+    # Each entry is a divisible demand block with constant immediate-service
+    # value per unit.  Sorting by value density solves the relaxed fractional
+    # knapsack while commodity-level supply is tracked separately.
+    items: List[Tuple[float, float, int, float]] = []
     for node, demand in ctx.d_tilde.items():
-        total += expected_deprivation_avoided(
-            ctx.nu[node], demand, ctx.age_hat[node], 0.0, horizon,
-            lambda_k, alpha_k, kappa_k)
+        for k, quantity in enumerate(demand):
+            if quantity <= 1e-9 or w_k[k] <= 0.0:
+                continue
+            one = np.zeros(N_COMMODITIES)
+            one[k] = 1.0
+            unit_value = expected_deprivation_avoided(
+                ctx.nu[node], one, ctx.age_hat[node], 0.0, horizon,
+                lambda_k, alpha_k, kappa_k,
+            )
+            items.append(
+                (unit_value / float(w_k[k]), unit_value, k, float(quantity))
+            )
+
+    total = 0.0
+    remaining_units = available_units.copy()
+    for _, unit_value, k, demand_cap in sorted(items, reverse=True):
+        if mass_remaining <= 1e-9:
+            break
+        take = min(
+            demand_cap,
+            float(remaining_units[k]),
+            mass_remaining / float(w_k[k]),
+        )
+        if take <= 1e-9:
+            continue
+        total += take * unit_value
+        remaining_units[k] -= take
+        mass_remaining -= take * float(w_k[k])
     return float(total)
 
 
@@ -737,6 +880,8 @@ class EventCausalRepairController:
         screen_soft_events: bool = True,
         shadow_audit_screened_events: bool = False,
         trigger_mode: str = "both",
+        gate_fleet_service_triggers: bool = False,
+        budget_pacing: bool = False,
     ):
         self.selective_repair = bool(selective_repair)
         self.solve_cost = solve_cost
@@ -746,6 +891,21 @@ class EventCausalRepairController:
             raise ValueError(
                 "trigger_mode must be 'certificate', 'proxy', or 'both'"
             )
+
+        # Distinct display names for the trigger-mode ablations so that
+        # certificate-only / proxy-only runs do not collide with the
+        # combined method in aggregated outputs (item 5).  Subclasses keep
+        # their own names.
+        if type(self) is EventCausalRepairController:
+            if self.trigger_mode == "certificate":
+                self.name = "Certificate-Only Belief-Repair ALNS"
+            elif self.trigger_mode == "proxy":
+                self.name = "Proxy-Only Belief-Repair ALNS"
+
+        self.gate_fleet_service_triggers = bool(
+            gate_fleet_service_triggers
+        )
+        self.budget_pacing = bool(budget_pacing)
 
         self.shadow_audit_screened_events = bool(
             shadow_audit_screened_events
@@ -771,6 +931,10 @@ class EventCausalRepairController:
 
         self.repair_wall_time_s = 0.0
         self.repair_solver_calls = 0
+        # When True (set by scheduled-replan subclasses around a forced
+        # super().act call), the change-free early exits are bypassed so a
+        # scheduled full-fleet replan is never silently skipped.
+        self._forcing_replan = False
 
     def reset(self) -> None:
         self.previous_snapshot = None
@@ -781,6 +945,26 @@ class EventCausalRepairController:
         self._shadow_audit_event_index = 0
         self.repair_wall_time_s = 0.0
         self.repair_solver_calls = 0
+
+    @staticmethod
+    def _pacing_allows(env) -> bool:
+        """Cumulative linear repair-budget schedule (item 4).
+
+        A non-hard repair may fire only while the number of budgeted
+        attempts so far is below ``min(K_max, floor((K_max+1)t/T))``.
+        This places all K_max release points strictly inside the horizon,
+        matching the budget-periodic comparator's interior schedule.
+        """
+        total = int(env.p.hybrid.K_max)
+        if total <= 0:
+            return False
+        spent = total - int(env.K_rem)
+        horizon = max(float(env.p.mission.T), 1e-9)
+        allowance = min(
+            total,
+            math.floor((total + 1) * float(env.t) / horizon),
+        )
+        return spent < allowance
 
     @staticmethod
     def _prefer_candidate(
@@ -1123,21 +1307,38 @@ class EventCausalRepairController:
             return actions
 
         current = OperationalSnapshot.capture(env)
+        event_type = env.last_decision_event_type
         changes = OperationalChanges.between(
             self.previous_snapshot,
             current,
+            event_type=event_type,
         )
         dependency_graph = PlanBeliefDependencyGraph.build(
             env
         )
-        event_type = env.last_decision_event_type
         hard = _hard_infeasible_decisions(
             env,
             env.scaffold,
             dependency_graph,
         )
 
-        if not changes.has_relevant_change and not hard:
+        # Optional soft-event ablation: fleet-service events cannot initiate
+        # an economic repair, but genuine hard infeasibility always remains
+        # safety-critical and bypasses this gate.
+        if (
+            self.gate_fleet_service_triggers
+            and event_type not in OPERATIONAL_REPAIR_EVENTS
+            and not hard
+        ):
+            self.previous_snapshot = current
+            self.last_t = float(env.t)
+            return actions
+
+        if (
+            not changes.has_relevant_change
+            and not hard
+            and not self._forcing_replan
+        ):
             self.previous_snapshot = current
             self.last_t = float(env.t)
             return actions
@@ -1156,7 +1357,10 @@ class EventCausalRepairController:
                 ctx,
             )
         )
-        upper_bound = optimistic_value_upper_bound(env)
+        upper_bound = max(
+            optimistic_value_upper_bound(env),
+            current_value,
+        )
         j_current = max(
             upper_bound - current_value,
             0.0,
@@ -1268,6 +1472,17 @@ class EventCausalRepairController:
             "outcome": "",
         }
 
+        # Hard-infeasibility reason bookkeeping (item 1): one count column
+        # per reason code plus a "label:code" detail string.
+        for _code in HARD_REASON_CODES:
+            record[f"hard_reason_{_code}"] = 0
+        _reason_detail: List[str] = []
+        for _label, _codes in trace.hard_reasons.items():
+            for _code in _codes:
+                record[f"hard_reason_{_code}"] += 1
+                _reason_detail.append(f"{_label}:{_code}")
+        record["hard_reasons_detail"] = ";".join(_reason_detail)
+
         # Trigger-mode screening.  Hard impacts always bypass the screen.
         certificate_screen_pass = (
             bool(trace.hard)
@@ -1279,7 +1494,11 @@ class EventCausalRepairController:
             > proxy_activation_threshold + 1e-9
         )
 
-        if not trace.hard and not trace.changed_resources:
+        if (
+            not trace.hard
+            and not trace.changed_resources
+            and not self._forcing_replan
+        ):
             record["outcome"] = (
                 "continue_no_relevant_change"
             )
@@ -1383,6 +1602,19 @@ class EventCausalRepairController:
                     ]
                 )
 
+        elif (
+            self.budget_pacing
+            and not trace.hard
+            and not self._pacing_allows(env)
+        ):
+            # Item 4: cumulative linear budget schedule.  Non-hard repairs
+            # may fire only while the number of budgeted attempts stays
+            # below the interior linear allowance, reserving budget for later
+            # periods.  Hard feasibility repairs are exempt.
+            record["outcome"] = (
+                "continue_budget_paced"
+            )
+
         elif env.K_rem <= 0:
             record["outcome"] = (
                 "continue_budget_exhausted"
@@ -1479,12 +1711,15 @@ class EventCausalRepairController:
                     candidate_value - current_value
                 )
                 candidate_feasible = not candidate_hard
+                cumulative_solve_cost = (
+                    float(attempt_index) * solve_cost
+                )
                 accepted_here = (
                     candidate_feasible
                     and (
                         bool(trace.hard)
                         or actual_improvement
-                        > solve_cost + 1e-9
+                        > cumulative_solve_cost + 1e-9
                     )
                 )
 
@@ -1521,6 +1756,9 @@ class EventCausalRepairController:
                 )
                 record[f"{prefix}_improvement"] = float(
                     actual_improvement
+                )
+                record[f"{prefix}_cumulative_solve_cost"] = float(
+                    cumulative_solve_cost
                 )
                 record[f"{prefix}_hard_count"] = len(
                     candidate_hard
@@ -1627,7 +1865,8 @@ class EventCausalRepairController:
                 selected_improvement
             )
             record["net_improvement_after_solve"] = float(
-                selected_improvement - solve_cost
+                selected_improvement
+                - transaction_calls * solve_cost
             )
             record["mutable_decision_count"] = (
                 selected_mutable_count
@@ -1697,6 +1936,9 @@ class OptimisticBoundScreenedFullReplanController(
         self,
         solve_cost: Optional[float] = None,
         proxy_threshold_fraction: float = 0.0,
+        trigger_mode: str = "both",
+        gate_fleet_service_triggers: bool = False,
+        budget_pacing: bool = False,
     ):
         super().__init__(
             selective_repair=False,
@@ -1705,6 +1947,9 @@ class OptimisticBoundScreenedFullReplanController(
                 proxy_threshold_fraction
             ),
             screen_soft_events=True,
+            trigger_mode=trigger_mode,
+            gate_fleet_service_triggers=gate_fleet_service_triggers,
+            budget_pacing=budget_pacing,
         )
 
 
@@ -1736,6 +1981,8 @@ class PeriodicFullReplanController(EventCausalRepairController):
         self,
         solve_cost: Optional[float] = None,
         period_hours: float = 2.0,
+        target_count: Optional[int] = None,
+        name: Optional[str] = None,
     ):
         super().__init__(
             selective_repair=False,
@@ -1744,20 +1991,67 @@ class PeriodicFullReplanController(EventCausalRepairController):
             screen_soft_events=True,
         )
         self.period_hours = float(period_hours)
+        # Item 7: when target_count is set, replan exactly target_count
+        # times per episode at interior evenly spaced times
+        # t_j = j * T / (N + 1), matched to another method's measured
+        # solver-call usage for an iso-cost comparison.
+        self.target_count = (
+            None if target_count is None else max(1, int(target_count))
+        )
+        if name is not None:
+            self.name = str(name)
         self._next_replan_t = 0.0
+        self._schedule: Optional[List[float]] = None
+        self._schedule_index = 0
 
     def reset(self) -> None:
         super().reset()
         self._next_replan_t = 0.0
+        self._schedule = None
+        self._schedule_index = 0
+
+    def _due(self, env) -> bool:
+        if self.target_count is None:
+            if env.t + 1e-9 >= self._next_replan_t:
+                self._next_replan_t = env.t + self.period_hours
+                return True
+            return False
+        if self._schedule is None:
+            horizon = max(float(env.p.mission.T), 1e-9)
+            self._schedule = [
+                j * horizon / (self.target_count + 1)
+                for j in range(1, self.target_count + 1)
+            ]
+        if (
+            self._schedule_index < len(self._schedule)
+            and env.t + 1e-9 >= self._schedule[self._schedule_index]
+        ):
+            self._schedule_index += 1
+            return True
+        return False
 
     def act(self, env, obs, masks, deciders):
-        if env.t + 1e-9 >= self._next_replan_t and deciders:
-            self._next_replan_t = env.t + self.period_hours
-            # Force a repair by temporarily disabling the valid screen.
+        token = id(env.scenario)
+        if (
+            self.previous_snapshot is None
+            or token != self.scenario_token
+            or env.t < self.last_t - 1e-9
+        ):
+            actions = super().act(env, obs, masks, deciders)
+            if self.target_count is None:
+                self._next_replan_t = float(env.t) + self.period_hours
+            return actions
+        if deciders and self._due(env):
+            # Force a repair by temporarily disabling the valid screen
+            # and the change-free early exits.
             old_screen = self.screen_soft_events
             self.screen_soft_events = False
-            actions = super().act(env, obs, masks, deciders)
-            self.screen_soft_events = old_screen
+            self._forcing_replan = True
+            try:
+                actions = super().act(env, obs, masks, deciders)
+            finally:
+                self.screen_soft_events = old_screen
+                self._forcing_replan = False
             return actions
         return {u: env.A_FOLLOW for u in deciders}
 
@@ -1807,4 +2101,3 @@ class EventPriorityHeuristicController(EventCausalRepairController):
             self.screen_soft_events = old_screen
             return actions
         return {u: env.A_FOLLOW for u in deciders}
-

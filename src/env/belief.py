@@ -149,17 +149,29 @@ class BeliefState:
         # report time is the conservative (youngest) estimate.
         e.est_onset = np.where((prev_mu <= 1e-9) & (e.mu > 1e-9), t, e.est_onset)
 
-    def apply_delivery(self, i: int, x: np.ndarray, t: float) -> None:
+    def apply_delivery(
+        self, i: int, x: np.ndarray, t: float,
+        attempted: Optional[np.ndarray] = None,
+    ) -> None:
         """
-        Own-fleet deliveries are observed by the command center:
-        mu <- [mu - x]^+. No sigma/gamma change — the UAV performs no
-        autonomous sensing (sec: information, P4 discussion); any truth
-        synchronization arrives only via a subsequent P4 report.
+        Own-fleet fulfillment is observed by the command center. Normally
+        ``mu <- [mu - x]^+`` with unchanged uncertainty. If a site accepts
+        less than the attempted handoff, that shortfall is an exact service
+        observation of zero residual demand for the affected commodities;
+        no latent state is queried.
         """
         if i not in self.entries:
             return
         e = self.entries[i]
-        e.mu = np.maximum(e.mu - np.maximum(np.asarray(x, dtype=float), 0.0), 0.0)
+        delivered = np.maximum(np.asarray(x, dtype=float), 0.0)
+        e.mu = np.maximum(e.mu - delivered, 0.0)
+        if attempted is not None:
+            requested = np.maximum(
+                np.asarray(attempted, dtype=float), 0.0,
+            )
+            observed_empty = delivered < requested - 1e-9
+            e.mu = np.where(observed_empty, 0.0, e.mu)
+            e.sigma = np.where(observed_empty, 0.0, e.sigma)
         # If believed demand is fully cleared, future demand estimates start fresh.
         e.est_onset = np.where(e.mu <= 1e-9, t, e.est_onset)
 

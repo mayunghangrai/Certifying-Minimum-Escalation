@@ -1,7 +1,7 @@
 # =============================================================================
 # Information-obsolescence family: frequent P3 latent mutations, later P2
-# reveals, noisier initial beliefs. Corridor closures remain at the standard
-# rate so the dominant stressor is belief staleness.
+# reveals, and noisier initial beliefs. Corridor closures are disabled to
+# isolate belief staleness from physical-network disruption.
 # =============================================================================
 
 physics:
@@ -37,7 +37,7 @@ events:
   p_P4: 0.8
   delta_P4_mean: 0.1
   sigma_P4: 1.0
-  avail_closure_rate: 0.35
+  avail_closure_rate: 0.0
   avail_closure_dur: [0.5, 2.0]
   avail_hazard_threshold: 0.15
 

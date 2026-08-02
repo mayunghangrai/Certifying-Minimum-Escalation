@@ -274,8 +274,13 @@ def generate_scenario(seed: int, params: EnvParams = None) -> Scenario:
     avail_changes.sort(key=lambda a: a.t)
 
     # -- depot inventory and replenishment -----------------------------------
+    # Stock is sized from *initially known* demand only: hidden (P2) nodes
+    # are latent at t=0, so including their demand would leak oracle
+    # information into the depot inventory.
     known_demand = np.zeros(N_COMMODITIES)
     for n in nodes:
+        if n.idx in hidden:
+            continue
         known_demand += np.array(n.d0)
     S0 = np.ceil(p.mission.stock_mult * known_demand)
     replenishments: List[Replenishment] = []

@@ -18,21 +18,30 @@ import numpy as np  # noqa: E402
 
 METHOD_ORDER = (
     "Event-Causal Belief-Repair ALNS",
+    "Certificate-Only Belief-Repair ALNS",
+    "Proxy-Only Belief-Repair ALNS",
     "Optimistic-Bound-Screened Full Replan ALNS",
     "Periodic Full Replan ALNS",
+    "Budget-Matched Periodic Full Replan ALNS",
     "Event-Priority Heuristic ALNS",
     "Full Event Replan ALNS",
     "Initial Plan Only",
 )
 SHORT_NAMES = {
     "Event-Causal Belief-Repair ALNS": "Event-causal\nrepair",
+    "Certificate-Only Belief-Repair ALNS": "Certificate-\nonly",
+    "Proxy-Only Belief-Repair ALNS": "Proxy-only\nrepair",
     "Optimistic-Bound-Screened Full Replan ALNS": "Bound-gated\nfull replan",
     "Periodic Full Replan ALNS": "Periodic\nfull replan",
+    "Budget-Matched Periodic Full Replan ALNS": "Budget-matched\nperiodic",
     "Event-Priority Heuristic ALNS": "Event-priority\nheuristic",
     "Full Event Replan ALNS": "Every-event\nfull replan",
     "Initial Plan Only": "Initial plan\nonly",
 }
-COLORS = ("#176B87", "#64CCC5", "#DAA520", "#B85C38", "#8A8A8A", "#C0C0C0")
+COLORS = (
+    "#176B87", "#2E86AB", "#6EB5C0", "#64CCC5", "#DAA520",
+    "#E3B505", "#B85C38", "#8A8A8A", "#C0C0C0",
+)
 FIGURE_STEMS = (
     "fig_event_causal_performance",
     "fig_repair_trigger_scope",

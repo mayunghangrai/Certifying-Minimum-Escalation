@@ -86,3 +86,14 @@ def test_passive_belief_known_set_grows(scn):
 
 def test_stock_positive(scn):
     assert all(v > 0 for v in scn.S0_init)
+
+
+def test_initial_stock_excludes_hidden_demand():
+    p = EnvParams()
+    scenario = generate_scenario(42, p)
+    known_demand = np.zeros(4)
+    for node in scenario.nodes:
+        if node.reveal_time <= 0.0:
+            known_demand += np.asarray(node.d0)
+    expected = np.ceil(p.mission.stock_mult * known_demand)
+    np.testing.assert_allclose(scenario.S0_init, expected)

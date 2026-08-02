@@ -86,7 +86,9 @@ class EventParams:
     delta_P4_mean: float = 0.1   # mean communication delay [h] (exponential)
     sigma_P4: float = 1.0        # P4 report noise std [units]
     # route availability process A_ij(t): closure intervals correlated with hazard
-    avail_closure_rate: float = 0.35   # closures per edge per hour, scaled by hazard exposure
+    # Default is information-only. Disruption families opt into a calibrated
+    # sparse per-edge rate (0.002 in the manuscript experiments).
+    avail_closure_rate: float = 0.0
     avail_closure_dur: List[float] = field(default_factory=lambda: [0.5, 2.0])  # [h] uniform
     avail_hazard_threshold: float = 0.15  # edges with exposure below this never close
 

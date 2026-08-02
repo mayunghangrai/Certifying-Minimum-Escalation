@@ -13,6 +13,7 @@ from methods.event_causal_repair import (
     OperationalChanges,
     OperationalSnapshot,
     PlanBeliefDependencyGraph,
+    PeriodicFullReplanController,
     corridor_resource,
     trace_impacts,
 )
@@ -75,6 +76,59 @@ def test_corridor_closure_traces_direct_decision_and_route_consequences():
     assert decision.key in trace.hard
     assert decision.key in trace.mutable
     assert trace.mutable.isdisjoint(trace.frozen)
+    assert "corridor_leg_closed" in trace.hard_reasons[decision.key.label()]
+
+
+def test_routine_service_consumption_is_not_an_exogenous_change():
+    before = OperationalSnapshot(
+        t=1.0,
+        known=frozenset({0}),
+        demand={0: (5.0, 0.0, 0.0, 0.0)},
+        inventory=(10.0, 10.0, 10.0, 10.0),
+        corridors={},
+        uav_battery=(200.0,),
+        uav_payload=((3.0, 0.0, 0.0, 0.0),),
+    )
+    after = OperationalSnapshot(
+        t=1.02,
+        known=frozenset({0}),
+        demand={0: (4.0, 0.0, 0.0, 0.0)},
+        inventory=before.inventory,
+        corridors={},
+        uav_battery=(197.5,),
+        uav_payload=((2.0, 0.0, 0.0, 0.0),),
+    )
+    changes = OperationalChanges.between(
+        before, after, event_type=EventType.SERVICE_COMPLETE,
+    )
+    assert changes.service_consumption_nodes == {0}
+    assert not changes.has_relevant_change
+
+
+def test_service_shortfall_remains_relevant_information():
+    before = OperationalSnapshot(
+        t=1.0,
+        known=frozenset({0}),
+        demand={0: (5.0, 0.0, 0.0, 0.0)},
+        inventory=(10.0, 10.0, 10.0, 10.0),
+        corridors={},
+        uav_battery=(200.0,),
+        uav_payload=((3.0, 0.0, 0.0, 0.0),),
+    )
+    after = OperationalSnapshot(
+        t=1.02,
+        known=frozenset({0}),
+        demand={0: (0.0, 0.0, 0.0, 0.0)},
+        inventory=before.inventory,
+        corridors={},
+        uav_battery=(197.5,),
+        uav_payload=((2.0, 0.0, 0.0, 0.0),),
+    )
+    changes = OperationalChanges.between(
+        before, after, event_type=EventType.SERVICE_COMPLETE,
+    )
+    assert changes.demand_nodes == {0}
+    assert changes.has_relevant_change
 
 
 def test_bound_screen_can_certify_continuation_without_solving():
@@ -109,6 +163,28 @@ def test_calibrated_proxy_threshold_blocks_small_soft_event():
     )
     assert env.K_rem == budget_before
     assert env.metrics.n_resolves == 0
+
+
+def test_linear_budget_pacing_reserves_early_soft_repairs():
+    env, _, _ = small_env()
+    env.t = 0.1
+    assert not EventCausalRepairController._pacing_allows(env)
+    env.t = env.T / 2.0
+    assert EventCausalRepairController._pacing_allows(env)
+
+
+def test_target_count_periodic_baseline_uses_every_interior_slot():
+    env, obs, info = small_env(seed=17)
+    controller = PeriodicFullReplanController(target_count=2)
+    steps = 0
+    while not env.done and steps < 2000:
+        actions = controller.act(
+            env, obs, info["masks"], info["deciders"],
+        )
+        obs, _, _, info = env.step(actions)
+        steps += 1
+    assert env.done
+    assert env.metrics.n_resolves == 2
 
 
 def test_hard_infeasibility_automatically_attempts_selective_repair():

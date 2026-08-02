@@ -495,8 +495,10 @@ class UAMTVRPIUEnv:
         cap = ev.payload.get("x_plan")
         nt = self.nodes[node]
         x_served = np.zeros(N_COMMODITIES)
+        x_attempted = np.zeros(N_COMMODITIES)
         for k in range(N_COMMODITIES):
             want = uav.ell[k] if cap is None else min(uav.ell[k], cap[k])
+            x_attempted[k] = max(float(want), 0.0)
             want = min(want, nt.d(k))
             if want > EPS:
                 x_served[k] = nt.serve_fofs(k, want)
@@ -505,7 +507,9 @@ class UAMTVRPIUEnv:
         self._interval_energy += service_energy(self.p.physics)
         self.metrics.J_energy += service_energy(self.p.physics)
         self.metrics.delivered_units += x_served
-        self.belief.apply_delivery(node, x_served, ev.t)
+        self.belief.apply_delivery(
+            node, x_served, ev.t, attempted=x_attempted,
+        )
 
         # Consume the served visit from the incumbent scaffold so the
         # controller does not treat the rest of the sortie as hard infeasible.

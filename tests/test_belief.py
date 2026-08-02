@@ -81,6 +81,17 @@ def test_delivery_decrements_belief(belief):
     assert belief.entries[0].mu[0] == 0.0
 
 
+def test_delivery_shortfall_is_exact_operational_feedback(belief):
+    belief.apply_delivery(
+        0,
+        np.array([1.0, 0.0, 0.0, 0.0]),
+        t=1.0,
+        attempted=np.array([3.0, 0.0, 0.0, 0.0]),
+    )
+    assert belief.entries[0].mu[0] == 0.0
+    assert belief.entries[0].sigma[0] == 0.0
+
+
 def test_age_hat_modes():
     for mode, factor in [("oldest", 1.0), ("mean", 0.5)]:
         b = BeliefState(BeliefParams(belief_age_mode=mode))

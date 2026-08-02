@@ -39,7 +39,8 @@ events:
   delta_P4_mean: 0.1       # mean P4 communication delay [h]
   sigma_P4: 1.0            # P4 report noise std; set p_P4=1, delta=0, sigma=0
                            # for the exact-sync special case (eq:p4_exact_case)
-  avail_closure_rate: 0.35
+  # Information-only reference family; disruption families use 0.002.
+  avail_closure_rate: 0.0
   avail_closure_dur: [0.5, 2.0]
   avail_hazard_threshold: 0.15
 
@@ -80,7 +81,7 @@ mission:
   T_load: 0.15             # (eq:turnaround_time)
   T_charge: 0.5            # full-recharge duration [h]
   n_depot_bays: 2
-  stock_mult: 1.2          # S0_k(0) = ceil(mult * total initial demand_k)
+  stock_mult: 1.2          # S0_k(0) = ceil(mult * initially reported demand_k)
   n_replenish: 2
   replenish_frac: 0.35
   gamma_hour: 0.98         # SMDP discount per hour (gamma_eff = gamma_hour^dt)

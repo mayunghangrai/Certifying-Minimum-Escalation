@@ -1,7 +1,7 @@
 # =============================================================================
-# Standard environment for event-causal repair experiments.
-# Copy of manuscript.yaml with the higher planning budget used in the
-# event-causal hard family.
+# Standard information-only environment for event-causal repair experiments.
+# Dynamic corridor failures are disabled so this family measures ordinary
+# report/reveal dynamics without disruption confounding.
 # =============================================================================
 
 physics:
@@ -37,7 +37,7 @@ events:
   p_P4: 0.8
   delta_P4_mean: 0.1
   sigma_P4: 1.0
-  avail_closure_rate: 0.35
+  avail_closure_rate: 0.0
   avail_closure_dur: [0.5, 2.0]
   avail_hazard_threshold: 0.15
 
