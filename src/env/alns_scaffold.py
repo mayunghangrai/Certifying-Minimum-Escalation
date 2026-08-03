@@ -313,6 +313,7 @@ class ALNSPlanner:
                 frozen_nodes_by_uav=frozen_nodes_by_uav,
                 removal_weights_by_uav_node=removal_weights_by_uav_node,
                 use_visit_profiles=use_visit_profiles,
+                preserve_visit_profiles=adaptive_causal_mix,
             )
             for tier, count in destroy_stats.items():
                 removed_tiers[tier] = removed_tiers.get(tier, 0) + count
@@ -663,6 +664,7 @@ class ALNSPlanner:
             Dict[Tuple[int, int], float]
         ] = None,
         use_visit_profiles: bool = False,
+        preserve_visit_profiles: bool = False,
     ) -> Tuple[Scaffold, Dict[str, int]]:
         cand = scaffold.clone()
         all_visits: List[Tuple[int, int, int]] = []
@@ -732,7 +734,7 @@ class ALNSPlanner:
         ] + [visit.removal_weight for visit in removed]
         default_removal_weight = (
             min(profile_weights)
-            if use_visit_profiles and profile_weights
+            if preserve_visit_profiles and profile_weights
             else 1.0
         )
         for start in order:

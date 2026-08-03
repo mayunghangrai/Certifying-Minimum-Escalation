@@ -203,6 +203,21 @@ def test_new_adaptive_visits_use_global_floor_weight():
     assert visits
     assert all(visit.removal_tier == "global_fleet" for visit in visits)
     assert all(visit.removal_weight == 0.125 for visit in visits)
+    repaired, _ = env.planner._destroy_repair(
+        scaffold,
+        env._plan_context(),
+        np.random.default_rng(10),
+        use_visit_profiles=False,
+        preserve_visit_profiles=True,
+    )
+    repaired_visits = [
+        visit
+        for sorties in repaired.plans.values()
+        for sortie in sorties
+        for visit in sortie.visits
+    ]
+    assert repaired_visits
+    assert all(visit.removal_weight == 0.125 for visit in repaired_visits)
 
 
 def test_soft_boundary_repair_uses_one_solver_call():

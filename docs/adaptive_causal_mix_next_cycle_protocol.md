@@ -43,9 +43,10 @@ infeasibility continues to bypass the economic screen.
 ## Data separation
 
 - Historical diagnosis only: seeds 500--739.
-- Engineering smoke only: seeds 798--799; these verify packaging and are not
+- Engineering smoke only: seeds 797--799; these verify packaging and are not
   eligible for parameter selection or claims.
-- Development screening: seeds 800--809, standard and mixed families.
+- Original development screening: seeds 800--809, standard and mixed
+  families.
 - Development confirmation: seeds 810--829, all four families.
 - Reserved defect fallback: seeds 830--839, used only after a reproducible
   implementation defect.
@@ -108,3 +109,15 @@ episode wall time, feasibility, operator selection, and removed-tier shares.
 Confirmation is diagnostic, not a second tuning phase.  Unless a concrete
 software defect is found, the selected method is frozen and the final block is
 run once even if confirmation is negative.
+
+## Defect amendment before valid screening
+
+The standard-family 800--809 package exposed a lineage-propagation defect:
+visits freshly created during a uniform-global iteration received weight 1.0
+instead of the fleet-global `decay^3` floor.  Mixed 800--809 was stopped before
+completion, and the entire 800--809 block is invalid for selection or claims.
+The defect was fixed and regression-tested before any replacement data were
+generated.  The predeclared reserve 830--839 is therefore consumed as the
+replacement screening block with the original grid and selection rule.
+Confirmation remains the untouched 810--829 block and final evaluation remains
+900--939.
