@@ -19,7 +19,12 @@ import math
 
 import numpy as np
 
-from env.alns_scaffold import Scaffold, Sortie, sortie_energy_exact
+from env.alns_scaffold import (
+    RemovalProfile,
+    Scaffold,
+    Sortie,
+    sortie_energy_exact,
+)
 from env.deprivation import expected_deprivation_avoided
 from env.events import EventType
 from env.graph import DEPOT
@@ -778,6 +783,47 @@ def soft_boundary_removal_weights(
     return weights
 
 
+def adaptive_removal_profiles(
+    dependency_graph: PlanBeliefDependencyGraph,
+    trace: ImpactTrace,
+    decay: float,
+) -> Dict[Tuple[int, int, int], RemovalProfile]:
+    """Attach a causal tier to every exact incumbent decision identity."""
+
+    decay = float(decay)
+    if not 0.0 < decay <= 1.0:
+        raise ValueError("adaptive causal decay must be in (0, 1]")
+
+    level_profiles = {
+        "causal_decisions": ("causal_decisions", 1.0),
+        "affected_uav_routes": ("affected_uav_routes", decay),
+        "shared_resource_uavs": ("shared_resource_uavs", decay ** 2),
+        "full_fleet": ("global_fleet", decay ** 3),
+    }
+    profiles_by_key: Dict[DecisionKey, Tuple[str, float]] = {
+        key: ("global_fleet", decay ** 3)
+        for key in dependency_graph.decisions
+    }
+    for neighborhood in reversed(expanding_repair_neighborhoods(
+        dependency_graph,
+        trace,
+        selective_repair=True,
+    )):
+        tier, weight = level_profiles[neighborhood.name]
+        for key in neighborhood.mutable:
+            if weight >= profiles_by_key[key][1]:
+                profiles_by_key[key] = (tier, weight)
+
+    return {
+        (key.uav, key.sortie, key.visit): RemovalProfile(
+            visit_id=key.label(),
+            tier=tier,
+            weight=float(weight),
+        )
+        for key, (tier, weight) in profiles_by_key.items()
+    }
+
+
 def optimistic_value_upper_bound(env) -> float:
     """Capacity-aware relaxed upper bound on achievable belief-side value.
 
@@ -927,6 +973,10 @@ class EventCausalRepairController:
         gate_fleet_service_triggers: bool = False,
         budget_pacing: bool = False,
         soft_boundary_decay: Optional[float] = None,
+        adaptive_causal_mix: bool = False,
+        adaptive_reaction: float = 0.2,
+        adaptive_min_probability: float = 0.2,
+        planner_iterations_override: Optional[int] = None,
     ):
         self.selective_repair = bool(selective_repair)
         self.solve_cost = solve_cost
@@ -961,6 +1011,33 @@ class EventCausalRepairController:
             if soft_boundary_decay is None
             else float(soft_boundary_decay)
         )
+        self.adaptive_causal_mix = bool(adaptive_causal_mix)
+        if self.adaptive_causal_mix and self.soft_boundary_decay is None:
+            raise ValueError(
+                "adaptive_causal_mix requires soft_boundary_decay"
+            )
+        if not 0.0 < float(adaptive_reaction) <= 1.0:
+            raise ValueError("adaptive_reaction must be in (0, 1]")
+        if not 0.0 <= float(adaptive_min_probability) < 0.5:
+            raise ValueError(
+                "adaptive_min_probability must be in [0, 0.5)"
+            )
+        self.adaptive_reaction = float(adaptive_reaction)
+        self.adaptive_min_probability = float(
+            adaptive_min_probability
+        )
+        self.planner_iterations_override = (
+            None
+            if planner_iterations_override is None
+            else int(planner_iterations_override)
+        )
+        if (
+            self.planner_iterations_override is not None
+            and self.planner_iterations_override < 0
+        ):
+            raise ValueError(
+                "planner_iterations_override must be nonnegative"
+            )
 
         self.shadow_audit_screened_events = bool(
             shadow_audit_screened_events
@@ -1481,12 +1558,16 @@ class EventCausalRepairController:
                 initial_scope_fraction
             ),
             "repair_policy": (
-                "soft_boundary"
-                if self.soft_boundary_decay is not None
+                "adaptive_causal_mix"
+                if self.adaptive_causal_mix
                 else (
-                    "hard_freeze"
-                    if self.selective_repair
-                    else "full_replan"
+                    "soft_boundary"
+                    if self.soft_boundary_decay is not None
+                    else (
+                        "hard_freeze"
+                        if self.selective_repair
+                        else "full_replan"
+                    )
                 )
             ),
             "soft_boundary_decay": (
@@ -1495,6 +1576,17 @@ class EventCausalRepairController:
                 else float("nan")
             ),
             "soft_weighted_node_count": 0,
+            "adaptive_profile_count": 0,
+            "adaptive_reaction": (
+                self.adaptive_reaction
+                if self.adaptive_causal_mix
+                else float("nan")
+            ),
+            "adaptive_min_probability": (
+                self.adaptive_min_probability
+                if self.adaptive_causal_mix
+                else float("nan")
+            ),
             "current_plan_value": float(
                 current_value
             ),
@@ -1709,7 +1801,27 @@ class EventCausalRepairController:
             )
 
             soft_removal_weights = None
-            if self.soft_boundary_decay is not None:
+            adaptive_profiles = None
+            if self.adaptive_causal_mix:
+                all_decisions = frozenset(
+                    dependency_graph.decisions
+                )
+                neighborhoods = [
+                    RepairNeighborhood(
+                        hierarchy_level=0,
+                        name="adaptive_causal_mix",
+                        mutable=all_decisions,
+                    )
+                ]
+                adaptive_profiles = adaptive_removal_profiles(
+                    dependency_graph,
+                    trace,
+                    self.soft_boundary_decay,
+                )
+                record["adaptive_profile_count"] = len(
+                    adaptive_profiles
+                )
+            elif self.soft_boundary_decay is not None:
                 all_decisions = frozenset(
                     dependency_graph.decisions
                 )
@@ -1757,7 +1869,10 @@ class EventCausalRepairController:
                 mutable = set(neighborhood.mutable)
 
                 removal_weights = None
-                if neighborhood.name == "soft_boundary":
+                if neighborhood.name == "adaptive_causal_mix":
+                    warm = env.scaffold
+                    frozen = None
+                elif neighborhood.name == "soft_boundary":
                     warm = _partial_warm_start(
                         env.scaffold,
                         set(trace.mutable),
@@ -1782,11 +1897,38 @@ class EventCausalRepairController:
                 solve_wall_before = float(
                     env.repair_solver_wall_time_s
                 )
-                candidate = env.propose_scaffold_repair(
-                    warm,
-                    frozen,
-                    removal_weights,
-                )
+                if (
+                    self.adaptive_causal_mix
+                    or self.planner_iterations_override is not None
+                ):
+                    candidate = env.propose_scaffold_repair(
+                        warm,
+                        frozen,
+                        removal_weights,
+                        removal_profiles_by_decision=(
+                            adaptive_profiles
+                        ),
+                        adaptive_causal_mix=(
+                            self.adaptive_causal_mix
+                        ),
+                        adaptive_reaction=self.adaptive_reaction,
+                        adaptive_min_probability=(
+                            self.adaptive_min_probability
+                        ),
+                        iterations_override=(
+                            self.planner_iterations_override
+                        ),
+                    )
+                else:
+                    candidate = env.propose_scaffold_repair(
+                        warm,
+                        frozen,
+                        removal_weights,
+                    )
+                if self.adaptive_causal_mix:
+                    record.update(
+                        env.last_repair_planner_diagnostics
+                    )
                 solve_wall_time = max(
                     float(env.repair_solver_wall_time_s)
                     - solve_wall_before,
@@ -2058,6 +2200,41 @@ class OptimisticBoundScreenedFullReplanController(
         )
 
 
+class AdaptiveCausalMixRepairController(
+    EventCausalRepairController
+):
+    """Proxy-triggered repair with adaptive causal/global ALNS destroy."""
+
+    name = "Adaptive Causal-Mix ALNS"
+
+    def __init__(
+        self,
+        solve_cost: Optional[float] = None,
+        proxy_threshold_fraction: float = 0.0,
+        causal_decay: float = 0.65,
+        adaptive_reaction: float = 0.2,
+        adaptive_min_probability: float = 0.2,
+        gate_fleet_service_triggers: bool = False,
+        budget_pacing: bool = True,
+        name: Optional[str] = None,
+    ):
+        super().__init__(
+            selective_repair=True,
+            solve_cost=solve_cost,
+            proxy_threshold_fraction=proxy_threshold_fraction,
+            screen_soft_events=True,
+            trigger_mode="proxy",
+            gate_fleet_service_triggers=gate_fleet_service_triggers,
+            budget_pacing=budget_pacing,
+            soft_boundary_decay=causal_decay,
+            adaptive_causal_mix=True,
+            adaptive_reaction=adaptive_reaction,
+            adaptive_min_probability=adaptive_min_probability,
+        )
+        if name is not None:
+            self.name = str(name)
+
+
 class SoftBoundaryEventCausalRepairController(
     EventCausalRepairController
 ):
@@ -2117,6 +2294,7 @@ class PeriodicFullReplanController(EventCausalRepairController):
         solve_cost: Optional[float] = None,
         period_hours: float = 2.0,
         target_count: Optional[int] = None,
+        iterations_override: Optional[int] = None,
         name: Optional[str] = None,
     ):
         super().__init__(
@@ -2124,6 +2302,7 @@ class PeriodicFullReplanController(EventCausalRepairController):
             solve_cost=solve_cost,
             proxy_threshold_fraction=0.0,
             screen_soft_events=True,
+            planner_iterations_override=iterations_override,
         )
         self.period_hours = float(period_hours)
         # Item 7: when target_count is set, replan exactly target_count

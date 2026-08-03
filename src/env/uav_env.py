@@ -40,8 +40,9 @@ from typing import Dict, List, Optional, Set, Tuple
 
 import numpy as np
 
-from .alns_scaffold import (ALNSPlanner, PlanContext, PlannedVisit, Scaffold,
-                            Sortie, UAVPlanStart, plan_divergence)
+from .alns_scaffold import (ALNSPlanner, PlanContext, PlannedVisit,
+                            RemovalProfile, Scaffold, Sortie, UAVPlanStart,
+                            plan_divergence)
 from .belief import BeliefState
 from .deprivation import (belief_deprivation_integral, belief_deprivation_rate,
                           belief_urgency, true_deprivation_integral,
@@ -233,6 +234,7 @@ class UAMTVRPIUEnv:
         # deliberately excluded from repair statistics.
         self.repair_solver_calls = 0
         self.repair_solver_wall_time_s = 0.0
+        self.last_repair_planner_diagnostics: Dict[str, float] = {}
         # Counterfactual audit accounting. These values must never be   
 # included in operational repair-time or repair-call metrics.
         self.shadow_audit_solver_calls = 0
@@ -847,6 +849,13 @@ class UAMTVRPIUEnv:
         ],
         respect_onboard: bool,
         count_as_repair: bool,
+        removal_profiles_by_decision: Optional[
+            Dict[Tuple[int, int, int], RemovalProfile]
+        ] = None,
+        adaptive_causal_mix: bool = False,
+        adaptive_reaction: float = 0.2,
+        adaptive_min_probability: float = 0.2,
+        iterations_override: Optional[int] = None,
     ) -> Scaffold:
         """Run ALNS through one instrumented interface."""
 
@@ -856,7 +865,7 @@ class UAMTVRPIUEnv:
         self.alns_request_t = self.t
 
         try:
-            return self.planner.solve(
+            scaffold = self.planner.solve(
                 ctx,
                 self._rng_alns,
                 warm=warm,
@@ -865,7 +874,19 @@ class UAMTVRPIUEnv:
                     removal_weights_by_uav_node
                 ),
                 respect_onboard=respect_onboard,
+                removal_profiles_by_decision=(
+                    removal_profiles_by_decision
+                ),
+                adaptive_causal_mix=adaptive_causal_mix,
+                adaptive_reaction=adaptive_reaction,
+                adaptive_min_probability=adaptive_min_probability,
+                iterations_override=iterations_override,
             )
+            if count_as_repair:
+                self.last_repair_planner_diagnostics = dict(
+                    self.planner.last_solve_diagnostics
+                )
+            return scaffold
         finally:
             elapsed = time.perf_counter() - started
 
@@ -935,6 +956,13 @@ class UAMTVRPIUEnv:
         removal_weights_by_uav_node: Optional[
             Dict[Tuple[int, int], float]
         ] = None,
+        removal_profiles_by_decision: Optional[
+            Dict[Tuple[int, int, int], RemovalProfile]
+        ] = None,
+        adaptive_causal_mix: bool = False,
+        adaptive_reaction: float = 0.2,
+        adaptive_min_probability: float = 0.2,
+        iterations_override: Optional[int] = None,
         ) -> Scaffold:
         """Solve a belief-consistent candidate without installing it."""
 
@@ -949,6 +977,13 @@ class UAMTVRPIUEnv:
             ),
             respect_onboard=True,
             count_as_repair=True,
+            removal_profiles_by_decision=(
+                removal_profiles_by_decision
+            ),
+            adaptive_causal_mix=adaptive_causal_mix,
+            adaptive_reaction=adaptive_reaction,
+            adaptive_min_probability=adaptive_min_probability,
+            iterations_override=iterations_override,
         )
     def propose_shadow_scaffold_repair(
         self,

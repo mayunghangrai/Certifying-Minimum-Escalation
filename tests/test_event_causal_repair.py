@@ -4,17 +4,20 @@ from pathlib import Path
 
 import numpy as np
 
+from env.alns_scaffold import RemovalProfile, Scaffold
 from env.events import EventType
 from env.params import EnvParams
 from env.scenario_generator import generate_scenario
 from env.uav_env import UAMTVRPIUEnv
 from methods.event_causal_repair import (
+    AdaptiveCausalMixRepairController,
     EventCausalRepairController,
     OperationalChanges,
     OperationalSnapshot,
     PlanBeliefDependencyGraph,
     PeriodicFullReplanController,
     SoftBoundaryEventCausalRepairController,
+    adaptive_removal_profiles,
     corridor_resource,
     soft_boundary_removal_weights,
     trace_impacts,
@@ -106,6 +109,100 @@ def test_soft_boundary_keeps_every_visit_removable_with_causal_bias():
             weights[(item.key.uav, item.node)] < 1.0
             for item in noncausal
         )
+
+
+def test_adaptive_profiles_preserve_exact_decision_identity():
+    env, _, _ = small_env()
+    before = OperationalSnapshot.capture(env)
+    graph = PlanBeliefDependencyGraph.build(env)
+    decision = first_decision(graph)
+    env.graph.set_available(
+        decision.predecessor_node, decision.node, False)
+    after = OperationalSnapshot.capture(env)
+    trace = trace_impacts(
+        env,
+        graph,
+        OperationalChanges.between(before, after),
+        EventType.AVAIL_CHANGE,
+    )
+    profiles = adaptive_removal_profiles(graph, trace, decay=0.5)
+    assert len(profiles) == len(graph.decisions)
+    assert set(profiles) == {
+        (key.uav, key.sortie, key.visit)
+        for key in graph.decisions
+    }
+    direct = profiles[(
+        decision.key.uav,
+        decision.key.sortie,
+        decision.key.visit,
+    )]
+    assert direct.visit_id == decision.key.label()
+    assert direct.tier == "causal_decisions"
+    assert direct.weight == 1.0
+
+
+def test_adaptive_causal_mix_logs_executed_operator_removals():
+    env, obs, info = small_env(seed=29)
+    env.p.hybrid.alns_iterations = 12
+    controller = AdaptiveCausalMixRepairController(
+        proxy_threshold_fraction=0.0,
+        causal_decay=0.5,
+        adaptive_min_probability=0.35,
+        budget_pacing=False,
+    )
+    controller.act(env, obs, info["masks"], info["deciders"])
+    node = sorted(env.belief.known)[0]
+    env.belief.entries[node].mu += np.array([10.0, 0.0, 0.0, 0.0])
+    env.last_decision_event_type = EventType.P1_REPORT
+    controller.act(env, obs, info["masks"], info["deciders"])
+    record = controller.diagnostics[-1]
+    assert record["attempted"] == 1
+    assert record["repair_policy"] == "adaptive_causal_mix"
+    assert record["repair_solver_calls"] == 1
+    assert record["adaptive_profile_count"] > 0
+    assert (
+        record["adaptive_causal_selections"]
+        + record["adaptive_global_selections"]
+        == 12
+    )
+    removed = sum(
+        record[f"adaptive_removed_{tier}"]
+        for tier in (
+            "causal_decisions",
+            "affected_uav_routes",
+            "shared_resource_uavs",
+            "global_fleet",
+        )
+    )
+    assert removed > 0
+    assert 0.35 <= record["adaptive_causal_final_probability"] <= 0.65
+    assert 0.35 <= record["adaptive_global_final_probability"] <= 0.65
+
+
+def test_new_adaptive_visits_use_global_floor_weight():
+    env, _, _ = small_env(seed=31)
+    profile = RemovalProfile(
+        visit_id="u0/s0/v0",
+        tier="global_fleet",
+        weight=0.125,
+    )
+    scaffold = env.planner.solve(
+        env._plan_context(),
+        np.random.default_rng(9),
+        warm=Scaffold(plans={u.idx: [] for u in env.uavs}),
+        removal_profiles_by_decision={(0, 0, 0): profile},
+        adaptive_causal_mix=True,
+        iterations_override=0,
+    )
+    visits = [
+        visit
+        for sorties in scaffold.plans.values()
+        for sortie in sorties
+        for visit in sortie.visits
+    ]
+    assert visits
+    assert all(visit.removal_tier == "global_fleet" for visit in visits)
+    assert all(visit.removal_weight == 0.125 for visit in visits)
 
 
 def test_soft_boundary_repair_uses_one_solver_call():

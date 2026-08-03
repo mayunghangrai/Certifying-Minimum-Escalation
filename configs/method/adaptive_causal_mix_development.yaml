@@ -1,0 +1,20 @@
+# Predeclared adaptive causal/global ALNS development specification.
+# Historical seeds end at 739. Screening uses 800--809, confirmation uses
+# 810--829, 830--839 is defect-only reserve, and final uses 900--939.
+
+method:
+  repair_budget: 18
+  alns_iterations: 60
+  wall_matched_alns_iterations: 40
+  solve_cost: null
+  proxy_threshold_fraction: 0.03
+  trigger_mode: proxy
+  budget_pacing: true
+  periodic_replan_period: 2.0
+  matched_periodic_target_count: 18
+
+  adaptive_reaction: 0.20
+  development_causal_decays: [0.35, 0.65]
+  development_min_probabilities: [0.20, 0.35]
+
+  randomize_method_order: true

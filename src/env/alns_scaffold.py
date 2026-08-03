@@ -33,14 +33,33 @@ SERVICE_DWELL = 0.02   # planning estimate of on-site dwell [h]
 
 
 # ---------------------------------------------------------------------------
+@dataclass(frozen=True)
+class RemovalProfile:
+    """Causal metadata attached to one exact incumbent visit."""
+
+    visit_id: str
+    tier: str
+    weight: float
+
+
 @dataclass
 class PlannedVisit:
     node: int
     x_plan: np.ndarray                 # planned delivery (units per commodity)
     eta: float = 0.0                   # expected service time
+    removal_visit_id: str = ""
+    removal_tier: str = "global_fleet"
+    removal_weight: float = 1.0
 
     def clone(self) -> "PlannedVisit":
-        return PlannedVisit(self.node, self.x_plan.copy(), self.eta)
+        return PlannedVisit(
+            self.node,
+            self.x_plan.copy(),
+            self.eta,
+            self.removal_visit_id,
+            self.removal_tier,
+            self.removal_weight,
+        )
 
 
 @dataclass
@@ -210,6 +229,7 @@ def sortie_energy_exact(start_pos: np.ndarray, node_pos: List[np.ndarray],
 class ALNSPlanner:
     def __init__(self, params: EnvParams):
         self.p = params
+        self.last_solve_diagnostics: Dict[str, float] = {}
 
     # -- public -------------------------------------------------------------
     def solve(self, ctx: PlanContext, rng: np.random.Generator,
@@ -218,7 +238,14 @@ class ALNSPlanner:
               removal_weights_by_uav_node: Optional[
                   Dict[Tuple[int, int], float]
               ] = None,
-              respect_onboard: bool = False) -> Scaffold:
+              respect_onboard: bool = False,
+              removal_profiles_by_decision: Optional[
+                  Dict[Tuple[int, int, int], RemovalProfile]
+              ] = None,
+              adaptive_causal_mix: bool = False,
+              adaptive_reaction: float = 0.2,
+              adaptive_min_probability: float = 0.2,
+              iterations_override: Optional[int] = None) -> Scaffold:
         """Greedy construction (optionally warm-started) + ALNS improvement.
 
         ``frozen_nodes_by_uav`` is an additive selective-repair contract: when
@@ -228,24 +255,136 @@ class ALNSPlanner:
         destroy operator toward causally related route regions.
         Legacy callers omit it and retain the original ALNS behavior.
         """
-        best = self._construct(ctx, warm, respect_onboard=respect_onboard)
+        if adaptive_causal_mix:
+            if not 0.0 < adaptive_reaction <= 1.0:
+                raise ValueError("adaptive_reaction must be in (0, 1]")
+            if not 0.0 <= adaptive_min_probability < 0.5:
+                raise ValueError(
+                    "adaptive_min_probability must be in [0, 0.5)"
+                )
+
+        best = self._construct(
+            ctx,
+            warm,
+            respect_onboard=respect_onboard,
+            removal_profiles_by_decision=removal_profiles_by_decision,
+            default_removal_weight=(
+                min(
+                    profile.weight
+                    for profile in removal_profiles_by_decision.values()
+                )
+                if removal_profiles_by_decision
+                else 1.0
+            ),
+        )
         best_val = self._evaluate(best, ctx)
         cur = best
-        for _ in range(self.p.hybrid.alns_iterations):
-            cand = self._destroy_repair(
+        operator_weights = np.ones(2, dtype=float)
+        operator_selections = np.zeros(2, dtype=int)
+        operator_best = np.zeros(2, dtype=int)
+        operator_diversifications = np.zeros(2, dtype=int)
+        removed_tiers: Dict[str, int] = {}
+        removed_tiers_by_operator: List[Dict[str, int]] = [{}, {}]
+        n_iterations = (
+            self.p.hybrid.alns_iterations
+            if iterations_override is None
+            else int(iterations_override)
+        )
+        if n_iterations < 0:
+            raise ValueError("iterations_override must be nonnegative")
+
+        for _ in range(n_iterations):
+            operator_index = -1
+            use_visit_profiles = False
+            if adaptive_causal_mix:
+                normalized = operator_weights / operator_weights.sum()
+                probabilities = (
+                    adaptive_min_probability
+                    + (1.0 - 2.0 * adaptive_min_probability) * normalized
+                )
+                operator_index = int(rng.choice(2, p=probabilities))
+                use_visit_profiles = operator_index == 0
+                operator_selections[operator_index] += 1
+
+            cand, destroy_stats = self._destroy_repair(
                 cur,
                 ctx,
                 rng,
                 frozen_nodes_by_uav=frozen_nodes_by_uav,
                 removal_weights_by_uav_node=removal_weights_by_uav_node,
+                use_visit_profiles=use_visit_profiles,
             )
+            for tier, count in destroy_stats.items():
+                removed_tiers[tier] = removed_tiers.get(tier, 0) + count
+                if adaptive_causal_mix:
+                    by_operator = removed_tiers_by_operator[operator_index]
+                    by_operator[tier] = by_operator.get(tier, 0) + count
             val = self._evaluate(cand, ctx)
+            reward = 0.0
             if val > best_val + 1e-9:
                 best, best_val = cand, val
                 cur = cand
+                reward = 1.0
+                if adaptive_causal_mix:
+                    operator_best[operator_index] += 1
             elif rng.random() < 0.1:   # mild diversification
                 cur = cand
+                reward = 0.1
+                if adaptive_causal_mix:
+                    operator_diversifications[operator_index] += 1
+
+            if adaptive_causal_mix:
+                operator_weights[operator_index] = max(
+                    (1.0 - adaptive_reaction)
+                    * operator_weights[operator_index]
+                    + adaptive_reaction * reward,
+                    1e-6,
+                )
         self._finalize(best, ctx)
+        if adaptive_causal_mix:
+            normalized = operator_weights / operator_weights.sum()
+            final_probabilities = (
+                adaptive_min_probability
+                + (1.0 - 2.0 * adaptive_min_probability) * normalized
+            )
+        else:
+            final_probabilities = np.array([0.0, 1.0])
+        self.last_solve_diagnostics = {
+            "adaptive_causal_selections": int(operator_selections[0]),
+            "adaptive_global_selections": int(operator_selections[1]),
+            "adaptive_causal_new_best": int(operator_best[0]),
+            "adaptive_global_new_best": int(operator_best[1]),
+            "adaptive_causal_diversifications": int(
+                operator_diversifications[0]
+            ),
+            "adaptive_global_diversifications": int(
+                operator_diversifications[1]
+            ),
+            "adaptive_causal_final_weight": float(operator_weights[0]),
+            "adaptive_global_final_weight": float(operator_weights[1]),
+            "adaptive_causal_final_probability": float(
+                final_probabilities[0]
+            ),
+            "adaptive_global_final_probability": float(
+                final_probabilities[1]
+            ),
+            "adaptive_iterations": int(n_iterations),
+        }
+        for tier in (
+            "causal_decisions",
+            "affected_uav_routes",
+            "shared_resource_uavs",
+            "global_fleet",
+        ):
+            self.last_solve_diagnostics[
+                f"adaptive_removed_{tier}"
+            ] = int(removed_tiers.get(tier, 0))
+            self.last_solve_diagnostics[
+                f"adaptive_causal_operator_removed_{tier}"
+            ] = int(removed_tiers_by_operator[0].get(tier, 0))
+            self.last_solve_diagnostics[
+                f"adaptive_global_operator_removed_{tier}"
+            ] = int(removed_tiers_by_operator[1].get(tier, 0))
         return best
 
     def evaluate_belief_value(self, scaffold: Scaffold, ctx: PlanContext) -> float:
@@ -257,8 +396,16 @@ class ALNSPlanner:
         return self._evaluate_capped(scaffold, ctx)
 
     # -- construction ---------------------------------------------------------
-    def _construct(self, ctx: PlanContext, warm: Optional[Scaffold],
-                   respect_onboard: bool = False) -> Scaffold:
+    def _construct(
+        self,
+        ctx: PlanContext,
+        warm: Optional[Scaffold],
+        respect_onboard: bool = False,
+        removal_profiles_by_decision: Optional[
+            Dict[Tuple[int, int, int], RemovalProfile]
+        ] = None,
+        default_removal_weight: float = 1.0,
+    ) -> Scaffold:
         remaining = {i: d.copy() for i, d in ctx.d_tilde.items() if d.sum() > 1e-9}
         stock = ctx.stock.copy()
         scaffold = Scaffold(plans={s.uav: [] for s in ctx.uav_starts},
@@ -266,14 +413,32 @@ class ALNSPlanner:
         if warm is not None:
             self._absorb_warm(
                 scaffold, warm, remaining, stock, ctx,
-                respect_onboard=respect_onboard)
+                respect_onboard=respect_onboard,
+                removal_profiles_by_decision=removal_profiles_by_decision,
+            )
         for start in ctx.uav_starts:
-            self._extend_plan(scaffold, start, remaining, stock, ctx)
+            self._extend_plan(
+                scaffold,
+                start,
+                remaining,
+                stock,
+                ctx,
+                default_removal_weight=default_removal_weight,
+            )
         return scaffold
 
-    def _absorb_warm(self, scaffold: Scaffold, warm: Scaffold,
-                     remaining: Dict[int, np.ndarray], stock: np.ndarray,
-                     ctx: PlanContext, respect_onboard: bool = False) -> None:
+    def _absorb_warm(
+        self,
+        scaffold: Scaffold,
+        warm: Scaffold,
+        remaining: Dict[int, np.ndarray],
+        stock: np.ndarray,
+        ctx: PlanContext,
+        respect_onboard: bool = False,
+        removal_profiles_by_decision: Optional[
+            Dict[Tuple[int, int, int], RemovalProfile]
+        ] = None,
+    ) -> None:
         """Keep warm-start visits that still address believed demand."""
         starts = {start.uav: start for start in ctx.uav_starts}
         for u, sorties in warm.plans.items():
@@ -288,7 +453,7 @@ class ALNSPlanner:
             kept: List[Sortie] = []
             for sortie_index, s in enumerate(sorties):
                 ns = Sortie()
-                for v in s.visits:
+                for visit_index, v in enumerate(s.visits):
                     if v.node not in remaining:
                         continue
                     supply = onboard if continuing and sortie_index == 0 else stock
@@ -308,16 +473,46 @@ class ALNSPlanner:
                         onboard = np.maximum(onboard - x, 0.0)
                     else:
                         stock -= x
-                    ns.visits.append(PlannedVisit(v.node, x))
+                    profile = (
+                        removal_profiles_by_decision or {}
+                    ).get((u, sortie_index, visit_index))
+                    ns.visits.append(PlannedVisit(
+                        v.node,
+                        x,
+                        removal_visit_id=(
+                            profile.visit_id
+                            if profile is not None
+                            else v.removal_visit_id
+                        ),
+                        removal_tier=(
+                            profile.tier
+                            if profile is not None
+                            else v.removal_tier
+                        ),
+                        removal_weight=(
+                            profile.weight
+                            if profile is not None
+                            else v.removal_weight
+                        ),
+                    ))
                     ns.y = ns.y + x
                 if ns.visits:
                     kept.append(ns)
                 continuing = False
             scaffold.plans[u] = kept
 
-    def _extend_plan(self, scaffold: Scaffold, start: UAVPlanStart,
-                     remaining: Dict[int, np.ndarray], stock: np.ndarray,
-                     ctx: PlanContext) -> None:
+    def _extend_plan(
+        self,
+        scaffold: Scaffold,
+        start: UAVPlanStart,
+        remaining: Dict[int, np.ndarray],
+        stock: np.ndarray,
+        ctx: PlanContext,
+        removal_profiles_by_node: Optional[
+            Dict[int, List[RemovalProfile]]
+        ] = None,
+        default_removal_weight: float = 1.0,
+    ) -> None:
         """Append sorties for one UAV until nothing valuable/feasible remains."""
         phys = self.p.physics
         w_k, lambda_k, alpha_k, kappa_k = self.p.commodities.as_arrays()
@@ -394,7 +589,28 @@ class ALNSPlanner:
                 if best is None:
                     break
                 _, node, x, tau, eta = best
-                visits.append(PlannedVisit(node, x, eta=eta))
+                profile = None
+                queued_profiles = (
+                    (removal_profiles_by_node or {}).get(node, [])
+                )
+                if queued_profiles:
+                    profile = queued_profiles.pop(0)
+                visits.append(PlannedVisit(
+                    node,
+                    x,
+                    eta=eta,
+                    removal_visit_id=(
+                        profile.visit_id if profile is not None else ""
+                    ),
+                    removal_tier=(
+                        profile.tier if profile is not None else "global_fleet"
+                    ),
+                    removal_weight=(
+                        profile.weight
+                        if profile is not None
+                        else float(default_removal_weight)
+                    ),
+                ))
                 xs.append(x)
                 node_pos.append(ctx.pos[node])
                 remaining[node] = remaining[node] - x
@@ -446,7 +662,8 @@ class ALNSPlanner:
         removal_weights_by_uav_node: Optional[
             Dict[Tuple[int, int], float]
         ] = None,
-    ) -> Scaffold:
+        use_visit_profiles: bool = False,
+    ) -> Tuple[Scaffold, Dict[str, int]]:
         cand = scaffold.clone()
         all_visits: List[Tuple[int, int, int]] = []
         removal_weights: List[float] = []
@@ -456,7 +673,9 @@ class ALNSPlanner:
                     if visit.node in (frozen_nodes_by_uav or {}).get(u, set()):
                         continue
                     weight = 1.0
-                    if removal_weights_by_uav_node is not None:
+                    if use_visit_profiles:
+                        weight = max(float(visit.removal_weight), 0.0)
+                    elif removal_weights_by_uav_node is not None:
                         weight = max(
                             float(removal_weights_by_uav_node.get(
                                 (u, visit.node), 0.0)),
@@ -467,10 +686,10 @@ class ALNSPlanner:
                     all_visits.append((u, si, vi))
                     removal_weights.append(weight)
         if not all_visits:
-            return cand
+            return cand, {}
         n_remove = max(1, int(self.p.hybrid.alns_removal_frac * len(all_visits)))
         probabilities = None
-        if removal_weights_by_uav_node is not None:
+        if use_visit_profiles or removal_weights_by_uav_node is not None:
             probabilities = np.asarray(removal_weights, dtype=float)
             probabilities /= float(probabilities.sum())
         idxs = rng.choice(len(all_visits), size=min(n_remove, len(all_visits)),
@@ -478,6 +697,18 @@ class ALNSPlanner:
         removed: List[PlannedVisit] = []
         for u, si, vi in sorted((all_visits[i] for i in idxs), key=lambda m: -m[2]):
             removed.append(cand.plans[u][si].visits.pop(vi))
+        removed_tiers: Dict[str, int] = {}
+        removal_profiles_by_node: Dict[int, List[RemovalProfile]] = {}
+        for visit in removed:
+            tier = str(visit.removal_tier or "global_fleet")
+            removed_tiers[tier] = removed_tiers.get(tier, 0) + 1
+            removal_profiles_by_node.setdefault(visit.node, []).append(
+                RemovalProfile(
+                    visit_id=visit.removal_visit_id,
+                    tier=tier,
+                    weight=float(visit.removal_weight),
+                )
+            )
         for u in cand.plans:           # drop emptied sorties, refresh y
             cand.plans[u] = [s for s in cand.plans[u] if s.visits]
             for s in cand.plans[u]:
@@ -493,9 +724,28 @@ class ALNSPlanner:
         stock = np.maximum(ctx.stock - stock_used, 0.0)
         order = list(ctx.uav_starts)
         rng.shuffle(order)
+        profile_weights = [
+            visit.removal_weight
+            for sorties in cand.plans.values()
+            for sortie in sorties
+            for visit in sortie.visits
+        ] + [visit.removal_weight for visit in removed]
+        default_removal_weight = (
+            min(profile_weights)
+            if use_visit_profiles and profile_weights
+            else 1.0
+        )
         for start in order:
-            self._extend_plan(cand, start, remaining, stock, ctx)
-        return cand
+            self._extend_plan(
+                cand,
+                start,
+                remaining,
+                stock,
+                ctx,
+                removal_profiles_by_node=removal_profiles_by_node,
+                default_removal_weight=default_removal_weight,
+            )
+        return cand, removed_tiers
 
     def _tail_start(self, scaffold: Scaffold, start: UAVPlanStart,
                     ctx: PlanContext) -> UAVPlanStart:
