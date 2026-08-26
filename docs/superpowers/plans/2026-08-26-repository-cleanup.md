@@ -32,11 +32,14 @@
 - Consumes: `Scenario.to_dict()`, `generate_information_aware_scenario()`, and the two scenario CLI scripts.
 - Produces: regression contracts for removed legacy configuration, scenario provenance, operational projection stability, and clarified HTML labels.
 
-- [ ] **Step 1: Add the failing cleanup contract**
+- [ ] **Step 1: Add the failing provenance contract and characterize base generation**
 
 ```python
-def test_map_params_excludes_legacy_polygon_switch():
-    assert "generate_polygon_airspace" not in EnvParams().to_dict()["map"]
+def test_base_generator_does_not_inject_route_information_polygons():
+    scenario = generate_scenario(42, EnvParams())
+    assert scenario.no_fly_zones == []
+    assert scenario.hazard_regions == []
+    assert scenario.airspace_updates == []
 
 
 def test_information_aware_generation_metadata(scenario):
@@ -97,8 +100,10 @@ $env:PYTHONDONTWRITEBYTECODE='1'
 C:\Users\mayun\anaconda3\python.exe -m pytest -p no:cacheprovider tests/test_repository_cleanup.py tests/test_robust_scenario_generator.py tests/test_information_aware_scenario_artifacts.py -q
 ```
 
-Expected: failures for the still-present legacy map field, missing
-`generation_metadata`, and old HTML wording.
+Expected: the base-generator characterization passes; failures report missing
+`generation_metadata` and old HTML wording. Removal of the obsolete field is
+verified by the repository-wide forbidden-reference check rather than a
+source-shape unit test.
 
 - [ ] **Step 4: Commit the contract tests**
 
