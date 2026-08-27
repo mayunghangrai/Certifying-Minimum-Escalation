@@ -395,8 +395,8 @@ references are removed.
 The refactor is complete only when:
 
 1. repository search finds no `ALNS`, `MAPPO`, belief, P1/P2/P3/P4,
-   `scenario_generator`, `uav_env`, learned-observation, or path-search
-   references outside historical design/plan documents;
+   legacy `env.scenario_generator` import/path, `uav_env`, learned-observation,
+   or path-search references outside historical design/plan documents;
 2. only the new robust generator can create scenarios;
 3. seed 42 generates twice to byte-identical version-2 JSON;
 4. all tasks are exact and visible at `t=0` with no uncertainty fields;
