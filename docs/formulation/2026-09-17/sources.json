@@ -1,0 +1,10 @@
+{
+  "system_model.tex": {
+    "sha256": "a5fa277b077a85365a42edb42165ddd3506b2cf3236f7a4438f83eb5bc03b864",
+    "source": "../manuscript/tmp/recovery-method-2026-09-18/sections_system_model.tex.before"
+  },
+  "technical_details.tex": {
+    "sha256": "f1816ad762fdf9bcbca8b35d471ea6ffe0316324d2dba5ed69cc6b1b753018dd",
+    "source": "../manuscript/tmp/recovery-method-2026-09-18/sections_technical_details.tex.before"
+  }
+}

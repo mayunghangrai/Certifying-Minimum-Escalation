@@ -1,0 +1,60 @@
+{
+  "source_files": {
+    "docs/formulation/worked-recovery-2026-09-18/worked_instance.json": {
+      "original": "D:\\Post-disaster Logistics\\manuscript\\tmp\\recovery-method-2026-09-18\\worked_instance.json",
+      "sha256": "f099f6f1c25854bf0cb262fa61fc6db32172e93db262d66ab3cc1df262452703"
+    },
+    "docs/formulation/worked-recovery-2026-09-18/recovery_details.tex": {
+      "original": "D:\\Post-disaster Logistics\\manuscript\\sections\\recovery_details.tex",
+      "sha256": "41279307de4933040ce3d4da2d62bc9d6f9e16f7adb64b0607a78669a70adf80"
+    }
+  },
+  "scenarios": {
+    "scenarios/diagnostics/irrelevant_wind.json": {
+      "file_sha256": "8b2d2a88b7ed3c3dd69cb49f25c6ba8d275a58996b87a2b7503a1c34c879ceb9",
+      "content_sha256": "cd3055211f99165ad5e7b134f83101e8a024b35c6dc207fd027e5382381392c6"
+    },
+    "scenarios/diagnostics/unchanged_speed.json": {
+      "file_sha256": "54903a6ce6ec07263b3773f3fa0776c2a03568736ae99e44a8efeab7506de12d",
+      "content_sha256": "54f6496a3c924fbdd48b2add82435f26949c39baa55bfcd227fdcdd5a37d1eb1"
+    },
+    "scenarios/diagnostics/shifted_bins.json": {
+      "file_sha256": "cb3a90c3e217b1a6b646fa11b5e60a4972d871fa4b5963cda782a9e794e23ac4",
+      "content_sha256": "191aa9ded93d100d0b7ebe374055235a96141cae1b1cc6761e5734335b3167de"
+    },
+    "scenarios/diagnostics/reserve_only.json": {
+      "file_sha256": "bf9ed0a41b888f4f1f75881e4eadc936e2b74cfefcba0ff7da0f9536b4c7f35b",
+      "content_sha256": "dd1bbe54914b137c6bfed100a3dec13fc0e2b6faf50b7c6aadb8e88eac4eb43f"
+    },
+    "scenarios/diagnostics/downstream.json": {
+      "file_sha256": "b7fd98f3e3533c3b61895cdaef088874f4771fce6e370841359e3a660b096958",
+      "content_sha256": "73fbefeca2c72886ddc47115eade809450b92598cb822b6b4b21cf3d87910067"
+    },
+    "scenarios/diagnostics/late_undefined.json": {
+      "file_sha256": "0b67b5117dba44956ac75b0a890ad9306addd052c7ed0ce73565945a4a8fb99c",
+      "content_sha256": "838a41fbcfb1bfdfc3d52b24d76b58d1a2a05322efa50b2894210e3bc4bd8785"
+    },
+    "scenarios/worked/four_uav_case_a.json": {
+      "file_sha256": "386530c0cb40f6f319f0c499ff9a8bb19e01c7913547f10256c6edcef845cb82",
+      "content_sha256": "ca5180ab7a2f9c9f71889ef3fbef8a4542c19110514d653e01314124874f8813"
+    },
+    "scenarios/worked/four_uav_case_b.json": {
+      "file_sha256": "5f1b8f16ed4fcf65adadf0696c0ca46b1c61f10102df1e19f0d595092c163488",
+      "content_sha256": "4a6fe224f73c35f1a73be797543187c5b4882684c5dc1880796fdd8c105c81fe"
+    }
+  },
+  "candidates": {
+    "examples/recovery/case_a_east_exchange.json": {
+      "file_sha256": "9377c5c4a9760dcf8e3dcaa0ab6bb82948e5560dde002734d06f529a4abc153f"
+    },
+    "examples/recovery/case_b_east_exchange.json": {
+      "file_sha256": "9377c5c4a9760dcf8e3dcaa0ab6bb82948e5560dde002734d06f529a4abc153f"
+    }
+  },
+  "conventions": [
+    "Four normalized manuscript units are represented using benchmark km, h, kg and Wh numerical units.",
+    "Recipient i maps to Ti and UAV i maps to Ui.",
+    "WEST sorts before east, preserving manuscript ownership x <= 0 for shared boundaries.",
+    "Cases A/B are supplied validation examples; no solver or minimum certificate is imported."
+  ]
+}

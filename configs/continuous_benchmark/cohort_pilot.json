@@ -1,0 +1,11 @@
+{
+  "stage": "cohort",
+  "phase": "development",
+  "sizes": [[3, 3], [6, 3], [12, 4], [24, 6]],
+  "families": ["uniform", "clustered"],
+  "seeds": [51001],
+  "max_attempts": 12,
+  "offset": "1/10",
+  "generation_refinements": [2],
+  "budget": {"max_seconds": 10, "max_proposals": 120, "refinements": [1, 2], "digits": 18}
+}

@@ -1,9 +1,0 @@
-scenario_seed: 18427
-actions:
-  - action_id: audit_delivery_n3_t6
-    action_type: delivery
-    time_s: 21600.0
-    uav_id: UAV0
-    node_id: N3
-    service_visit_index: 1
-    quantities: [2.0, 0.0, 5.0, 0.0]

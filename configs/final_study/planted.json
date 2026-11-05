@@ -1,0 +1,23 @@
+{
+  "study": "planted",
+  "design": "docs/EXPERIMENT_REDESIGN_RAL_2026_10_30.md, Section 17: analytic gadgets with a deadline-isolated background, admitted by v1 code independent of certify_v2; every arm at 10 s, CMI, CMI-mu and PH-strict at 60 s",
+  "backgrounds": [1, 2, 3],
+  "seeds": 10,
+  "smoke": {
+    "backgrounds": [1, 3],
+    "seeds": 1
+  },
+  "arms_short": ["GR", "GR-c", "LR", "PH", "PH-strict", "CMI", "CMI-mu", "noAF", "noER"],
+  "arms_long": ["PH-strict", "CMI", "CMI-mu"],
+  "settings": {
+    "base_slice_fraction": 0.025,
+    "cmi": {},
+    "ph_shares": [
+      0.05,
+      0.15,
+      0.2,
+      0.3,
+      0.3
+    ]
+  }
+}

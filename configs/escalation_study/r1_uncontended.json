@@ -1,0 +1,80 @@
+{
+  "study": "R1",
+  "phase": "uncontended",
+  "freeze_note": "Same two primary missions and caps; run with --workers 1 for uncontended wall times.",
+  "tasks": [
+    8,
+    12
+  ],
+  "uavs": 4,
+  "families": [
+    "uniform"
+  ],
+  "seeds": [
+    72001
+  ],
+  "strengths": [
+    "1/5",
+    "2/5",
+    "3/5"
+  ],
+  "slacks": [
+    "1/10",
+    "1/30",
+    "1/100",
+    "1/300",
+    "1/1000"
+  ],
+  "battery_slack": "3/2",
+  "max_attempts": 24,
+  "budget": {
+    "refinements": [
+      2,
+      4
+    ],
+    "digits": 18,
+    "max_operations": 100000,
+    "max_rows": 10000,
+    "screen": {
+      "max_seconds": 10,
+      "max_proposals": 120
+    },
+    "level2": {
+      "max_seconds": 8,
+      "max_nodes": 100000
+    },
+    "level3": {
+      "max_seconds": 6,
+      "max_nodes": 100000
+    },
+    "level4": {
+      "max_seconds": 6,
+      "max_nodes": 100000
+    }
+  },
+  "pass2_budget": {
+    "refinements": [
+      2,
+      4
+    ],
+    "digits": 18,
+    "max_operations": 100000,
+    "max_rows": 10000,
+    "screen": {
+      "max_seconds": 20,
+      "max_proposals": 120
+    },
+    "level2": {
+      "max_seconds": 40,
+      "max_nodes": 100000
+    },
+    "level3": {
+      "max_seconds": 30,
+      "max_nodes": 100000
+    },
+    "level4": {
+      "max_seconds": 30,
+      "max_nodes": 100000
+    }
+  }
+}

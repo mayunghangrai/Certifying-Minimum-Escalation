@@ -1,0 +1,10 @@
+{
+  "study": "primary_randomized",
+  "freeze_date": "2026-09-30",
+  "pilot": "results/final_benchmark_2026_09_30/pilot_v2",
+  "sizes": [[3, 3], [6, 3], [12, 4], [24, 6]],
+  "families": ["uniform", "clustered"],
+  "seeds": [21000, 21001, 21002, 21003, 21004, 21005],
+  "budget": {"max_nodes": 40000, "max_branches": 4000, "max_seconds": 5},
+  "paired_seed_indices": [0, 3]
+}

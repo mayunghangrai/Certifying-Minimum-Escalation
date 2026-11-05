@@ -1,0 +1,14 @@
+{
+  "benign_update.json": {
+    "file_sha256": "175a6005f7197a364707b52c66f0dba9e777a82cb3b3614877a3c89cbe42b596",
+    "content_sha256": "5fae84e57d60e4d7ad601ee39ef45d1740ea7a289addf80aa305059a0346572d"
+  },
+  "horizon_late.json": {
+    "file_sha256": "837734497138f02f3dc3f0345fef47f7cabd20301e6be7c19546a2ea9fe1e602",
+    "content_sha256": "0e3a0c0172b42669449c26b3e34ac9bc64fa2f0648551f3cdb5ec54a29fa30ed"
+  },
+  "local_delay.json": {
+    "file_sha256": "87f50199710ba212af2d7108fb82be38c7f8504332d2e232f16608b2e5694dff",
+    "content_sha256": "d00445aed15a699c7d96252b0437fc9cb94fc5bcd23d47933506b9bde56706ea"
+  }
+}

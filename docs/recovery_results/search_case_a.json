@@ -1,0 +1,1157 @@
+{
+  "affected_tasks": [
+    "T1",
+    "T2"
+  ],
+  "arithmetic": "Normalized JSON decimals interpreted as rationals; unsupported radicals use numerical proposals.",
+  "certified_empty_levels": [
+    0,
+    1,
+    2
+  ],
+  "claim": "Exact bounds concern this finite path representation and the fixed operation protocol. They concern received-wind feasible sets; previous_premise separately reports whether the incumbent qualifies as an exact feasible-before-update benchmark. Numerical witnesses use simulator tolerances and do not certify an exact upper bound.",
+  "levels": [
+    {
+      "branch_evidence": [
+        {
+          "branch_hash": "a84006b9bf6ef9ee978d9d11defd383eba34af95c311b17f11c39b874bd46d2f",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "17": "1"
+            }
+          },
+          "exact": true,
+          "index": 0,
+          "outcome": "EMPTY"
+        }
+      ],
+      "branches": 1,
+      "budgets": [
+        {
+          "exhaustive": true,
+          "max_branches": 2000,
+          "max_iterations": 10000,
+          "max_nodes": 100000,
+          "max_operations": 10000,
+          "max_rows": 2000,
+          "numerical": true
+        }
+      ],
+      "cursor": {
+        "live_continuation_only": true,
+        "next_branch": 1,
+        "nodes": 18
+      },
+      "enumeration_complete": true,
+      "exact_feasible_branches": 0,
+      "excluded_branches": 1,
+      "feasible_branches": 0,
+      "level": 0,
+      "nodes": 18,
+      "representation_hash": "9f1653cad69dc0666744bb79be0b818b64df8ba62eb1402b49bf950cdce7d2fc",
+      "retry_attempts": 0,
+      "scenario_hash": "ca5180ab7a2f9c9f71889ef3fbef8a4542c19110514d653e01314124874f8813",
+      "status": "EMPTY",
+      "unresolved_branches": 0,
+      "version": "recovery-level-v1",
+      "witness": null
+    },
+    {
+      "branch_evidence": [
+        {
+          "branch_hash": "a84006b9bf6ef9ee978d9d11defd383eba34af95c311b17f11c39b874bd46d2f",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "17": "1"
+            }
+          },
+          "exact": true,
+          "index": 0,
+          "outcome": "EMPTY"
+        }
+      ],
+      "branches": 1,
+      "budgets": [
+        {
+          "exhaustive": true,
+          "max_branches": 2000,
+          "max_iterations": 10000,
+          "max_nodes": 100000,
+          "max_operations": 10000,
+          "max_rows": 2000,
+          "numerical": true
+        }
+      ],
+      "cursor": {
+        "live_continuation_only": true,
+        "next_branch": 1,
+        "nodes": 18
+      },
+      "enumeration_complete": true,
+      "equivalent_to": 0,
+      "exact_feasible_branches": 0,
+      "excluded_branches": 1,
+      "feasible_branches": 0,
+      "level": 1,
+      "nodes": 18,
+      "representation_hash": "9f1653cad69dc0666744bb79be0b818b64df8ba62eb1402b49bf950cdce7d2fc",
+      "retry_attempts": 0,
+      "scenario_hash": "ca5180ab7a2f9c9f71889ef3fbef8a4542c19110514d653e01314124874f8813",
+      "status": "EMPTY",
+      "unresolved_branches": 0,
+      "version": "recovery-level-v1",
+      "witness": null
+    },
+    {
+      "branch_evidence": [
+        {
+          "branch_hash": "a84006b9bf6ef9ee978d9d11defd383eba34af95c311b17f11c39b874bd46d2f",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "17": "1"
+            }
+          },
+          "exact": true,
+          "index": 0,
+          "outcome": "EMPTY"
+        }
+      ],
+      "branches": 1,
+      "budgets": [
+        {
+          "exhaustive": true,
+          "max_branches": 2000,
+          "max_iterations": 10000,
+          "max_nodes": 100000,
+          "max_operations": 10000,
+          "max_rows": 2000,
+          "numerical": true
+        }
+      ],
+      "cursor": {
+        "live_continuation_only": true,
+        "next_branch": 1,
+        "nodes": 38
+      },
+      "enumeration_complete": true,
+      "exact_feasible_branches": 0,
+      "excluded_branches": 1,
+      "feasible_branches": 0,
+      "level": 2,
+      "nodes": 38,
+      "representation_hash": "9f1653cad69dc0666744bb79be0b818b64df8ba62eb1402b49bf950cdce7d2fc",
+      "retry_attempts": 0,
+      "scenario_hash": "ca5180ab7a2f9c9f71889ef3fbef8a4542c19110514d653e01314124874f8813",
+      "status": "EMPTY",
+      "unresolved_branches": 0,
+      "version": "recovery-level-v1",
+      "witness": null
+    },
+    {
+      "branch_evidence": [
+        {
+          "branch_hash": "a84006b9bf6ef9ee978d9d11defd383eba34af95c311b17f11c39b874bd46d2f",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "17": "1"
+            }
+          },
+          "exact": true,
+          "index": 0,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "61f09f8b0609ff733434e17f1d7fa6e5c6a546c505d084ba9a33848603f0322f",
+          "exact": true,
+          "index": 1,
+          "outcome": "WITNESS"
+        }
+      ],
+      "branches": 2,
+      "budgets": [
+        {
+          "exhaustive": true,
+          "max_branches": 2000,
+          "max_iterations": 10000,
+          "max_nodes": 100000,
+          "max_operations": 10000,
+          "max_rows": 2000,
+          "numerical": true
+        }
+      ],
+      "cursor": {
+        "live_continuation_only": true,
+        "next_branch": 2,
+        "nodes": 76
+      },
+      "enumeration_complete": true,
+      "exact_feasible_branches": 1,
+      "excluded_branches": 1,
+      "feasible_branches": 1,
+      "level": 3,
+      "nodes": 76,
+      "representation_hash": "9f1653cad69dc0666744bb79be0b818b64df8ba62eb1402b49bf950cdce7d2fc",
+      "retry_attempts": 0,
+      "scenario_hash": "ca5180ab7a2f9c9f71889ef3fbef8a4542c19110514d653e01314124874f8813",
+      "status": "WITNESS",
+      "unresolved_branches": 0,
+      "version": "recovery-level-v1",
+      "witness": {
+        "exact": true,
+        "exact_transfers": {},
+        "plan": {
+          "assignment": {
+            "T1": "U2",
+            "T2": "U1",
+            "T3": "U3",
+            "T4": "U4"
+          },
+          "routes": {
+            "U1": {
+              "deliveries": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "loads": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "paths": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    1,
+                    0
+                  ]
+                ],
+                [
+                  [
+                    1,
+                    0
+                  ],
+                  [
+                    0,
+                    0
+                  ]
+                ]
+              ],
+              "stops": [
+                "T2",
+                "DEPOT"
+              ]
+            },
+            "U2": {
+              "deliveries": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "loads": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "paths": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    1,
+                    0
+                  ]
+                ],
+                [
+                  [
+                    1,
+                    0
+                  ],
+                  [
+                    0,
+                    0
+                  ]
+                ]
+              ],
+              "stops": [
+                "T1",
+                "DEPOT"
+              ]
+            },
+            "U3": {
+              "deliveries": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "loads": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "paths": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    -1,
+                    0
+                  ]
+                ],
+                [
+                  [
+                    -1,
+                    0
+                  ],
+                  [
+                    0,
+                    0
+                  ]
+                ]
+              ],
+              "stops": [
+                "T3",
+                "DEPOT"
+              ]
+            },
+            "U4": {
+              "deliveries": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "loads": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "paths": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    -1,
+                    0
+                  ]
+                ],
+                [
+                  [
+                    -1,
+                    0
+                  ],
+                  [
+                    0,
+                    0
+                  ]
+                ]
+              ],
+              "stops": [
+                "T4",
+                "DEPOT"
+              ]
+            }
+          }
+        },
+        "reserve_paths": {
+          "U1": {
+            "1": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "initial": [
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          "U2": {
+            "1": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "initial": [
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          "U3": {
+            "1": [
+              [
+                -1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "initial": [
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          "U4": {
+            "1": [
+              [
+                -1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "initial": [
+              [
+                0,
+                0
+              ]
+            ]
+          }
+        },
+        "validation": {
+          "accepted": true,
+          "candidate_hash": "4872f8cf1358f7c74effe0ba3c3cd074cd38a91a3bf2cdee16b88ea512ca060a",
+          "exact": true,
+          "level": 3,
+          "numerical_level": 3,
+          "numerical_model": "Simulator predicate tolerance 1e-9; exact flag requires rational primal checks.",
+          "scenario_hash": "ca5180ab7a2f9c9f71889ef3fbef8a4542c19110514d653e01314124874f8813"
+        }
+      }
+    },
+    {
+      "branch_evidence": [
+        {
+          "branch_hash": "a84006b9bf6ef9ee978d9d11defd383eba34af95c311b17f11c39b874bd46d2f",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "17": "1"
+            }
+          },
+          "exact": true,
+          "index": 0,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "7b0aac72f1033e8ea10f4b23ceab667eff67fcc6dbcd0562e80a93f9e1c41e3a",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "17": "1"
+            }
+          },
+          "exact": true,
+          "index": 1,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "61f09f8b0609ff733434e17f1d7fa6e5c6a546c505d084ba9a33848603f0322f",
+          "exact": true,
+          "index": 2,
+          "outcome": "WITNESS"
+        },
+        {
+          "branch_hash": "b2fe3246f0a3360c180ff7c2940d100070dbbfec9abb9d6492e1fd679131df40",
+          "exact": true,
+          "index": 3,
+          "outcome": "WITNESS"
+        }
+      ],
+      "branches": 4,
+      "budgets": [
+        {
+          "exhaustive": true,
+          "max_branches": 2000,
+          "max_iterations": 10000,
+          "max_nodes": 100000,
+          "max_operations": 10000,
+          "max_rows": 2000,
+          "numerical": true
+        }
+      ],
+      "cursor": {
+        "live_continuation_only": true,
+        "next_branch": 4,
+        "nodes": 116
+      },
+      "enumeration_complete": true,
+      "exact_feasible_branches": 2,
+      "excluded_branches": 2,
+      "feasible_branches": 2,
+      "level": 4,
+      "nodes": 116,
+      "representation_hash": "9f1653cad69dc0666744bb79be0b818b64df8ba62eb1402b49bf950cdce7d2fc",
+      "retry_attempts": 0,
+      "scenario_hash": "ca5180ab7a2f9c9f71889ef3fbef8a4542c19110514d653e01314124874f8813",
+      "status": "WITNESS",
+      "unresolved_branches": 0,
+      "version": "recovery-level-v1",
+      "witness": {
+        "exact": true,
+        "exact_transfers": {},
+        "plan": {
+          "assignment": {
+            "T1": "U2",
+            "T2": "U1",
+            "T3": "U3",
+            "T4": "U4"
+          },
+          "routes": {
+            "U1": {
+              "deliveries": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "loads": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "paths": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    1,
+                    0
+                  ]
+                ],
+                [
+                  [
+                    1,
+                    0
+                  ],
+                  [
+                    0,
+                    0
+                  ]
+                ]
+              ],
+              "stops": [
+                "T2",
+                "DEPOT"
+              ]
+            },
+            "U2": {
+              "deliveries": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "loads": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "paths": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    1,
+                    0
+                  ]
+                ],
+                [
+                  [
+                    1,
+                    0
+                  ],
+                  [
+                    0,
+                    0
+                  ]
+                ]
+              ],
+              "stops": [
+                "T1",
+                "DEPOT"
+              ]
+            },
+            "U3": {
+              "deliveries": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "loads": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "paths": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    -1,
+                    0
+                  ]
+                ],
+                [
+                  [
+                    -1,
+                    0
+                  ],
+                  [
+                    0,
+                    0
+                  ]
+                ]
+              ],
+              "stops": [
+                "T3",
+                "DEPOT"
+              ]
+            },
+            "U4": {
+              "deliveries": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "loads": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "paths": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    -1,
+                    0
+                  ]
+                ],
+                [
+                  [
+                    -1,
+                    0
+                  ],
+                  [
+                    0,
+                    0
+                  ]
+                ]
+              ],
+              "stops": [
+                "T4",
+                "DEPOT"
+              ]
+            }
+          }
+        },
+        "reserve_paths": {
+          "U1": {
+            "1": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "initial": [
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          "U2": {
+            "1": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "initial": [
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          "U3": {
+            "1": [
+              [
+                -1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "initial": [
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          "U4": {
+            "1": [
+              [
+                -1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "initial": [
+              [
+                0,
+                0
+              ]
+            ]
+          }
+        },
+        "validation": {
+          "accepted": true,
+          "candidate_hash": "4872f8cf1358f7c74effe0ba3c3cd074cd38a91a3bf2cdee16b88ea512ca060a",
+          "exact": true,
+          "level": 3,
+          "numerical_level": 3,
+          "numerical_model": "Simulator predicate tolerance 1e-9; exact flag requires rational primal checks.",
+          "scenario_hash": "ca5180ab7a2f9c9f71889ef3fbef8a4542c19110514d653e01314124874f8813"
+        }
+      }
+    }
+  ],
+  "lower_bound": 3,
+  "neighborhood": [
+    "T1",
+    "T2"
+  ],
+  "nodes_used": 248,
+  "numerical_upper_bound": null,
+  "previous_premise": {
+    "exact_feasible": true,
+    "numerical_feasible": true,
+    "reason": null
+  },
+  "representation": {
+    "nominal_paths": [
+      [
+        [
+          -1,
+          0
+        ]
+      ],
+      [
+        [
+          -1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      [
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      [
+        [
+          0,
+          0
+        ]
+      ],
+      [
+        [
+          0,
+          0
+        ],
+        [
+          -1,
+          0
+        ]
+      ],
+      [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      [
+        [
+          1,
+          0
+        ]
+      ],
+      [
+        [
+          1,
+          0
+        ],
+        [
+          -1,
+          0
+        ]
+      ],
+      [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    ],
+    "return_paths": [
+      [
+        [
+          -1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      [
+        [
+          0,
+          0
+        ]
+      ],
+      [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    ],
+    "scenario_hash": "ca5180ab7a2f9c9f71889ef3fbef8a4542c19110514d653e01314124874f8813",
+    "slot_bounds": {
+      "U1": 2,
+      "U2": 2,
+      "U3": 2,
+      "U4": 2
+    },
+    "version": "finite-paths-v1"
+  },
+  "representation_hash": "9f1653cad69dc0666744bb79be0b818b64df8ba62eb1402b49bf950cdce7d2fc",
+  "scenario_hash": "ca5180ab7a2f9c9f71889ef3fbef8a4542c19110514d653e01314124874f8813",
+  "status": "MINIMUM_CERTIFIED_R",
+  "total_node_budget": 500000,
+  "upper_bound": 3,
+  "version": "recovery-search-v1",
+  "witness": {
+    "exact": true,
+    "exact_transfers": {},
+    "plan": {
+      "assignment": {
+        "T1": "U2",
+        "T2": "U1",
+        "T3": "U3",
+        "T4": "U4"
+      },
+      "routes": {
+        "U1": {
+          "deliveries": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "loads": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "paths": [
+            [
+              [
+                0,
+                0
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          ],
+          "stops": [
+            "T2",
+            "DEPOT"
+          ]
+        },
+        "U2": {
+          "deliveries": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "loads": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "paths": [
+            [
+              [
+                0,
+                0
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          ],
+          "stops": [
+            "T1",
+            "DEPOT"
+          ]
+        },
+        "U3": {
+          "deliveries": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "loads": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "paths": [
+            [
+              [
+                0,
+                0
+              ],
+              [
+                -1,
+                0
+              ]
+            ],
+            [
+              [
+                -1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          ],
+          "stops": [
+            "T3",
+            "DEPOT"
+          ]
+        },
+        "U4": {
+          "deliveries": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "loads": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "paths": [
+            [
+              [
+                0,
+                0
+              ],
+              [
+                -1,
+                0
+              ]
+            ],
+            [
+              [
+                -1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          ],
+          "stops": [
+            "T4",
+            "DEPOT"
+          ]
+        }
+      }
+    },
+    "reserve_paths": {
+      "U1": {
+        "1": [
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "initial": [
+          [
+            0,
+            0
+          ]
+        ]
+      },
+      "U2": {
+        "1": [
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "initial": [
+          [
+            0,
+            0
+          ]
+        ]
+      },
+      "U3": {
+        "1": [
+          [
+            -1,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "initial": [
+          [
+            0,
+            0
+          ]
+        ]
+      },
+      "U4": {
+        "1": [
+          [
+            -1,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "initial": [
+          [
+            0,
+            0
+          ]
+        ]
+      }
+    },
+    "validation": {
+      "accepted": true,
+      "candidate_hash": "4872f8cf1358f7c74effe0ba3c3cd074cd38a91a3bf2cdee16b88ea512ca060a",
+      "exact": true,
+      "level": 3,
+      "numerical_level": 3,
+      "numerical_model": "Simulator predicate tolerance 1e-9; exact flag requires rational primal checks.",
+      "scenario_hash": "ca5180ab7a2f9c9f71889ef3fbef8a4542c19110514d653e01314124874f8813"
+    }
+  }
+}

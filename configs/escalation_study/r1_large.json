@@ -1,0 +1,41 @@
+{
+  "study": "R1",
+  "phase": "large_missions",
+  "freeze_note": "Witnesses and their times only: diagnosis, Levels 0-1, and the Level-2 search within one 60 s cap. n in {24, 48} crossed with m in {6, 8}, 10 missions each (plan Sections 4 and 8: 40 missions).",
+  "sizes": [
+    [
+      24,
+      6
+    ],
+    [
+      24,
+      8
+    ],
+    [
+      48,
+      6
+    ],
+    [
+      48,
+      8
+    ]
+  ],
+  "families": [
+    "uniform",
+    "clustered"
+  ],
+  "seeds": [
+    73001,
+    73002,
+    73003,
+    73004,
+    73005
+  ],
+  "search": {
+    "strength": "2/5",
+    "slack": "1/1000",
+    "max_seconds": 60,
+    "max_proposals": 120,
+    "max_attempts": 24
+  }
+}

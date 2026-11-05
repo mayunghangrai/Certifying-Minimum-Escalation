@@ -1,0 +1,11 @@
+{
+  "study": "near_boundary",
+  "phase": "development",
+  "sizes": [[3, 3], [6, 3], [12, 4], [24, 6]],
+  "families": ["uniform", "clustered"],
+  "seeds": [31001],
+  "anchors": ["incumbent", "fixed_sequence"],
+  "offset": "1/10",
+  "max_attempts": 48,
+  "budget": {"max_seconds": 5, "max_proposals": 120}
+}

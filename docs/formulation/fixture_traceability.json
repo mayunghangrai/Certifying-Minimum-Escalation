@@ -1,0 +1,616 @@
+{
+  "formulation_date": "2026-09-17",
+  "scope": "Every serialized leaf in the frozen benchmark has exactly one field rule. Numerical choices are synthetic instantiations, not empirical claims.",
+  "fields": [
+    {
+      "path": "/schema_version",
+      "source": "technical_details.tex",
+      "anchor": "eq:information_state",
+      "assumption": "All evaluations refer to one declared formulation and fixed information state.",
+      "benchmark_choice": "Engineering provenance metadata, not a manuscript decision variable; IDs distinguish the three hand-authored update cases.",
+      "tests": [
+        "test_benchmark_contract.py::test_scalar_fixture_round_trip_and_defensive_copy"
+      ]
+    },
+    {
+      "path": "/formulation_date",
+      "source": "technical_details.tex",
+      "anchor": "eq:information_state",
+      "assumption": "All evaluations refer to one declared formulation and fixed information state.",
+      "benchmark_choice": "Engineering provenance metadata, not a manuscript decision variable; IDs distinguish the three hand-authored update cases.",
+      "tests": [
+        "test_benchmark_contract.py::test_scalar_fixture_round_trip_and_defensive_copy"
+      ]
+    },
+    {
+      "path": "/benchmark_id",
+      "source": "technical_details.tex",
+      "anchor": "eq:information_state",
+      "assumption": "All evaluations refer to one declared formulation and fixed information state.",
+      "benchmark_choice": "Engineering provenance metadata, not a manuscript decision variable; IDs distinguish the three hand-authored update cases.",
+      "tests": [
+        "test_benchmark_contract.py::test_scalar_fixture_round_trip_and_defensive_copy"
+      ]
+    },
+    {
+      "path": "/units/distance",
+      "source": "technical_details.tex",
+      "anchor": "eq:flight_energy",
+      "assumption": "Travel, carried unit mass, duration and energy have consistent dimensions.",
+      "benchmark_choice": "Unit convention: km; no commodity type axis.",
+      "tests": [
+        "test_wind_physics.py::test_directed_constant_airspeed_and_scalar_mass"
+      ]
+    },
+    {
+      "path": "/units/time",
+      "source": "technical_details.tex",
+      "anchor": "eq:flight_energy",
+      "assumption": "Travel, carried unit mass, duration and energy have consistent dimensions.",
+      "benchmark_choice": "Unit convention: h; no commodity type axis.",
+      "tests": [
+        "test_wind_physics.py::test_directed_constant_airspeed_and_scalar_mass"
+      ]
+    },
+    {
+      "path": "/units/mass",
+      "source": "technical_details.tex",
+      "anchor": "eq:flight_energy",
+      "assumption": "Travel, carried unit mass, duration and energy have consistent dimensions.",
+      "benchmark_choice": "Unit convention: kg; no commodity type axis.",
+      "tests": [
+        "test_wind_physics.py::test_directed_constant_airspeed_and_scalar_mass"
+      ]
+    },
+    {
+      "path": "/units/energy",
+      "source": "technical_details.tex",
+      "anchor": "eq:flight_energy",
+      "assumption": "Travel, carried unit mass, duration and energy have consistent dimensions.",
+      "benchmark_choice": "Unit convention: Wh; no commodity type axis.",
+      "tests": [
+        "test_wind_physics.py::test_directed_constant_airspeed_and_scalar_mass"
+      ]
+    },
+    {
+      "path": "/units/quantity",
+      "source": "technical_details.tex",
+      "anchor": "eq:flight_energy",
+      "assumption": "Travel, carried unit mass, duration and energy have consistent dimensions.",
+      "benchmark_choice": "Unit convention: commodity_unit; no commodity type axis.",
+      "tests": [
+        "test_wind_physics.py::test_directed_constant_airspeed_and_scalar_mass"
+      ]
+    },
+    {
+      "path": "/mission/epoch_h",
+      "source": "technical_details.tex",
+      "anchor": "eq:information_state",
+      "assumption": "The update epoch t lies in [0,T).",
+      "benchmark_choice": "t=1 h; executed actions have already been settled.",
+      "tests": [
+        "test_benchmark_contract.py::test_invalid_input_fails_closed"
+      ]
+    },
+    {
+      "path": "/mission/horizon_h",
+      "source": "technical_details.tex",
+      "anchor": "eq:flight_status",
+      "assumption": "All remaining operations must complete by fixed T, including equality.",
+      "benchmark_choice": "T=8 h for each paired projection.",
+      "tests": [
+        "test_wind_physics.py::test_horizon_equality_zero_length_and_late_unavailable_results"
+      ]
+    },
+    {
+      "path": "/mission/commodity_unit_mass_kg",
+      "source": "technical_details.tex",
+      "anchor": "eq:payload_constraint",
+      "assumption": "One divisible commodity with a positive unit mass m; payload mass equals m times scalar onboard quantity.",
+      "benchmark_choice": "m=2 kg per commodity unit; fractional deliveries are intentional.",
+      "tests": [
+        "test_wind_physics.py::test_directed_constant_airspeed_and_scalar_mass"
+      ]
+    },
+    {
+      "path": "/mission/operating_region_xy/*/*",
+      "source": "technical_details.tex",
+      "anchor": "eq:wind_field",
+      "assumption": "A bounded polygonal operating region contains all sites and is fully partitioned by wind cells.",
+      "benchmark_choice": "Rectangle [0,12] x [0,8] km; every cell remains traversable.",
+      "tests": [
+        "test_benchmark_contract.py::test_invalid_input_fails_closed"
+      ]
+    },
+    {
+      "path": "/mission/depot_xy/*",
+      "source": "technical_details.tex",
+      "anchor": "eq:current_state_route",
+      "assumption": "The depot is fixed and active routes end there.",
+      "benchmark_choice": "One depot at (1,1) km.",
+      "tests": [
+        "test_plan_contract.py::test_common_domain_rejects_inconsistent_slots_assignments_and_residuals"
+      ]
+    },
+    {
+      "path": "/mission/tasks/*/id",
+      "source": "technical_details.tex",
+      "anchor": "eq:remaining_tasks",
+      "assumption": "Tasks have fixed identifiers; remaining tasks have positive residual demand.",
+      "benchmark_choice": "Three tasks A, B and C.",
+      "tests": [
+        "test_benchmark_contract.py::test_scalar_fixture_round_trip_and_defensive_copy"
+      ]
+    },
+    {
+      "path": "/mission/tasks/*/position_xy/*",
+      "source": "technical_details.tex",
+      "anchor": "eq:current_state_route",
+      "assumption": "Visit paths join fixed task locations.",
+      "benchmark_choice": "A=(9,1), B=(9,5), C=(3,5) km.",
+      "tests": [
+        "test_plan_contract.py::test_common_domain_rejects_inconsistent_slots_assignments_and_residuals"
+      ]
+    },
+    {
+      "path": "/mission/tasks/*/demand",
+      "source": "technical_details.tex",
+      "anchor": "eq:residual_demand",
+      "assumption": "Demand is a nonnegative scalar and residual demand subtracts cumulative delivery.",
+      "benchmark_choice": "Demands 4, 1.5 and 2 commodity units.",
+      "tests": [
+        "test_benchmark_contract.py::test_invalid_input_fails_closed"
+      ]
+    },
+    {
+      "path": "/mission/tasks/*/mandatory",
+      "source": "technical_details.tex",
+      "anchor": "eq:mandatory_residual",
+      "assumption": "Fixed mandatory quantities lie between zero and demand; residual obligations subtract history.",
+      "benchmark_choice": "A and B require full demand; C requires 1.5 of 2 units.",
+      "tests": [
+        "test_benchmark_execution.py::test_previous_incumbent_is_a_complete_feasible_witness"
+      ]
+    },
+    {
+      "path": "/mission/tasks/*/deadline_h",
+      "source": "technical_details.tex",
+      "anchor": "eq:time_constraints",
+      "assumption": "Positive deliveries must complete service before the fixed deadline.",
+      "benchmark_choice": "A deadline 3.9 h separates previous and revised feasibility; B/C deadlines are 6 h.",
+      "tests": [
+        "test_execution_boundaries.py::test_positive_delivery_deadline_is_service_completion_not_arrival"
+      ]
+    },
+    {
+      "path": "/mission/vehicles/*/id",
+      "source": "technical_details.tex",
+      "anchor": "eq:fleet_state",
+      "assumption": "Each UAV has its own observed position, load, battery and execution mode.",
+      "benchmark_choice": "Two UAVs U1/U2 with independent resource recursions.",
+      "tests": [
+        "test_benchmark_execution.py::test_previous_incumbent_is_a_complete_feasible_witness"
+      ]
+    },
+    {
+      "path": "/mission/vehicles/*/airspeed_kmh",
+      "source": "technical_details.tex",
+      "anchor": "eq:ground_speed",
+      "assumption": "Fixed positive airspeed; wind changes ground speed.",
+      "benchmark_choice": "10 km/h for both UAVs, above all wind magnitudes.",
+      "tests": [
+        "test_wind_physics.py::test_directed_constant_airspeed_and_scalar_mass"
+      ]
+    },
+    {
+      "path": "/mission/vehicles/*/empty_mass_kg",
+      "source": "technical_details.tex",
+      "anchor": "eq:flight_energy",
+      "assumption": "Empty mass is positive and contributes to flight power.",
+      "benchmark_choice": "2 kg for both UAVs.",
+      "tests": [
+        "test_wind_physics.py::test_directed_constant_airspeed_and_scalar_mass"
+      ]
+    },
+    {
+      "path": "/mission/vehicles/*/energy_coefficient_wh_per_kg_km",
+      "source": "technical_details.tex",
+      "anchor": "eq:flight_energy",
+      "assumption": "Linear flight-energy coefficient is positive with energy per mass per distance units.",
+      "benchmark_choice": "0.5 Wh/(kg km), an illustrative surrogate, not a calibrated aircraft model.",
+      "tests": [
+        "test_wind_physics.py::test_directed_constant_airspeed_and_scalar_mass"
+      ]
+    },
+    {
+      "path": "/mission/vehicles/*/battery_capacity_wh",
+      "source": "technical_details.tex",
+      "anchor": "eq:depot_recharge",
+      "assumption": "Departure preparation restores battery capacity; no replenishment away from depot.",
+      "benchmark_choice": "100 Wh for both UAVs.",
+      "tests": [
+        "test_benchmark_execution.py::test_previous_incumbent_is_a_complete_feasible_witness"
+      ]
+    },
+    {
+      "path": "/mission/vehicles/*/reserve_wh",
+      "source": "technical_details.tex",
+      "anchor": "eq:safe_terminal_set",
+      "assumption": "Terminal and pre-recharge depot arrival batteries retain beta.",
+      "benchmark_choice": "10 Wh reserve.",
+      "tests": [
+        "test_benchmark_execution.py::test_full_mission_constraints_are_enforced"
+      ]
+    },
+    {
+      "path": "/mission/vehicles/*/payload_capacity_kg",
+      "source": "technical_details.tex",
+      "anchor": "eq:payload_constraint",
+      "assumption": "Before/after-stop payload mass cannot exceed capacity.",
+      "benchmark_choice": "6 kg (3 commodity units).",
+      "tests": [
+        "test_benchmark_execution.py::test_full_mission_constraints_are_enforced"
+      ]
+    },
+    {
+      "path": "/mission/vehicles/*/slot_bound",
+      "source": "technical_details.tex",
+      "anchor": "eq:decision_partition",
+      "assumption": "Fixed finite positive route slot bounds are common to every scope.",
+      "benchmark_choice": "Five slots per UAV, including inactive canonical padding.",
+      "tests": [
+        "test_intervention_scope.py::test_resequence_and_padding_changes_are_fixed_coordinate_decisions"
+      ]
+    },
+    {
+      "path": "/state/depot_stock",
+      "source": "technical_details.tex",
+      "anchor": "eq:residual_inventory",
+      "assumption": "Residual depot stock is a scalar fixed across projections; returned payload is not restocked.",
+      "benchmark_choice": "6 units remain at the update epoch.",
+      "tests": [
+        "test_benchmark_execution.py::test_previous_incumbent_is_a_complete_feasible_witness"
+      ]
+    },
+    {
+      "path": "/state/cumulative_delivered/*",
+      "source": "technical_details.tex",
+      "anchor": "eq:residual_demand",
+      "assumption": "Consistent history supplies cumulative deliveries between zero and initial demand.",
+      "benchmark_choice": "Settled history summary: A=1, B=0, C=0.5; pre-epoch trajectories are not replayed.",
+      "tests": [
+        "test_benchmark_execution.py::test_previous_incumbent_is_a_complete_feasible_witness"
+      ]
+    },
+    {
+      "path": "/state/fleet/*/position_xy/*",
+      "source": "technical_details.tex",
+      "anchor": "eq:fleet_state",
+      "assumption": "The paired evaluations start at identical observed positions.",
+      "benchmark_choice": "U1 at depot, U2 at C.",
+      "tests": [
+        "test_benchmark_execution.py::test_previous_incumbent_is_a_complete_feasible_witness"
+      ]
+    },
+    {
+      "path": "/state/fleet/*/battery_wh",
+      "source": "technical_details.tex",
+      "anchor": "eq:fleet_state",
+      "assumption": "Observed batteries are fixed and bounded by capacity.",
+      "benchmark_choice": "U1=80 Wh, U2=90 Wh.",
+      "tests": [
+        "test_benchmark_execution.py::test_previous_incumbent_is_a_complete_feasible_witness"
+      ]
+    },
+    {
+      "path": "/state/fleet/*/onboard",
+      "source": "technical_details.tex",
+      "anchor": "eq:fleet_state",
+      "assumption": "Onboard commodity is one nonnegative scalar, not a transfer decision.",
+      "benchmark_choice": "U1=0, U2=0.5 units.",
+      "tests": [
+        "test_benchmark_execution.py::test_previous_incumbent_is_a_complete_feasible_witness"
+      ]
+    },
+    {
+      "path": "/state/fleet/*/mode",
+      "source": "technical_details.tex",
+      "anchor": "eq:fleet_state",
+      "assumption": "Observed execution mode determines any fixed unfinished operation.",
+      "benchmark_choice": "U1 idle; U2 is servicing C.",
+      "tests": [
+        "test_execution_boundaries.py::test_service_at_depot_coordinates_finishes_before_any_depot_preparation"
+      ]
+    },
+    {
+      "path": "/state/fleet/*/residual_operation",
+      "source": "technical_details.tex",
+      "anchor": "eq:information_state",
+      "assumption": "Only an unfinished committed ground operation has residual data.",
+      "benchmark_choice": "Null for U1; U2 uses its fixed remaining service operation.",
+      "tests": [
+        "test_plan_contract.py::test_common_domain_rejects_inconsistent_slots_assignments_and_residuals"
+      ]
+    },
+    {
+      "path": "/state/fleet/*/residual_operation/duration_h",
+      "source": "technical_details.tex",
+      "anchor": "eq:information_state",
+      "assumption": "An unfinished operation retains only its remaining duration.",
+      "benchmark_choice": "U2 has 0.05 h remaining; the generic protocol applies only after this leading service.",
+      "tests": [
+        "test_execution_boundaries.py::test_pending_service_uses_residual_duration_energy_and_transfers"
+      ]
+    },
+    {
+      "path": "/state/fleet/*/residual_operation/energy_wh",
+      "source": "technical_details.tex",
+      "anchor": "eq:service_battery",
+      "assumption": "Remaining service energy reduces observed battery once.",
+      "benchmark_choice": "U2 consumes the declared residual 0.2 Wh once.",
+      "tests": [
+        "test_execution_boundaries.py::test_pending_service_uses_residual_duration_energy_and_transfers"
+      ]
+    },
+    {
+      "path": "/state/fleet/*/residual_operation/delivery",
+      "source": "technical_details.tex",
+      "anchor": "eq:residual_flow",
+      "assumption": "The remaining committed delivery is credited only at completion.",
+      "benchmark_choice": "U2 delivers its remaining 0.5 onboard units at the leading visit.",
+      "tests": [
+        "test_execution_boundaries.py::test_pending_service_uses_residual_duration_energy_and_transfers"
+      ]
+    },
+    {
+      "path": "/state/fleet/*/residual_operation/load",
+      "source": "technical_details.tex",
+      "anchor": "eq:residual_flow",
+      "assumption": "Loading is restricted to depot preparation and only unfinished transfers are repeated.",
+      "benchmark_choice": "Zero for the residual relief service.",
+      "tests": [
+        "test_execution_boundaries.py::test_pending_preparation_keeps_onboard_load_and_uses_only_unfinished_loading"
+      ]
+    },
+    {
+      "path": "/operations/service_duration_h",
+      "source": "technical_details.tex",
+      "anchor": "eq:delivery_time",
+      "assumption": "Ground service duration is a prescribed deterministic function, with no independent waiting decision.",
+      "benchmark_choice": "Constant 0.05 h for fresh relief service.",
+      "tests": [
+        "test_execution_boundaries.py::test_pending_service_uses_residual_duration_energy_and_transfers"
+      ]
+    },
+    {
+      "path": "/operations/service_energy_wh",
+      "source": "technical_details.tex",
+      "anchor": "eq:service_battery",
+      "assumption": "Prescribed service energy is subtracted away from depot.",
+      "benchmark_choice": "Constant 0.2 Wh for fresh relief service.",
+      "tests": [
+        "test_execution_boundaries.py::test_pending_service_uses_residual_duration_energy_and_transfers"
+      ]
+    },
+    {
+      "path": "/operations/preparation_duration_h",
+      "source": "technical_details.tex",
+      "anchor": "eq:depot_recharge",
+      "assumption": "Depot preparation loads and restores battery, with prescribed timing and no implicit queue.",
+      "benchmark_choice": "Constant 0.1 h for fresh preparation; residual preparation overrides it.",
+      "tests": [
+        "test_execution_boundaries.py::test_pending_preparation_keeps_onboard_load_and_uses_only_unfinished_loading"
+      ]
+    },
+    {
+      "path": "/operations/depot_bays",
+      "source": "technical_details.tex",
+      "anchor": "eq:depot_bays",
+      "assumption": "Optional finite bay capacity applies to half-open simultaneous preparation intervals.",
+      "benchmark_choice": "Two bays; conflicts are infeasible, not automatically delayed.",
+      "tests": [
+        "test_execution_boundaries.py::test_bay_conflict_is_infeasible_without_inventing_a_queue"
+      ]
+    },
+    {
+      "path": "/wind/cells/*/id",
+      "source": "technical_details.tex",
+      "anchor": "eq:wind_field",
+      "assumption": "The finite spatial partition indexes wind values.",
+      "benchmark_choice": "L/R index two adjoining polygonal cells.",
+      "tests": [
+        "test_benchmark_contract.py::test_invalid_input_fails_closed"
+      ]
+    },
+    {
+      "path": "/wind/cells/*/polygon_xy/*/*",
+      "source": "technical_details.tex",
+      "anchor": "eq:wind_field",
+      "assumption": "Polygonal wind cells cover the operating region without overlapping interiors.",
+      "benchmark_choice": "Split at x=6 km; no cell excludes flight.",
+      "tests": [
+        "test_wind_physics.py::test_cell_and_time_boundaries_are_integrated_exactly"
+      ]
+    },
+    {
+      "path": "/wind/boundary_owner",
+      "source": "technical_details.tex",
+      "anchor": "eq:wind_field",
+      "assumption": "Every shared boundary edge and vertex has exactly one owner.",
+      "benchmark_choice": "Lowest cell ID owns shared boundaries.",
+      "tests": [
+        "test_wind_physics.py::test_oblique_shared_edge_uses_declared_owner_despite_midpoint_rounding"
+      ]
+    },
+    {
+      "path": "/wind/time_knots_h/*",
+      "source": "technical_details.tex",
+      "anchor": "eq:wind_field",
+      "assumption": "Bins cover [t,T], are right-open except for the closed final endpoint.",
+      "benchmark_choice": "Knots 1,2,3,8 h for both tables.",
+      "tests": [
+        "test_wind_physics.py::test_boundary_aligned_segment_uses_lowest_cell_id_and_last_time_bin"
+      ]
+    },
+    {
+      "path": "/wind/speed_bound_kmh",
+      "source": "technical_details.tex",
+      "anchor": "eq:wind_bound",
+      "assumption": "A common bound on wind magnitude is strictly below every airspeed.",
+      "benchmark_choice": "9.5 km/h bound, so every direction is trackable.",
+      "tests": [
+        "test_benchmark_contract.py::test_invalid_input_fails_closed"
+      ]
+    },
+    {
+      "path": "/wind/previous/issued_at_h",
+      "source": "technical_details.tex",
+      "anchor": "eq:packet",
+      "assumption": "Previous received information is restricted to the common remaining domain.",
+      "benchmark_choice": "Previously issued at 0.5 h; evaluated at current state t=1, not replayed from 0.5.",
+      "tests": [
+        "test_benchmark_contract.py::test_invalid_input_fails_closed"
+      ]
+    },
+    {
+      "path": "/wind/received/issued_at_h",
+      "source": "technical_details.tex",
+      "anchor": "eq:packet",
+      "assumption": "The newly received packet is issued at the update epoch.",
+      "benchmark_choice": "Issued at t=1 h; future packets are absent.",
+      "tests": [
+        "test_benchmark_contract.py::test_invalid_input_fails_closed"
+      ]
+    },
+    {
+      "path": "/wind/previous/values/*/*/*",
+      "source": "technical_details.tex",
+      "anchor": "eq:wind_field",
+      "assumption": "Every cell-time wind vector is defined on the entire remaining horizon.",
+      "benchmark_choice": "Previous table is calm in both cells and all bins.",
+      "tests": [
+        "test_benchmark_contract.py::test_pair_has_full_coverage_and_only_local_wind_changes"
+      ]
+    },
+    {
+      "path": "/wind/received/values/*/*/*",
+      "source": "technical_details.tex",
+      "anchor": "eq:local_wind_update",
+      "assumption": "Only wind vectors change between paired projections.",
+      "benchmark_choice": "Received vectors implement the benign, delay and late cases; fixed data are shared.",
+      "tests": [
+        "test_benchmark_execution.py::test_paired_local_update_changes_downstream_time_energy_but_no_inputs"
+      ]
+    },
+    {
+      "path": "/wind/update_support/*/*",
+      "source": "technical_details.tex",
+      "anchor": "eq:local_wind_update",
+      "assumption": "A declared proper subset of cell-time entries contains every nonzero update.",
+      "benchmark_choice": "One L bin or two/three R bins change out of six entries. Support may conservatively include unchanged entries.",
+      "tests": [
+        "test_benchmark_contract.py::test_declared_support_can_conservatively_include_unchanged_entries"
+      ]
+    },
+    {
+      "path": "/incumbent/assignment/*",
+      "source": "technical_details.tex",
+      "anchor": "eq:remaining_plan",
+      "assumption": "Each visited remaining task has exactly one responsible UAV; repeated partial visits are allowed.",
+      "benchmark_choice": "A assigned to U1; B/C to U2; no cross-UAV split.",
+      "tests": [
+        "test_plan_contract.py::test_common_domain_rejects_inconsistent_slots_assignments_and_residuals"
+      ]
+    },
+    {
+      "path": "/incumbent/routes/*/stops/*",
+      "source": "technical_details.tex",
+      "anchor": "eq:current_state_route",
+      "assumption": "Active slots form a depot-ending prefix; remaining slots use inactive padding.",
+      "benchmark_choice": "U1 revisits A after replenishment; U2 begins with pending C service.",
+      "tests": [
+        "test_plan_contract.py::test_common_domain_rejects_inconsistent_slots_assignments_and_residuals"
+      ]
+    },
+    {
+      "path": "/incumbent/routes/*/paths/*/*/*",
+      "source": "technical_details.tex",
+      "anchor": "eq:decision_partition",
+      "assumption": "Directed piecewise-linear paths use normalized arclength; inactive paths are constant at depot.",
+      "benchmark_choice": "Caller-supplied paths include a zero-length leading service path and canonical padding.",
+      "tests": [
+        "test_intervention_scope.py::test_path_release_uses_curve_identity_and_release_does_not_require_change"
+      ]
+    },
+    {
+      "path": "/incumbent/routes/*/deliveries/*",
+      "source": "technical_details.tex",
+      "anchor": "eq:residual_flow",
+      "assumption": "Delivery is scalar, occurs only at relief visits, and is zero at the virtual origin/inactive slots.",
+      "benchmark_choice": "Repeated fractional deliveries; total remaining service A=3, B=1.5, C=1.",
+      "tests": [
+        "test_benchmark_execution.py::test_previous_incumbent_is_a_complete_feasible_witness"
+      ]
+    },
+    {
+      "path": "/incumbent/routes/*/loads/*",
+      "source": "technical_details.tex",
+      "anchor": "eq:residual_inventory",
+      "assumption": "Loading is scalar and only at a depot before a subsequent leg; returned payload stays onboard.",
+      "benchmark_choice": "U1 loads 2 then 1, carrying 0.5 back; U2 loads 2.5.",
+      "tests": [
+        "test_benchmark_execution.py::test_previous_incumbent_is_a_complete_feasible_witness"
+      ]
+    },
+    {
+      "path": "/commitments/A/*",
+      "source": "technical_details.tex",
+      "anchor": "eq:commitment_projection",
+      "assumption": "Committed coordinates retain incumbent values in every space, including Level 4.",
+      "benchmark_choice": "Component-specific mask: committed C assignment, selected first stops, U2 leading path and residual delivery; other coordinates remain mutable.",
+      "tests": [
+        "test_intervention_scope.py::test_release_table_includes_quantities_at_level_two_and_preserves_commitments"
+      ]
+    },
+    {
+      "path": "/commitments/S/*",
+      "source": "technical_details.tex",
+      "anchor": "eq:commitment_projection",
+      "assumption": "Committed coordinates retain incumbent values in every space, including Level 4.",
+      "benchmark_choice": "Component-specific mask: committed C assignment, selected first stops, U2 leading path and residual delivery; other coordinates remain mutable.",
+      "tests": [
+        "test_intervention_scope.py::test_release_table_includes_quantities_at_level_two_and_preserves_commitments"
+      ]
+    },
+    {
+      "path": "/commitments/P/*",
+      "source": "technical_details.tex",
+      "anchor": "eq:commitment_projection",
+      "assumption": "Committed coordinates retain incumbent values in every space, including Level 4.",
+      "benchmark_choice": "Component-specific mask: committed C assignment, selected first stops, U2 leading path and residual delivery; other coordinates remain mutable.",
+      "tests": [
+        "test_intervention_scope.py::test_release_table_includes_quantities_at_level_two_and_preserves_commitments"
+      ]
+    },
+    {
+      "path": "/commitments/L/*",
+      "source": "technical_details.tex",
+      "anchor": "eq:commitment_projection",
+      "assumption": "Committed coordinates retain incumbent values in every space, including Level 4.",
+      "benchmark_choice": "Component-specific mask: committed C assignment, selected first stops, U2 leading path and residual delivery; other coordinates remain mutable.",
+      "tests": [
+        "test_intervention_scope.py::test_release_table_includes_quantities_at_level_two_and_preserves_commitments"
+      ]
+    },
+    {
+      "path": "/reserve_paths/*/*/*/*",
+      "source": "technical_details.tex",
+      "anchor": "eq:reserve_witness_set",
+      "assumption": "Supplied return paths carry the current payload to depot without delivery/recharge; failure of one path does not disprove existence.",
+      "benchmark_choice": "Fixed diagnostic witnesses at each required initial/post-service state, separate from A/S/P/L.",
+      "tests": [
+        "test_benchmark_execution.py::test_failed_or_missing_supplied_reserve_witness_is_unresolved_not_empty"
+      ]
+    }
+  ]
+}

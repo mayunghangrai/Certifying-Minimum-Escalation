@@ -1,0 +1,52 @@
+{
+  "airframe": {
+    "model": "DJI Matrice 350 RTK",
+    "empty_mass_kg": 6.5,
+    "payload_capacity_kg": 2.7,
+    "source": "DJI Matrice 350 RTK specifications (weight with two batteries about 6.47 kg; 2.7 kg maximum payload)"
+  },
+  "airspeeds_mps": [
+    10,
+    12.5,
+    15
+  ],
+  "power_coefficients": {
+    "model": "P(m) = a + b*m in W, m = airframe + onboard payload in kg; same for all three airspeeds",
+    "a_w": -368,
+    "b_w_per_kg": 145.5,
+    "derivation": "Matrice 350 RTK: two 263.2 Wh batteries, 55 min without payload -> about 574 W at 6.47 kg; scaled with mass^1.5 and fitted by a line over 6.5-9.0 kg (decided 5 November, Q12)",
+    "check": "about 578 W at 6.5 kg, about 942 W at 9.0 kg; positive over the whole mass range",
+    "service": "service of 60 s at P(mass on arrival); service_energy_wh = 0",
+    "source": "DJI Matrice 350 RTK specifications; mass scaling following Dorling et al., doi 10.1109/TSMC.2016.2582745"
+  },
+  "package_mass_kg": 0.5,
+  "service_duration_s": 60,
+  "preparation_duration_s": 240,
+  "bin_width_s": 900,
+  "battery": {
+    "rule": "C = R * (1 + beta) / 0.9, reserve = 0.1 * C",
+    "beta": {
+      "tight": 0.15,
+      "medium": 0.5,
+      "ample": 2.0
+    }
+  },
+  "slack_cell_crossings": {
+    "tight": [
+      0.6,
+      2
+    ],
+    "medium": [
+      2,
+      6
+    ],
+    "loose": [
+      6,
+      20
+    ]
+  },
+  "cell_crossing_s": 125,
+  "minimum_margin_s": 60,
+  "wind_ratio_bound": 0.8,
+  "time_grid_s": "1/1000000"
+}

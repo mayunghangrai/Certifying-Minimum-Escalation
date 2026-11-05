@@ -159,6 +159,13 @@ The diagnostic never searches for a route. A declared route edge absent from
 the network must provide an explicit per-leg geometry in the incumbent plan;
 otherwise the input is rejected.
 
+If a declared route revisits the observed stop, the plan entry must include
+`current_route_index` (the zero-based index of the observed stop), except for
+the conventional initial/terminal depot pair when the snapshot is interpreted
+as the initial depot state. Without that cursor the diagnostic rejects an
+ambiguous repeated occurrence instead of guessing which completed stop should
+be removed from the suffix.
+
 The first leg starts at `epoch.time_h`. The current snapshot payload and
 battery are authoritative for the first leg. For a not-yet-loaded UAV at the
 depot, the declared plan `load` supplies its starting payload. After each
@@ -250,7 +257,10 @@ def diagnose_packet_update(
 This convenience method is valid only after a packet-update decision epoch
 and delegates to the pure function with the current snapshot, previous
 packet, and current packet. It does not alter simulator state or choose a
-follow-up command.
+follow-up command. The diagnostic window closes as soon as a controller
+command mutates or attempts to mutate simulator state; callers must diagnose
+before `prepare`, `dispatch`, `resume_current_leg`, `deliver`, or direct
+battery-consumption commands.
 
 ## Visualization
 

@@ -1,0 +1,411 @@
+\section{Constructive Recovery and Verification}
+\label{sec:constructive_recovery}
+
+This section suppresses the fixed update epoch. It supplies the locality
+criterion, constructive reference search, and worked instance used in the
+main paper. All certificates remain conditional on the received wind table.
+
+\subsection{Locality, Effective Freedom, and Collapse}
+\label{subsec:locality_resolution}
+
+Let $\mathfrak C$ be the connected components of
+$\mathcal G^{\mathrm{task}}$ and write $S=\mathcal V^{\mathrm{aff}}$.
+Reachability gives the exact identity
+\begin{equation}
+\mathcal V^R=M^A\cap\bigcup_{C\in\mathfrak C:\,C\cap S\ne\varnothing}C.
+\label{eq:supp_component_locality}
+\end{equation}
+In particular, $\mathcal V^R\subsetneq M^A$ if and only if there is a
+mutable assignment whose component contains no seed. A sufficient way to
+establish this is a partition of the task set such that every declared
+support $T(g)$ lies within one block, seeds lie in only some blocks, and
+an unseeded block contains a mutable task. This is a statement about the
+declared supports; it is not inferred from geographic distance or incumbent
+constraint slack.
+
+Define
+\begin{equation}
+E^A=\{i\in M^A:\exists\Pi\in\mathcal Y,\ a_i\ne\bar a_i\}.
+\label{eq:supp_effective_assignments}
+\end{equation}
+Nominally mutable coordinates outside $E^A$ are already fixed by structural
+consistency or other commitments. Determining $E^A$ can itself require
+search; the procedure need not compute it to obtain a safe neighborhood.
+
+\medskip
+\noindent\textbf{Proposition 4 (strictness and collapse).}
+Under the fixed support and common-domain conventions,
+\begin{equation}
+\mathcal X_3\subsetneq\mathcal X_4
+\quad\Longleftrightarrow\quad E^A\setminus\mathcal V^R\ne\varnothing.
+\label{eq:supp_strict_spaces}
+\end{equation}
+If a reached support contains $M^A$, then $\mathcal X_3=\mathcal X_4$.
+Moreover, $\mathcal X_2\subsetneq\mathcal X_3$ holds exactly when some
+plan in $\mathcal X_3$ changes an assignment from the incumbent.
+\emph{Proof.}
+The only additional restrictions in $\mathcal X_3$ relative to
+$\mathcal X_4=\mathcal Y$ are the assignment equalities outside
+$\mathcal V^R$. A plan violating any one exists precisely under the
+condition in \eqref{eq:supp_strict_spaces}. A reached support containing
+$M^A$ puts all mutable assignments into the closure, leaving no such
+equalities. Finally, $\mathcal X_2$ fixes all assignments and otherwise
+has the same mutable sequence, path, and transfer releases as
+$\mathcal X_3$. \hfill$\square$
+
+Strictness of $\mathcal X_3\subsetneq\mathcal X_4$ does not imply
+$\mathcal F_3\subsetneq\mathcal F_4$: the extra structural plans could
+all be infeasible. Likewise, a proper neighborhood can leave identical
+spaces when its excluded assignments are structurally fixed.
+
+For example, if $\mathcal T_u=\mathcal V^{\mathrm{rem}}$, any constraint
+depending on a mutable route coordinate of $u$ has full task incidence
+under the stated attribution. A nonempty seed set then reaches every task.
+Shared stock and finite bay capacity can also join otherwise separated
+groups. Such edges are retained. Constraint elimination is permissible
+only with a proof of satisfaction throughout the common domain; removing
+an incumbent-slack constraint is insufficient. Smaller exact supports may
+be proved from fixed endpoints or other structural restrictions.
+
+For searching, merge levels only after equality of their decision spaces
+in the searched representation is certified. Equal release masks suffice;
+the implication $E^A\subseteq\mathcal V^R$ also suffices for Levels 3--4
+in the full domain. Without an equality proof, retain both searches.
+An equivalence class keeps its smallest original label. Hence, when
+$\mathcal X_3=\mathcal X_4$, successful reassignment has label 3 and never
+a separate minimum of 4. This preserves the original definition of the
+minimum rather than renumbering levels.
+
+\subsection{Declared Reference Representation}
+\label{subsec:reference_domain}
+
+The reference procedure specializes the fixed operation protocol to
+durations and ground energies that depend on the UAV, site, slot, and
+observed residual mode, but not on decision quantities, entry time, or
+entering battery. Depot preparation restores full charge in its prescribed
+turnaround time. This is an explicit simulation convention, not a model
+of charging electrochemistry. It is chosen before the paired evaluations
+and held fixed across all levels. Quantity-dependent service/charging
+durations require a different solver and are outside the linear reference
+reduction.
+
+Let $\mathfrak R$ specify finite libraries
+$\mathscr P_u^{\mathfrak R}(i,j)$ and
+$\mathscr W_u^{\mathfrak R}(i)$ for nominal endpoint pairs and returns
+from a site or observed origin to the depot. A concrete construction uses
+a finite directed waypoint graph whose edges are straight segments in
+$\mathcal W$, and enumerates all walks of at most $H_P$ edges.
+Repeated vertices are allowed: excluding all loops would be an additional
+restriction in time-varying wind. Include the constant depot path and
+append every incumbent/committed nominal curve and each supplied
+pre-update reserve witness, even if it exceeds $H_P$.
+Canonicalize geometrically identical arclength curves.
+Empty endpoint libraries are explicit and cannot be filled differently
+at different levels.
+
+The waypoint graph includes all task locations, the depot, and each
+observed origin; any extra vertices, $H_P$, and library ordering are fixed
+before comparing levels using only received information. Libraries contain
+geometry, not precomputed departure-time costs. Every evaluation splits
+paths at spatial boundaries and integrates the appropriate time bins at
+the actual induced departure time. The support rules and the resulting
+$\mathcal V^R$ are also fixed across levels. Supports valid on the original
+$\mathcal Y$ remain conservative on the restricted domain.
+
+Let $\mathcal Y^{\mathfrak R}$ impose the nominal libraries in addition
+to the original structural and commitment rules, with continuous transfer
+variables. Write $\mathcal F_k^{\mathfrak R}$ for plans in
+$\mathcal X_k\cap\mathcal Y^{\mathfrak R}$ satisfying all nominal
+conditions and
+\begin{equation}
+\mathscr W_u(z)\cap\mathscr W_u^{\mathfrak R}(\mathbf x_z)
+\ne\varnothing\quad\forall (u,z)\in\mathcal Z^{\mathrm{res}}(\Pi).
+\label{eq:represented_reserve}
+\end{equation}
+The shorthand library argument $\mathbf x_z$ denotes the matching site or
+origin. A reserve witness is not an intervention coordinate: it may be
+chosen at every level, including Level-0.
+Then
+\begin{equation}
+\mathcal F_k^{\mathfrak R}\subseteq\mathcal F_k,
+\qquad k^F\le k_{\mathfrak R}^F
+:=\min\{k:\mathcal F_k^{\mathfrak R}\ne\varnothing\}.
+\label{eq:reference_scope_relation}
+\end{equation}
+The incumbent and its pre-update reserve witnesses are validated in
+$\mathfrak R$ before the instance is admitted to the reference benchmark.
+
+Enlarging nominal or reserve libraries while retaining the same support
+graph, operation protocol, and hierarchy can only enlarge each feasible
+set and decrease $k_{\mathfrak R}^F$. This gives a useful representation
+check. Rebuilding a different hierarchy during refinement invalidates that
+particular comparison. Finite-library exhaustion gives no emptiness proof
+for arbitrary piecewise-linear paths.
+
+\subsection{Reduction to Linear Feasibility}
+\label{subsec:linear_reference_search}
+
+Enumerate assignment vectors, active-prefix sequences, and nominal
+library paths satisfying structural compatibility, commitments, and the
+level's unreleased coordinates. Call a resulting skeleton
+$\sigma=(\mathcal A,\mathcal S,\mathcal P)$. Assignments may equivalently
+be derived from a consistent sequence, avoiding duplicate enumeration.
+There are finitely many skeletons because the slot bounds and libraries
+are finite.
+
+For a skeleton, perform exact wind integration and the prescribed ground
+operations. These times do not depend on loading or delivery quantities.
+A late nominal operation, fixed ground completion failure, or bay conflict
+excludes the whole skeleton. Bay intervals are checked with departures
+processed before arrivals at equal times, consistently with the half-open
+interval convention; zero-duration intervals occupy no bay.
+
+Let $\mathbf l$ contain all remaining delivery and loading variables.
+The payload recursion gives affine functions
+$q_{u,h}^{\pm}(\mathbf l)$. Define the known coefficient
+$c_{u,h}=\gamma_u v_u\tau_{u,h}$. Then
+\begin{equation}
+E_{u,h}^{\mathrm{fly}}(\mathbf l)
+=c_{u,h}\bigl(m_u^0+m q_{u,h-1}^{+}(\mathbf l)\bigr).
+\label{eq:supp_affine_energy}
+\end{equation}
+Battery states are affine by induction, including the constant reset to
+$B_u$ at depot departure. Fixed service energies preserve this property.
+For each reserve-check state, enumerate one path from its finite return
+library. Its start time and duration are already fixed by $\sigma$;
+its payload and battery remain affine in $\mathbf l$.
+Denote the vector of reserve-path choices by $\omega$.
+A return path finishing after $T$ excludes that choice, not all choices.
+
+For each pair $(\sigma,\omega)$ retain the following constraints:
+nonnegative transfers and payloads; delivery availability; payload
+capacity; stock; per-task residual mandatory and demand bounds; battery
+bounds; pre-recharge arrival and terminal reserves; and every selected
+return-energy inequality. Add site-specific transfer zeros, padding,
+commitment equalities, and the level's fixed transfers. If a relief visit
+has fixed completion time above its deadline, impose $x_{u,h}=0$.
+Thus the positive-delivery implication introduces no strict inequality
+or additional binary variable within a skeleton.
+
+The branch is a continuous linear feasibility problem
+\begin{equation}
+A\mathbf l\le b,\qquad C\mathbf l=d.
+\label{eq:supp_branch_lp}
+\end{equation}
+Each allowed transfer can additionally be bounded by
+$0\le x_{u,h},y_{u,h}\le C_u^{\mathrm{pay}}/m$.
+These upper bounds are implied by delivery availability or depot payload
+capacity (loading and unloading do not occur together). Fixed impossible
+quantities reject the branch. Keeping the explicit bounds makes the
+transfer polytope compact.
+
+\medskip
+\noindent\textbf{Proposition 5 (finite reference completeness).}
+Under the prescribed transfer-independent ground protocol, a represented
+plan is feasible at level $k$ if and only if at least one enumerated
+branch has a feasible transfer vector.
+\emph{Proof.}
+A feasible plan determines an enumerated nominal skeleton. At each of its
+finitely many reserve states, represented feasibility supplies at least
+one return path, so an enumerated $\omega$ contains those witnesses.
+Its transfer vector satisfies every row of \eqref{eq:supp_branch_lp}.
+Conversely, a feasible vector for a retained branch has structurally
+admissible nominal decisions, complete time records, every resource and
+service condition, and explicit reserve witnesses. These are precisely
+the represented feasibility requirements. \hfill$\square$
+
+This construction does not assume independent UAV resource subproblems:
+the LP retains all shared-stock rows, and the skeleton schedule retains
+the full bay check. Its cost can be exponential in route, path, and reserve
+choices. It is a small-instance correctness reference, with no real-time
+or fleet-scale efficiency claim.
+
+\subsection{Certificates, Arithmetic, and Search Budgets}
+\label{subsec:recovery_certification}
+
+A positive branch certificate contains $\sigma$, $\omega$, $\mathbf l$,
+and recomputed induced states. An independent validator checks the
+original predicates and level membership, not only the LP residuals.
+For \eqref{eq:supp_branch_lp}, a sufficient exclusion certificate is
+\begin{equation}
+\begin{split}
+\lambda&\ge0,\qquad A^{\mathsf T}\lambda+C^{\mathsf T}\nu=0,\\
+b^{\mathsf T}\lambda+d^{\mathsf T}\nu&<0,
+\end{split}
+\label{eq:branch_exclusion_certificate}
+\end{equation}
+with unrestricted equality multipliers $\nu$. If a feasible vector
+existed, premultiplication would give
+$0\le b^{\mathsf T}\lambda+d^{\mathsf T}\nu$, a contradiction.
+Equality rows can instead be encoded as pairs of inequalities.
+Geometric/time rejection and certified structural inconsistency are also
+valid exclusions and must carry their reason.
+
+For a fully specified exact reference option, use rational primitive
+geometry, wind, vehicle, and fixed-operation data. Cell intersections,
+segment lengths, wind speeds, and bin-integrated times are then real
+algebraic numbers. Exact algebraic arithmetic and sign decisions make the
+branch tests well-defined. Encode all equalities and bounds as inequalities.
+With $p$ free transfer variables, enumerate sets of $p$ linearly independent
+active rows, solve their systems, and check the resulting points against
+all rows. A nonempty bounded polyhedron has a vertex; consequently,
+exhausting all such bases without a feasible point certifies emptiness.
+When $p=0$, check the constant rows directly. This is finite but expensive.
+Rational collinear-wind examples below require only rational arithmetic.
+
+Floating-point LP software can propose witnesses and dual certificates,
+but proof labels require validated arithmetic for the declared coefficients.
+An exact check, or certified enclosures that establish every required
+inequality and equality, may validate them. Unresolved signs, equality
+residuals, or solver failure yield unresolved search. Rounded coefficients
+and feasibility tolerances must not silently redefine the represented
+mission. Equality and horizon-boundary cases require exact treatment or an
+explicitly declared alternative numerical model.
+
+For each level, fix a branch ordering and a branch/LP budget $B_k$;
+also fix a total budget. A finite wall-clock limit may be imposed, with
+its runtime recorded separately. Exhaustive search returns a witness
+immediately after validation, an empty status only after all branches have
+sound exclusion records, and unresolved otherwise. Proven infeasible
+branches can be pruned; a missed or numerically unresolved branch prevents
+an emptiness certificate. Complete exact search terminates for the finite
+representation; bounded search need not decide it.
+
+The outer procedure in the main paper searches increasing original labels.
+Empty certificates are credited to every proven-equivalent label. Nesting
+also excludes all smaller labels. A timeout at a smaller level does not
+prevent searching a larger level for a usable witness if budget remains.
+It does prevent claiming that witness's label is minimal without further
+exclusion. The output contains
+\begin{equation}
+(\mathfrak R,\Pi^{\mathrm{wit}},\omega^{\mathrm{wit}},W,D,\ell,u,
+\text{unresolved labels},\text{search counts}),
+\label{eq:recovery_record}
+\end{equation}
+with absent witnesses represented explicitly. Bounds are
+\begin{equation}
+u=\min W,\qquad
+\ell=\begin{cases}
++\infty,&4\in D,\\
+1+\max(\{-1\}\cup D),&\text{otherwise}.
+\end{cases}
+\label{eq:supp_search_bounds}
+\end{equation}
+The bounds apply to $k_{\mathfrak R}^F$. A finite validated upper bound also
+applies to $k^F$; the represented lower bound generally does not.
+Use four explicit outcomes: minimum certified, witness with unresolved
+minimum, no represented continuation, and unresolved without a witness.
+Only an independent exclusion over the unrestricted domain can upgrade
+the third outcome to unrestricted impossibility.
+
+\balance
+\subsection{Worked Locality and Recovery Instance}
+\label{subsec:worked_recovery_instance}
+
+All values use consistent normalized units. Set $t=0$, $T=4$,
+$\mathcal W=[-1,1]^2$, and $\mathbf p_0=(0,0)$. Distinct recipients
+1 and 2 are at $(1,0)$; recipients 3 and 4 are at $(-1,0)$.
+Each requires exactly one commodity unit: $d_i=d_i^{\mathrm{mand}}=1$,
+and no delivery has occurred. Set $m=1$, $S^{\mathrm{dep}}=4$,
+$\bar t_1=3/2$, and $\bar t_i=3$ for $i=2,3,4$.
+All four UAVs start idle at the depot with zero payload and full battery.
+Their airspeeds are $(1,2,1,1)$; each has empty mass 1, payload capacity 1,
+$\gamma_u=1/10$, battery capacity 10, and reserve 1.
+All ground durations and energies are zero and bay capacity is unconstrained.
+
+Each UAV has two active slots, with slot 2 committed to the terminal depot.
+Commit the full transfer vectors: initial loading 1, first-slot delivery 1,
+and all other transfers zero. The incumbent gives task $i$ to UAV $i$,
+with a straight outbound path and its reverse. Assignments and first-slot
+task identities are mutable. The positive first-slot delivery precludes
+a depot or inactive first slot. Assignment consistency therefore makes the
+four first-slot recipients a permutation of the four tasks.
+
+Use two cells, east $\{(x,y)\in\mathcal W:x>0\}$ and west
+$\{(x,y)\in\mathcal W:x\le0\}$, with one time bin $[0,4]$.
+The previous wind is zero. The updated east wind is $(-1/2,0)$ and the
+west wind remains zero. Thus the change affects a proper subset of
+cell--time entries and its magnitude is strictly below every airspeed.
+The incumbent is feasible under the previous wind, including all reserve
+checks. Its eastbound times are initially 1 and $1/2$.
+
+Under the updated wind the direct eastbound times of UAVs 1 and 2 are
+2 and $2/3$, and the corresponding return times are $2/3$ and $2/5$.
+UAV 1 misses recipient 1's deadline. Assigning recipient 1 to UAV 2 and
+recipient 2 to UAV 1 satisfies both deadlines. The unaffected west UAVs
+arrive at time 1 and return at time 2.
+The exchanged plan has the following exact records.
+
+\begin{table}[t]
+\centering
+\caption{Exact records of the constructed recovery witness.}
+\label{tab:worked_recovery}
+\begin{tabular}{ccccc}
+\toprule
+UAV & Task & Delivery time & Return time & Total energy\\
+\midrule
+1 & 2 & $2$ & $8/3$ & $7/15$\\
+2 & 1 & $2/3$ & $16/15$ & $26/75$\\
+3 & 3 & $1$ & $2$ & $3/10$\\
+4 & 4 & $1$ & $2$ & $3/10$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Outbound payload is one unit and return payload is zero. For example,
+UAV 1 expends $(1/10)(1+1)(1)(2)=2/5$ outbound and
+$(1/10)(1)(1)(2/3)=1/15$ on return. All terminal batteries exceed reserve,
+and each post-service state uses that same direct return as its reserve
+witness. The initial depot witness is the constant path. Total loading
+is exactly four and all demand, payload, and horizon constraints hold.
+
+\emph{Case A: structurally local reassignment.}
+Commit both nominal path coordinates of every UAV to their incumbent
+curves. Endpoint consistency then forces UAVs 1--2 to the east site and
+UAVs 3--4 to the west site, while co-located recipient identities can swap.
+Their potential participants are respectively $\{1,2\}$ and $\{3,4\}$.
+Only first-slot sequence and assignment coordinates remain mutable.
+The stock record is constant because all loads are committed; its mutable
+support is empty. There is no bay constraint. For a per-task service
+record, endpoints prove that only sequences in that task's group can
+select it. All remaining argument records depend on at most one group,
+so group-local supports satisfy the common-domain support condition.
+Service constraints connect the two recipients within each group.
+
+The paired diagnostic seeds recipients 1 and 2, so
+$\mathcal V^R=\{1,2\}$. There are four structural permutations: the
+identity or exchange within each group. The Level-2 space contains only
+the incumbent, Level-3 also admits the east exchange, and Level-4 also
+permits the west exchange. Thus
+$\mathcal X_2\subsetneq\mathcal X_3\subsetneq\mathcal X_4$.
+Only the east exchange restores recipient 1's deadline; hence
+$k^F=k_{\mathfrak R}^F=3$. Every smaller level retains that recipient's
+responsible slow UAV and its committed incoming path, so lower-level
+infeasibility is exact, not a failed candidate search.
+
+\emph{Case B: collapse under route participation.}
+Make the nominal path coordinates mutable, retaining all other inputs
+and commitments. Structurally every UAV can now serve every task;
+$\mathcal T_u=\mathcal V^{\mathrm{rem}}$ for all $u$. A route-dependent
+completion constraint therefore has full task incidence. The nonempty
+east seed set gives $\mathcal V^R=M^A$ and
+$\mathcal X_3=\mathcal X_4$. The same east exchange remains feasible.
+
+In fact $k^F=3$ even with arbitrary admissible paths. Any route by UAV 1
+from $x=0$ to $x=1$ must gain one unit of eastward displacement within
+the east cell. There its eastward ground-velocity component is at most
+$v_1-1/2=1/2$, so it needs at least two time units. Extra west-cell
+excursions cannot reduce the required east-cell displacement. Since
+$\bar t_1=3/2$, retaining UAV 1's responsibility cannot meet the positive
+mandatory delivery at Levels 0--2. The reassignment witness proves the
+matching upper bound.
+
+For a finite reference library containing only the direct segment for
+each endpoint pair, Case A enumerates four structural assignments and
+Case B enumerates 24. Their feasible counts by level are respectively
+$(0,0,0,1,2)$ and $(0,0,0,6,6)$; their pre-update feasible counts over
+the full represented domain are four and 24. These are exact constructed
+checks, not sampled mission results. The example demonstrates possible
+strict locality under existing commitments and its loss when participation
+widens. It does not establish that co-location or such commitments are
+typical in disaster relief.

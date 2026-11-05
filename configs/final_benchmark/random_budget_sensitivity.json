@@ -1,0 +1,11 @@
+{
+  "study": "supplementary_post_run_budget_check",
+  "decision_date": "2026-09-30",
+  "reason": "The frozen 5-second run left all nonzero randomized minima unresolved. Apply the same larger cap to every original mission, preserving generator, seeds, and original results. This is a disclosed post-run computational sensitivity, not a replacement primary study.",
+  "source_primary": "results/final_benchmark_2026_09_30/random",
+  "sizes": [[3, 3], [6, 3], [12, 4], [24, 6]],
+  "families": ["uniform", "clustered"],
+  "seeds": [21000, 21001, 21002, 21003, 21004, 21005],
+  "budget": {"max_nodes": 480000, "max_branches": 48000, "max_seconds": 60},
+  "paired_seed_indices": []
+}

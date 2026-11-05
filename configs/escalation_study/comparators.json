@@ -1,0 +1,17 @@
+{
+  "study": "comparators",
+  "note": "Same caps as the P1 pass-1 ladder: C1 uses the screen cap; C2 spends the screen cap on Level-4 proposals and the remaining 20 s on the certified global search; C3 gives each level one 2 s slice.",
+  "c1": {
+    "max_seconds": 10,
+    "max_proposals": 120
+  },
+  "c2": {
+    "max_seconds": 10,
+    "max_proposals": 120,
+    "search_seconds": 20,
+    "max_nodes": 100000
+  },
+  "c3": {
+    "slice_seconds": 2
+  }
+}

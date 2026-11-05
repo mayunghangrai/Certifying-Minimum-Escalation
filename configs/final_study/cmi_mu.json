@@ -1,0 +1,27 @@
+{
+  "study": "cmi_mu",
+  "design": "docs/EXPERIMENT_REDESIGN_RAL_2026_10_30.md, Section 14: CMI-mu (CMI, then the fewest UAVs outside U0 in the remaining budget) on the frozen FS and LS instances, against the frozen CMI arm and the B1 mu*",
+  "source_run": "results/final_study_2026_10_17",
+  "b_sweep_run": "results/b_sweep_2026_10_31",
+  "arms": [
+    "CMI-mu"
+  ],
+  "budget_short": 10,
+  "budget_long": 60,
+  "smoke": {
+    "population": 20,
+    "others": 6,
+    "seed": 76104
+  },
+  "settings": {
+    "base_slice_fraction": 0.025,
+    "cmi": {},
+    "ph_shares": [
+      0.05,
+      0.15,
+      0.2,
+      0.3,
+      0.3
+    ]
+  }
+}

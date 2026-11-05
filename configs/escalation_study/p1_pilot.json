@@ -1,0 +1,27 @@
+{
+  "study": "P1",
+  "phase": "pilot",
+  "purpose": "Calibrate the slack grid and caps. Seeds 71001-71002 are never reused as primary samples.",
+  "tasks": [4, 8, 12],
+  "uavs": 4,
+  "families": ["uniform", "clustered"],
+  "seeds": [71001, 71002],
+  "strengths": ["1/5", "2/5", "3/5"],
+  "slacks": ["2/5", "1/10", "1/20", "1/50", "1/100", "1/300", "1/1000"],
+  "battery_slack": "3/2",
+  "max_attempts": 24,
+  "budget": {
+    "refinements": [2, 4], "digits": 18, "max_operations": 100000, "max_rows": 10000,
+    "screen": {"max_seconds": 10, "max_proposals": 120},
+    "level2": {"max_seconds": 8, "max_nodes": 100000},
+    "level3": {"max_seconds": 6, "max_nodes": 100000},
+    "level4": {"max_seconds": 6, "max_nodes": 100000}
+  },
+  "pass2_budget": {
+    "refinements": [2, 4], "digits": 18, "max_operations": 100000, "max_rows": 10000,
+    "screen": {"max_seconds": 20, "max_proposals": 120},
+    "level2": {"max_seconds": 40, "max_nodes": 100000},
+    "level3": {"max_seconds": 30, "max_nodes": 100000},
+    "level4": {"max_seconds": 30, "max_nodes": 100000}
+  }
+}

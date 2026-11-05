@@ -1,0 +1,80 @@
+{
+  "study": "R1",
+  "phase": "budget_third",
+  "freeze_note": "Same two primary missions as the reference subset; every stage wall cap divided by 3, proposal and node caps unchanged.",
+  "tasks": [
+    8,
+    12
+  ],
+  "uavs": 4,
+  "families": [
+    "uniform"
+  ],
+  "seeds": [
+    72001
+  ],
+  "strengths": [
+    "1/5",
+    "2/5",
+    "3/5"
+  ],
+  "slacks": [
+    "1/10",
+    "1/30",
+    "1/100",
+    "1/300",
+    "1/1000"
+  ],
+  "battery_slack": "3/2",
+  "max_attempts": 24,
+  "budget": {
+    "refinements": [
+      2,
+      4
+    ],
+    "digits": 18,
+    "max_operations": 100000,
+    "max_rows": 10000,
+    "screen": {
+      "max_seconds": 3.333,
+      "max_proposals": 120
+    },
+    "level2": {
+      "max_seconds": 2.667,
+      "max_nodes": 100000
+    },
+    "level3": {
+      "max_seconds": 2.0,
+      "max_nodes": 100000
+    },
+    "level4": {
+      "max_seconds": 2.0,
+      "max_nodes": 100000
+    }
+  },
+  "pass2_budget": {
+    "refinements": [
+      2,
+      4
+    ],
+    "digits": 18,
+    "max_operations": 100000,
+    "max_rows": 10000,
+    "screen": {
+      "max_seconds": 20,
+      "max_proposals": 120
+    },
+    "level2": {
+      "max_seconds": 40,
+      "max_nodes": 100000
+    },
+    "level3": {
+      "max_seconds": 30,
+      "max_nodes": 100000
+    },
+    "level4": {
+      "max_seconds": 30,
+      "max_nodes": 100000
+    }
+  }
+}

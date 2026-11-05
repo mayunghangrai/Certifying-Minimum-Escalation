@@ -1,0 +1,22 @@
+{
+  "study": "b_sweep",
+  "design": "docs/EXPERIMENT_REDESIGN_RAL_2026_10_30.md, B1: certified minimum outside participation mu* on FS and LS instances whose reference minimum is Level 3 or 4, by CMI labels with the helper allowance b changed",
+  "source_run": "results/final_study_2026_10_17",
+  "label_budget_s": 600,
+  "smoke": {
+    "units": 12,
+    "seed": 76103,
+    "label_budget_s": 60
+  },
+  "settings": {
+    "base_slice_fraction": 0.025,
+    "cmi": {},
+    "ph_shares": [
+      0.05,
+      0.15,
+      0.2,
+      0.3,
+      0.3
+    ]
+  }
+}

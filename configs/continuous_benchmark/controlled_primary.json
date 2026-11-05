@@ -1,0 +1,6 @@
+{
+  "stage": "controlled",
+  "phase": "primary",
+  "freeze_note": "Fixed after both development pilots and the consolidated proof/provenance review.",
+  "budget": {"max_seconds": 10, "max_proposals": 120, "refinements": [1, 2], "digits": 18}
+}

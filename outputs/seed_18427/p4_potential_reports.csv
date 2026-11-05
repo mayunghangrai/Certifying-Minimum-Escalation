@@ -1,2 +1,0 @@
-node_id,service_visit_index,will_generate,report_delay_s,report_lost,confidence,noise_by_commodity,source_seed_stream
-N3,1,True,1152.0,False,1.0,"[0.0,0.0,0.0,0.0]",p4_potential_outcomes

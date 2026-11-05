@@ -1,0 +1,7 @@
+{
+  "stage": "paired",
+  "phase": "primary",
+  "input_bank": "results/study3_near_boundary_2026_10_01/primary",
+  "freeze_note": "All 128 frozen inputs, incumbents, quantities and helper policies preserved. Archived timings are historical and use a separate proposal clock.",
+  "budget": {"max_seconds": 5, "max_proposals": 120, "refinements": [1, 2], "digits": 18}
+}

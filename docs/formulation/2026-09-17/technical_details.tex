@@ -1,0 +1,1266 @@
+\section{Detailed Model and Proofs}
+\label{sec:detailed_model}
+
+We ask: \emph{Given a local wind disturbance, what is the minimum decision
+scope that must be released to recover mission feasibility without
+unnecessary replanning?} The short-paper scope includes only wind-induced
+perturbations of flight travel time and energy consumption. No-fly zones,
+including weather-induced no-fly zones, are excluded from the model.
+Recovery is a hierarchical mixed discrete--continuous optimization problem.
+Only wind entries change between the paired evaluations; they affect
+flight time and energy and thereby subsequent mission constraints.
+Disturbance propagation is evaluated on the
+fixed incumbent, whereas release sufficiency is an existence statement
+about alternative plans in a declared hierarchy.
+
+\subsection{Information, Mission Requirements, and Decision Domain}
+\label{subsec:information_remaining}
+
+Let $N,M$ be positive integers. Let $v_0$ denote the depot,
+$\mathcal V=\{1,\ldots,N\}$ the relief tasks, and
+$\mathcal U=\{1,\ldots,M\}$ the UAVs. The mission distributes one divisible
+commodity, with unit mass $m>0$. Intervention levels are $k$,
+and decision-component indices are
+$a\in\mathcal D_{\mathrm{cmp}}:=\{A,S,P,L\}$.
+The fixed mission horizon is $T>0$. Task $i$ has known location
+$\mathbf p_i\in\mathbb R^2$ and initial demand $d_i\ge0$;
+$\mathbf p_0$ is the depot location. All delivery, loading, onboard,
+demand, and stock quantities are expressed in units of the commodity.
+The bounded polygonal operating region $\mathcal W\subset\mathbb R^2$ contains all
+sites and has diameter $D_{\mathcal W}>0$.
+
+At epoch $t_{n+1}\in[0,T)$, let $H_{n+1}$ contain the executed trajectory
+and delivery history, and let $q_i^{\mathrm{del}}(t_{n+1})$ denote the
+quantity already delivered. We assume consistent history,
+$0\le q_i^{\mathrm{del}}(t_{n+1})\le d_i$, and define
+\begin{equation}
+d_{i,n+1}^{\mathrm{rem}}
+=d_i-q_i^{\mathrm{del}}(t_{n+1}).
+\label{eq:residual_demand}
+\end{equation}
+The residual depot stock is $S_{n+1}^{\mathrm{dep}}\ge0$.
+The mission specification supplies total mandatory quantities
+$d_i^{\mathrm{mand}}\in[0,d_i]$ and, where applicable, hard service
+deadlines $\bar t_i\in[0,T]$. Their residual obligations are
+\begin{equation}
+\underline d_{i,n+1}
+=\left[d_i^{\mathrm{mand}}
+-q_i^{\mathrm{del}}(t_{n+1})\right]_+,
+\qquad [z]_+:=\max\{z,0\}.
+\label{eq:mandatory_residual}
+\end{equation}
+Let $\mathcal V^{\mathrm{dl}}\subseteq\mathcal V$ be the tasks with hard
+deadlines. Define
+\begin{align}
+\mathcal V_{n+1}^{\mathrm{mand}}
+&=\{i:\underline d_{i,n+1}>0\},
+\label{eq:mandatory_tasks}\\
+\mathcal V_{n+1}^{\mathrm{rem}}
+&=\{i:d_{i,n+1}^{\mathrm{rem}}>0\}.
+\label{eq:remaining_tasks}
+\end{align}
+Thus $\mathcal V_{n+1}^{\mathrm{mand}}\subseteq
+\mathcal V_{n+1}^{\mathrm{rem}}$. Mandatory amounts and deadlines
+are fixed mission inputs and are identical at all intervention levels.
+A zero mandatory amount is an explicit absence of that service obligation.
+For missions requiring full demand satisfaction, set
+$d_i^{\mathrm{mand}}=d_i$. Feasibility is determined by these service
+requirements together with the remaining hard constraints.
+
+For the paired evaluation, fix a finite polygonal cell partition
+$\mathcal W=\mathop{\dot\bigcup}_{r\in\mathcal R}\mathcal W_r$, where
+$\mathcal R=\{1,\ldots,R\}$. Assign each open boundary edge and each vertex
+to exactly one adjoining cell. Fix time knots
+$t_{n+1}=t_0<t_1<\cdots<t_J=T$, with $R,J\ge1$,
+and let $\mathcal J=\{0,\ldots,J-1\}$.
+Use $I_j=[t_j,t_{j+1})$ for $j<J-1$ and
+$I_{J-1}=[t_{J-1},T]$. Both wind tables cover the entire common domain
+$\mathcal W\times[t_{n+1},T]$ and are constant on each cell--time bin:
+\begin{equation}
+\widehat{\mathbf w}^{\omega}(\mathbf x,s)
+=\widehat{\mathbf w}_{rj}^{\omega}\in\mathbb R^2,\qquad
+(\mathbf x,s)\in\mathcal W_r\times I_j,\quad \omega\in\{-,+\}.
+\label{eq:wind_field}
+\end{equation}
+The minus table is the previous received wind description restricted to
+this common partition and horizon; the plus table is the new description.
+The received wind packet is
+\begin{equation}
+\widehat{\mathcal E}_{n+1}
+=\left(t_{n+1},(\widehat{\mathbf w}_{rj}^{+})_
+{(r,j)\in\mathcal R\times\mathcal J}\right).
+\label{eq:packet}
+\end{equation}
+The local disturbance has a declared support
+$\mathcal B_\Delta\subsetneq\mathcal R\times\mathcal J$:
+\begin{equation}
+\begin{split}
+\widehat{\mathbf w}_{rj}^{+}
+&=\widehat{\mathbf w}_{rj}^{-}+\delta\mathbf w_{rj},\\
+\delta\mathbf w_{rj}&=\mathbf0\qquad
+\text{if }(r,j)\notin\mathcal B_\Delta.
+\end{split}
+\label{eq:local_wind_update}
+\end{equation}
+Thus the update is confined to specified cells and time intervals.
+For the airspeeds $v_u>0$ defined below, assume a common bound
+\begin{equation}
+\|\widehat{\mathbf w}_{rj}^{\omega}\|_2\le\bar w<\min_{u\in\mathcal U}v_u,
+\qquad (r,j)\in\mathcal R\times\mathcal J,\quad\omega\in\{-,+\}.
+\label{eq:wind_bound}
+\end{equation}
+This bounds the disturbance to a regime in which every direction remains
+trackable. Every spatial cell remains traversable; the partition indexes
+wind values and imposes no flight exclusion. Operating geometry,
+wind-cell boundaries, time bins, demands,
+stock, observed state, commitments, and ground-operation rules are fixed in
+the comparison and across release levels. The only revised data are wind
+vectors. These tables are supplied estimates for the remaining horizon;
+certificates are conditional on them.
+
+The observed fleet state is
+\begin{equation}
+X_{n+1}^{\mathrm{fleet}}
+=\left(\mathbf x_{u,n+1},b_{u,n+1},
+q_{u,n+1}^{\mathrm{on}},\xi_{u,n+1}\right)_{u\in\mathcal U},
+\label{eq:fleet_state}
+\end{equation}
+where the entries are position, battery energy, onboard commodity quantity, and
+execution mode. Elapsed motion and completed operations have already been
+settled at $t_{n+1}$. Any unfinished committed operation is represented by a
+fixed leading operation with its \emph{residual} duration and transfers;
+completed portions are never repeated.
+Let $\vartheta$ collect the fixed mission, vehicle, operation, and
+representation parameters defined in this section. The information state is
+\begin{equation}
+\begin{split}
+\mathscr I_{n+1}=\bigl(&\vartheta,H_{n+1},X_{n+1}^{\mathrm{fleet}},
+\mathbf d_{n+1}^{\mathrm{rem}},S_{n+1}^{\mathrm{dep}},\\
+&\bar\Pi_{n+1}^{\mathrm{rem}},\mathcal C_{n+1}^{\mathrm{fix}},
+\widehat{\mathcal E}_{0:n+1}\bigr),
+\end{split}
+\label{eq:information_state}
+\end{equation}
+where $\mathbf d_{n+1}^{\mathrm{rem}}=(d_{i,n+1}^{\mathrm{rem}})_{i\in\mathcal V}$
+collects task demands, $\bar\Pi_{n+1}^{\mathrm{rem}}$ is the incumbent, and
+$\mathcal C_{n+1}^{\mathrm{fix}}$ is the commitment mask defined below.
+A deterministic non-anticipative policy satisfies
+\begin{equation}
+\Pi_{n+1}^{\mathrm{rem}}
+=\phi_{n+1}(\mathscr I_0,\ldots,\mathscr I_{n+1}).
+\label{eq:nonanticipativity}
+\end{equation}
+A randomized policy may additionally use an internal random seed independent
+of future packets. No continuation certificate asserts validity after an
+unreceived packet changes the operating conditions.
+
+A remaining plan consists of four decision components:
+\begin{equation}
+\Pi^{\mathrm{rem}}=(\mathcal A,\mathcal S,\mathcal P,\mathcal L).
+\label{eq:remaining_plan}
+\end{equation}
+At a fixed epoch write $\Pi=\Pi^{\mathrm{rem}}$ and
+$\bar\Pi=\bar\Pi_{n+1}^{\mathrm{rem}}$; bars on individual components
+always refer to this same incumbent.
+The assignment vector $\mathcal A=(a_i)_{i\in\mathcal V_{n+1}^{\mathrm{rem}}}$
+has $a_i\in\mathcal U\cup\{\varnothing\}$. Each served task has one
+responsible UAV in the remaining plan; repeated partial deliveries by that
+UAV are allowed. Cross-UAV splitting of a task within one remaining plan is
+excluded by this assignment convention.
+
+To make projections meaningful when routes change, fix a positive integer
+slot bound $\bar n_u$ for each UAV before comparing levels.
+The sequence component has fixed coordinates
+$\mathcal S=(s_{u,h})_{u\in\mathcal U,\,1\le h\le\bar n_u}$ with
+$s_{u,h}\in\mathcal V_{n+1}^{\mathrm{rem}}\cup\{v_0,\partial\}$.
+The symbol $\partial$ is inactive padding. Active slots form a prefix of
+length $n_u(\Pi)\in\{0,\ldots,\bar n_u\}$; if $n_u(\Pi)>0$, its last site is
+$v_0$. Intermediate depot visits permit multiple trips. Every active
+relief visit to $i$ is assigned to $a_i=u$, and $a_i=u$ requires at least
+one such visit. A null assignment therefore means no planned visit.
+It is permitted structurally even for a mandatory task; its positive service
+lower bound will reject it through hard feasibility.
+
+Let $s_{u,0}=v_{u,n+1}^{\mathrm{cur}}$ be a fixed virtual origin located at
+$\mathbf x_{u,n+1}$. The active route is
+\begin{equation}
+r_u(\Pi)=(v_{u,n+1}^{\mathrm{cur}},s_{u,1},\ldots,s_{u,n_u(\Pi)}).
+\label{eq:current_state_route}
+\end{equation}
+A route with no active slot is structurally permitted only for an idle UAV
+already at the depot. A pending delivery at the current relief site is
+represented by a leading visit at that site; its incoming path has zero
+length. Fixed residual ground operations likewise occupy leading slots or
+the initial depot operation as appropriate to the observed mode.
+
+The path component is
+$\mathcal P=(P_{u,h})_{u\in\mathcal U,\,1\le h\le\bar n_u}$ on the same
+fixed slot indices. An active $P_{u,h}:[0,1]\to\mathcal W$ is a directed
+piecewise-linear curve from the preceding site's location to that of
+$s_{u,h}$. Curves use normalized arclength parameterization, so adding
+collinear vertices does not create a different decision. A zero-length
+path is the constant curve at its endpoint; each inactive path is the
+constant curve at $\mathbf p_0$. The quantity component is
+$\mathcal L=(x_{u,h},y_{u,h})$: delivery occurs at stop $h\ge1$, and
+loading at stop $h\ge0$. All inactive quantities are zero. Onboard payload
+is induced by these transfers and is not another decision variable.
+
+For each component $a\in\mathcal D_{\mathrm{cmp}}$, let $D_{n+1}^a$ be
+its fixed finite set of remaining coordinates, partitioned as
+\begin{equation}
+D_{n+1}^a=C_{n+1}^a\mathbin{\dot\cup}M_{n+1}^a.
+\label{eq:decision_partition}
+\end{equation}
+Here $C_{n+1}^a$ and $M_{n+1}^a$ are committed and mutable coordinates.
+Executed coordinates occur only in $H_{n+1}$.
+Write $\mathcal C_{n+1}^{\mathrm{fix}}=(C_{n+1}^a)_a$ and
+$\Pi^A=\mathcal A$, $\Pi^S=\mathcal S$, $\Pi^P=\mathcal P$, and
+$\Pi^L=\mathcal L$. For coordinate projection $\rho_B$, commitments require
+\begin{equation}
+\rho_{C_{n+1}^a}(\Pi^a)
+=\rho_{C_{n+1}^a}(\bar\Pi_{n+1}^a),
+\qquad a\in\mathcal D_{\mathrm{cmp}}.
+\label{eq:commitment_projection}
+\end{equation}
+For example, a first destination may be committed while its unflown path
+is mutable. Coordinate labels, padding conventions, and slot bounds are
+fixed across all levels. Reassignment and resequencing must respect path
+endpoint consistency as well as any fixed coordinates.
+
+The master domain $\mathcal Y_{n+1}^{\mathrm{rem}}$ consists of the
+structurally compatible plans just defined, anchored at the observed fleet
+state and satisfying \eqref{eq:commitment_projection}. It enforces finite
+representation, endpoint and assignment consistency, nonnegative transfer
+quantities, and canonical padding, but does not impose time or
+resource feasibility. The incumbent is assumed to belong to this domain,
+although it may be operationally infeasible after the update.
+A commitment override changes the master domain and is a separate safety
+action, not level four.
+
+\subsection{Induced Resource and Wind Evaluation}
+\label{subsec:resource_wind_evaluation}
+
+Throughout the remaining formulation, the epoch is fixed and omitted from
+the residual-data symbols $d_i^{\mathrm{rem}}$, $\underline d_i$, and
+$S^{\mathrm{dep}}$.
+The following resource recursions apply only to active stops and legs,
+with $n_u=n_u(\Pi)$. Let $q_{u,h}^{-}$ and
+$q_{u,h}^{+}$ be the scalar onboard quantities immediately before and
+after stop $h$. Set
+$q_{u,0}^{-}=q_{u,n+1}^{\mathrm{on}}$ and $x_{u,0}=0$.
+The stop and flight recursions are
+\begin{align}
+q_{u,h}^{+}&=q_{u,h}^{-}-x_{u,h}+y_{u,h},
+&&0\le h\le n_u,
+\label{eq:residual_flow}\\
+q_{u,h+1}^{-}&=q_{u,h}^{+},
+&&0\le h<n_u.
+\label{eq:flight_payload}
+\end{align}
+Delivery is allowed only at relief visits. Loading is allowed only at
+depot stops before a subsequent leg, including stop zero if physically at
+the depot. Thus $y_{u,n_u}=0$ and all deliveries at depot stops are zero.
+The resource constraints are
+\begin{align}
+0\le x_{u,h}&\le q_{u,h}^{-},
+\label{eq:delivery_availability}\\
+\sum_{u}\sum_{h=0}^{n_u-1}y_{u,h}&\le S^{\mathrm{dep}},
+\label{eq:residual_inventory}\\
+Q_i(\Pi)&:=\sum_{u,h:\,s_{u,h}=i}x_{u,h},
+\label{eq:planned_delivery}\\
+\underline d_i&\le Q_i(\Pi)\le d_i^{\mathrm{rem}},
+\label{eq:mandatory_service}\\
+m q_{u,h}^{-}&\le C_u^{\mathrm{pay}},
+\qquad
+m q_{u,h}^{+}\le C_u^{\mathrm{pay}}.
+\label{eq:payload_constraint}
+\end{align}
+Here $C_u^{\mathrm{pay}}>0$ is payload capacity, and the sum defining
+$Q_i$ ranges over active relief visits. An empty sum is zero.
+Returned payload remains onboard; it is not credited back to depot stock.
+Consequently the inventory bound also prevents intermediate stock
+overdrawing, since all loads are nonnegative and no replenishment is modeled.
+
+Each UAV has fixed airspeed $v_u>0$, empty mass $m_u^0>0$, energy
+coefficient $\gamma_u>0$, battery capacity $B_u>0$, and reserve
+$\beta_u\in[0,B_u]$. The initial battery satisfies
+$0\le b_{u,n+1}\le B_u$ and the initial onboard quantities are nonnegative.
+Split each finite piecewise-linear path at the fixed wind-cell boundaries,
+using the declared ownership rule also for segments lying on a boundary.
+Every resulting nonzero segment $e$ lies in one cell $r(e)$ except possibly
+at its endpoints, which do not affect the time integral. This refinement
+changes no path decision. For its length $\ell_e>0$ and unit direction
+$\mathbf t_e$, let $\mathbf t_e^\perp$ be its left normal. Write
+$\widehat{\mathbf w}_{r}^{+}(s)=\widehat{\mathbf w}_{rj}^{+}$ for $s\in I_j$,
+and define
+\begin{equation}
+w_{\parallel,e}(s)=\widehat{\mathbf w}_{r(e)}^{+}(s)^{\mathsf T}\mathbf t_e,
+\quad
+w_{\perp,e}(s)=\widehat{\mathbf w}_{r(e)}^{+}(s)^{\mathsf T}\mathbf t_e^\perp.
+\label{eq:wind_components}
+\end{equation}
+The constant-airspeed track model uses the forward air-velocity branch:
+\begin{equation}
+s_{u,e}(s)=w_{\parallel,e}(s)
++\sqrt{v_u^2-w_{\perp,e}(s)^2}.
+\label{eq:ground_speed}
+\end{equation}
+The wind bound gives
+$\sqrt{v_u^2-w_{\perp,e}(s)^2}>|w_{\parallel,e}(s)|$,
+so $s_{u,e}(s)>0$. The ground velocity is $s_{u,e}\mathbf t_e$ and its
+air-relative velocity has norm $v_u$; the triangle and reverse-triangle
+inequalities then give
+$v_u-\bar w\le s_{u,e}(s)\le v_u+\bar w$.
+For entry time
+$a\in[t_{n+1},T]$, the segment duration is the unique
+$\tau\in[0,T-a]$ satisfying
+\begin{equation}
+\int_a^{a+\tau}s_{u,e}(s)\,\mathrm ds=\ell_e.
+\label{eq:travel_relation}
+\end{equation}
+Such a duration exists exactly when
+$\int_a^T s_{u,e}(s)\,\mathrm ds\ge\ell_e$; otherwise the path cannot
+complete by the horizon. Strictly positive speed makes the integrated
+distance continuous and strictly increasing, establishing uniqueness.
+We adopt the linear flight-energy surrogate
+\begin{equation}
+E_{u,e}^{\mathrm{fly}}
+=\gamma_u(m_u^0+m_{u,e}^{\mathrm{pay}})v_u\tau.
+\label{eq:flight_energy}
+\end{equation}
+Here $\gamma_u$ has units of energy per mass per distance and
+$m_{u,e}^{\mathrm{pay}}$ is constant onboard mass during the segment.
+For a segment of leg $h$, its payload mass is
+$m_{u,e}^{\mathrm{pay}}=mq_{u,h-1}^{+}$.
+Leg duration $\tau_{u,h}$ and energy $E_{u,h}^{\mathrm{fly}}$ are sums
+over its consecutively traversed segments, with each entry time updated
+after the preceding segment. A constant path has zero flight duration and
+energy. Since speed is constant within each time bin, the integral can be
+evaluated by accumulating bin distances and solving linearly in the final
+bin. No temporal sampling approximation is part of this definition.
+The minus projection uses the same equations with the minus wind table.
+
+Let $t_{u,h}^{\mathrm{arr}}$ and $b_{u,h}^{-}$ be the arrival time and
+battery at stop $h$, initialized by
+$t_{u,0}^{\mathrm{arr}}=t_{n+1}$ and $b_{u,0}^{-}=b_{u,n+1}$.
+A fixed ground-operation protocol specifies service duration
+$\delta_{u,h}^{\mathrm{srv}}\ge0$, service energy
+$E_{u,h}^{\mathrm{srv}}\ge0$, and depot preparation duration
+$\delta_{u,h}^{\mathrm{dep}}\ge0$. These are known deterministic functions
+of site, transfers, entering state, and residual execution mode; they
+are fixed model data, not independently chosen waiting times.
+Service quantities are credited at completion:
+\begin{align}
+t_{u,h}^{\mathrm{del}}
+&=t_{u,h}^{\mathrm{arr}}+\delta_{u,h}^{\mathrm{srv}},
+\label{eq:delivery_time}\\
+t_{u,h}^{\mathrm{dep}}
+&=t_{u,h}^{\mathrm{del}}+\delta_{u,h}^{\mathrm{dep}},
+&&h<n_u,
+\label{eq:departure_time}\\
+t_{u,h+1}^{\mathrm{arr}}
+&=t_{u,h}^{\mathrm{dep}}+\tau_{u,h+1},
+&&h<n_u.
+\label{eq:time_recursion}
+\end{align}
+The virtual origin has no new service:
+$\delta_{u,0}^{\mathrm{srv}}=E_{u,0}^{\mathrm{srv}}=0$.
+Depot service duration and energy are zero. At each departure from the depot, the fixed
+preparation protocol loads $y_{u,h}$ and restores the battery to $B_u$;
+its duration includes the prescribed loading and charging time, or their
+remaining time for an already committed operation. Away from the depot,
+including an airborne virtual origin, $\delta^{\mathrm{dep}}=0$ and no
+energy is replenished. In particular,
+\begin{align}
+b_{u,h}^{\mathrm{srv}}&=b_{u,h}^{-}-E_{u,h}^{\mathrm{srv}}\ge0,
+\label{eq:service_battery}\\
+b_{u,h}^{+}
+&=\begin{cases}
+B_u,&\text{depot stop with }h<n_u,\\
+b_{u,h}^{\mathrm{srv}},&\text{otherwise},
+\end{cases}
+\label{eq:depot_recharge}\\
+b_{u,h+1}^{-}&=b_{u,h}^{+}-E_{u,h+1}^{\mathrm{fly}}\ge0,
+&&h<n_u.
+\label{eq:battery_recursion}
+\end{align}
+Every depot arrival after flight also satisfies
+$b_{u,h}^{-}\ge\beta_u$ before any recharge. Initial depot preparation may
+restore a battery below reserve before departure. A zero-slot route has no
+preparation and uses its observed battery.
+The ground sites are assumed safe for these operations. Depot preparation
+has no queue-induced waiting in the propagation recursion. If a finite bay
+count $B^{\mathrm{dep}}\in\mathbb N$ is imposed, simultaneous preparation
+intervals must satisfy the separate hard constraint
+\begin{equation}
+\sum_{(u,h)\in\mathcal H^{\mathrm{dep}}(\Pi)}
+\mathbf 1_{[t_{u,h}^{\mathrm{arr}},\,t_{u,h}^{\mathrm{dep}})}(t)
+\le B^{\mathrm{dep}},\qquad t\in[t_{n+1},T],
+\label{eq:depot_bays}
+\end{equation}
+where $\mathcal H^{\mathrm{dep}}(\Pi)$ contains the nonterminal depot
+operations and $\mathbf 1_B$ is the indicator of a set $B$.
+The unconstrained-bay model omits \eqref{eq:depot_bays}. A conflict is
+infeasible under the given schedule; it does not introduce an implicit
+waiting decision.
+
+For UAV $u$ and a path $P$ started at a specified state
+$z=(\mathbf x,t,b,q)$, with $t\ge t_{n+1}$, the flight evaluator
+either completes by $T$ or establishes a horizon violation. Identical
+geometry entered at different times can have different completion times.
+Write $\chi_{u,n+1}(P,z)=\chi_u(P,z;\widehat{\mathcal E}_{n+1})$ and define
+\begin{equation}
+\chi_{u,n+1}(P,z)=
+\begin{cases}
+\mathsf{complete},&\text{path finishes by }T,\\
+\mathsf{late},&\text{otherwise}.
+\end{cases}
+\label{eq:flight_status}
+\end{equation}
+A constant path is complete exactly when its start time is at most $T$.
+Completion exactly at $T$ is allowed. If the next segment cannot finish
+by $T$, its final duration and energy and subsequent flight records are
+unavailable; the late status itself is defined. This is a confirmed time
+violation, since the wind table covers all times up to $T$.
+Define
+\begin{equation}
+\operatorname{Comp}_u(P,z;\widehat{\mathcal E}_{n+1})
+=\mathbf 1\{\chi_{u,n+1}(P,z)=\mathsf{complete}\}.
+\label{eq:flight_completion}
+\end{equation}
+Flight completion does not imply battery sufficiency.
+The deterministic nominal evaluation is denoted by
+\begin{equation}
+\Xi_{n+1}(\Pi)=
+\Gamma(\Pi;X_{n+1}^{\mathrm{fleet}},\widehat{\mathcal E}_{n+1},\vartheta).
+\label{eq:induced_execution_state}
+\end{equation}
+It returns the time, payload, battery, and status records induced
+above. A ground operation finishing after $T$ likewise establishes a
+horizon violation and stops that UAV's remaining evaluation. Unavailable
+downstream values are $\bot$, a distinguished symbol outside their
+numerical domains. Write $\operatorname{Complete}(\Xi)=1$ when every
+required nominal flight and ground operation finishes by $T$ and all
+required nominal records are defined. Completeness alone does not imply
+resource or service feasibility.
+
+\subsection{Mission Feasibility Under the Updated Wind}
+\label{subsec:hard_feasibility}
+
+The ordinary safe terminal set for UAV $u$ is
+\begin{equation}
+\begin{split}
+\mathcal X_u^{\mathrm{safe}}=\{(\mathbf p_0,t,b,q):\;&
+0\le t\le T,\ \beta_u\le b\le B_u,\\
+&q\ge0,\quad m q\le C_u^{\mathrm{pay}}\}.
+\end{split}
+\label{eq:safe_terminal_set}
+\end{equation}
+Landing elsewhere or releasing a commitment belongs to a separate safety
+override. At each initial state and post-service relief state, a reserve
+certificate is a path $W$ from that state's position to the depot, with no
+intermediate delivery or recharge. Its payload is therefore the current
+onboard payload. For UAV $u$ at state $z=(\mathbf x,t,b,q)$, define
+\begin{equation}
+\begin{split}
+\mathscr W_{u,n+1}(z)=\{W:\;&
+W(0)=\mathbf x,\quad W(1)=\mathbf p_0,\\
+&\operatorname{Comp}_u(W,z;\widehat{\mathcal E}_{n+1})=1,\\
+&t+\tau_u(W,z)\le T,\\
+&E_u(W,z)+\beta_u\le b\},
+\end{split}
+\label{eq:reserve_witness_set}
+\end{equation}
+where $W$ uses the same piecewise-linear path convention as a nominal leg,
+and $\tau_u(W,z)$ and $E_u(W,z)$ are evaluated for UAV $u$ under the
+same received packet. At the assumed-safe depot, the constant path is a
+certificate whenever $t\le T$ and $b\ge\beta_u$.
+Let $\mathcal Z^{\mathrm{res}}(\Pi)$ contain UAV--state pairs $(u,z)$:
+the initial state outside the depot, the first departure state for a UAV
+initially at the depot with an active route, and every post-service relief
+state. Zero-slot routes are covered by the terminal constraint.
+A candidate requires
+\begin{equation}
+\mathscr W_{u,n+1}(z)\ne\varnothing,
+\qquad (u,z)\in\mathcal Z^{\mathrm{res}}(\Pi).
+\label{eq:reserve_constraint}
+\end{equation}
+The existence of a reserve path is a feasibility condition, not a fifth
+intervention component. A supplied path certifies it one-sidedly; failure
+of one supplied return path does not disprove existence.
+
+Let $z_{u,h}^{\mathrm{dep}}$ contain the stop location,
+$t_{u,h}^{\mathrm{dep}}$, $b_{u,h}^{+}$, and $q_{u,h}^{+}$.
+At a relief stop its post-service state similarly contains
+$t_{u,h}^{\mathrm{del}}$, $b_{u,h}^{\mathrm{srv}}$, and
+$q_{u,h}^{-}-x_{u,h}$.
+All active flight paths must satisfy
+\begin{equation}
+\operatorname{Comp}_u(P_{u,h},z_{u,h-1}^{\mathrm{dep}};
+\widehat{\mathcal E}_{n+1})=1.
+\label{eq:nominal_completion}
+\end{equation}
+Hard deadlines apply to completed positive deliveries, not merely arrivals:
+\begin{equation}
+x_{u,h}>0,\ s_{u,h}=i\in\mathcal V^{\mathrm{dl}}
+\ \Longrightarrow\ t_{u,h}^{\mathrm{del}}\le\bar t_i.
+\label{eq:time_constraints}
+\end{equation}
+The terminal state $z_u^{\mathrm{term}}$ is the depot-arrival state of the
+last active slot, or the observed state for a zero-slot route.
+
+Let $\mathcal Q_{n+1}^{\mathrm{hard}}$ denote the individual resource,
+service, deadline, bay (when imposed), reserve, and terminal constraints just
+defined, including the pre-recharge depot-arrival reserve bound.
+Its predicates are evaluated with all induced quantities substituted.
+On plans with incomplete nominal records, a predicate needing an
+unavailable value has status undetermined rather than an assumed truth
+value. The hard-feasible set is
+\begin{equation}
+\begin{split}
+\mathcal F_{n+1}=\{\Pi\in\mathcal Y_{n+1}^{\mathrm{rem}}:\;&
+\operatorname{Complete}(\Xi_{n+1}(\Pi))=1,\\
+&\eqref{eq:nominal_completion}\text{ holds},\\
+&g(\Pi)=1\quad\forall g\in\mathcal Q_{n+1}^{\mathrm{hard}}\}.
+\end{split}
+\label{eq:hard_feasible_set}
+\end{equation}
+Here the terminal predicates include
+$z_u^{\mathrm{term}}\in\mathcal X_u^{\mathrm{safe}}$ for every $u$.
+We also write $\mathcal F(\mathscr I_{n+1})=\mathcal F_{n+1}$.
+A late nominal path or ground operation excludes the plan. Failure to find
+a reserve witness alone does not prove that no such witness exists.
+Mathematical nonmembership and failure of a particular search are distinct.
+
+Let $\mathcal F_{n+1}^{-}$ be the same feasible set evaluated with the
+previous wind table at the same observed state. We assume
+$\bar\Pi\in\mathcal F_{n+1}^{-}$, so any newly lost feasibility in this
+paired comparison is attributable to the wind change. The received table
+need not invalidate the incumbent. Recovery certifies a \emph{complete
+remaining mission} under $\widehat{\mathcal E}_{n+1}$; it asserts no
+recursive-feasibility guarantee under future wind updates.
+Earlier missed obligations remain in the recorded history; only residual
+requirements are certified.
+
+
+\subsection{Typed Disturbance-Propagation Diagnostic}
+\label{subsec:propagation_diagnostic}
+
+Write $\widehat{\mathcal E}^{-}$ for the previous packet's wind table
+restricted to the common partition and remaining horizon, and
+$\widehat{\mathcal E}^{+}=\widehat{\mathcal E}_{n+1}$ for the received table, with
+$\omega\in\{-,+\}$. Both projections begin at the \emph{same observed
+state at $t_{n+1}$}; the minus projection is a counterfactual evaluation
+using the previous wind, not a reconstruction of an earlier physical
+state. The incumbent decisions, fixed operation protocol, and commitments
+are identical in the two projections.
+
+For UAV $u$, let $\bar e_{u,h}$ denote its incumbent leg at active slot
+$h$, and set $\bar n_u^{\mathrm{act}}=n_u(\bar\Pi)$.
+For an active route, the reserve-check indices are
+\begin{equation}
+\begin{split}
+\mathcal H_u^{\mathrm{res}}
+={}&\{0\}\\
+&{}\cup\{h:1\le h\le\bar n_u^{\mathrm{act}},\
+\bar s_{u,h}\in\mathcal V_{n+1}^{\mathrm{rem}}\}.
+\end{split}
+\label{eq:diagnostic_reserve_indices}
+\end{equation}
+For a zero-slot route, set $\mathcal H_u^{\mathrm{res}}=\varnothing$.
+For $h=0$, let $z_{u,0}^{\omega}$ be the observed initial state outside
+the depot, or the first departure state if initially at the depot.
+For a relief index $h>0$, $z_{u,h}^{\omega}$ is the post-service state
+defined above. These are exactly the state pairs required by
+$\mathcal Z^{\mathrm{res}}(\bar\Pi)$; unavailable states are $\bot$.
+Supply one fixed return geometry $\bar W_{u,h}$ for each
+$h\in\mathcal H_u^{\mathrm{res}}$. At other active slots, set
+$\bar W_{u,h}=\varnothing$ to indicate an absent reserve-path argument.
+
+Starting from the observed state, process the fixed initial ground
+operation once. For an active route the resulting first departure state is
+$Z_{u,1}^{\omega}$. Then, for $1\le h\le\bar n_u^{\mathrm{act}}$,
+\begin{align}
+R_{u,h}^{\omega}
+&=\operatorname{EvalLeg}
+ (\bar e_{u,h},Z_{u,h}^{\omega};\widehat{\mathcal E}^{\omega},\vartheta,
+ \bar W_{u,h}),
+\label{eq:two_packet_projection}\\
+Z_{u,h+1}^{\omega}
+&=\Phi_{u,h}(Z_{u,h}^{\omega},R_{u,h}^{\omega}),
+\qquad 1\le h<\bar n_u^{\mathrm{act}},
+\label{eq:projection_transition}
+\end{align}
+where the transition is used only for $h<\bar n_u^{\mathrm{act}}$.
+The leg record includes the
+following fixed stop evaluation, and $\Phi_{u,h}$ extracts its next
+departure state without applying the stop transfers a second time.
+The record includes arrival and
+service-completion times, flight energy, battery, payload, and completion
+and local constraint statuses. Missing numerical values are $\bot$.
+A hard resource violation may coexist with computable diagnostic values;
+it is recorded rather than silently repaired.
+
+For every $h\in\mathcal H_u^{\mathrm{res}}$, the supplied return geometry
+is held fixed between projections. Its battery margin is
+\begin{equation}
+\mathfrak m_{u,h}^{\omega}
+=b(z_{u,h}^{\omega})
+-E_u(\bar W_{u,h},z_{u,h}^{\omega};\widehat{\mathcal E}^{\omega})
+-\beta_u,
+\label{eq:diagnostic_reserve_margin}
+\end{equation}
+where $b(z)$ extracts a state's battery. The margin is reported only when
+the state, completed flight, and energy are defined; otherwise
+it is unavailable with an explicit status. These paths are diagnostic
+metadata, not extra mutable plan coordinates. Their failure does not
+establish failure of the existential reserve condition
+\eqref{eq:reserve_constraint}.
+The flight-completion status is also reported; a nonnegative battery
+margin alone is not a reserve
+certificate. The initial reserve record
+($h=0$) is associated with the first leg for reporting and query attribution.
+It does not change $Z_{u,1}^{\omega}$ or any nominal transition.
+
+There is one change atom $\delta_{rj}$ for each revised wind entry:
+\begin{equation}
+\mathcal D_{n+1}=\{\delta_{rj}:(r,j)\in\mathcal B_\Delta,\
+\widehat{\mathbf w}_{rj}^{-}\ne\widehat{\mathbf w}_{rj}^{+}\}.
+\label{eq:wind_atoms}
+\end{equation}
+Let $\mathcal Q_{u,h}^{\omega}$ contain the wind queries needed by the leg
+record, including nominal flight, associated reserve-path evaluation
+(including the initial check at $h=1$), and all time bins used in the
+distance integral. If a preceding state is unavailable, use a declared
+conservative superset of all possible queries for that record. Time-bin
+selection and horizon guards must also appear in the dependency graph.
+
+For each atom $\delta$, let $\operatorname{supp}(\delta)$ be the set of
+wind queries whose answers the atom can change. Define
+\begin{equation}
+\operatorname{contact}(\delta,\bar e_{u,h})
+=\mathbf 1\!\left\{
+\operatorname{supp}(\delta)\cap
+(\mathcal Q_{u,h}^{-}\cup\mathcal Q_{u,h}^{+})\ne\varnothing\right\}.
+\label{eq:contact}
+\end{equation}
+Contact tests whether an evaluation queries a changed cell--time bin.
+The union of old and new queries is necessary because a changed entry time
+can alter the bins traversed. Query supports are conservative diagnostic
+objects and do not assert that every contacted record changes.
+The relevant atoms are
+\begin{equation}
+\mathcal D_{n+1}^{\mathrm{rel}}
+=\{\delta\in\mathcal D_{n+1}:
+\exists u,h,\ \operatorname{contact}(\delta,\bar e_{u,h})=1\}.
+\label{eq:relevant_changes}
+\end{equation}
+
+Unrolling the fixed-suffix evaluator yields a finite typed directed acyclic
+graph
+\begin{equation}
+\mathcal G_{n+1}
+=(\mathcal N_{n+1},\mathcal E_{n+1}^{G},\kappa),
+\label{eq:dependency_graph}
+\end{equation}
+with disjoint vertex classes
+\begin{equation}
+\mathcal N_{n+1}
+=\mathcal N^\Delta\mathbin{\dot\cup}\mathcal N^{\mathrm{wind}}
+\mathbin{\dot\cup}\mathcal N^{\mathrm{state}}
+\mathbin{\dot\cup}\mathcal N^{\mathrm{eval}}
+\mathbin{\dot\cup}\mathcal N^{\mathrm{qty}}
+\mathbin{\dot\cup}\mathcal N^{\mathrm{stat}}.
+\label{eq:typed_vertices}
+\end{equation}
+The first class is $\mathcal N^\Delta=\mathcal D_{n+1}$.
+Each change atom carries its old or received wind vector in the
+corresponding projection; both values are available.
+The other five classes contain wind inputs, entering states,
+evaluator records, numerical quantities, and categorical statuses.
+The map $\kappa$ assigns each vertex its class. Let $\nu^\omega(v)$ be
+the value of vertex $v$ in projection $\omega$.
+For the parent set $\operatorname{pa}(v)$, each nonroot vertex obeys the
+deterministic structural equation
+\begin{equation}
+\nu(v)=f_v((\nu(w))_{w\in\operatorname{pa}(v)};
+\vartheta,\bar\Pi,\bar W).
+\label{eq:structural_equation}
+\end{equation}
+An arc records an argument of that equation, including time-bin selection
+and horizon guards. The graph contains the union of dependencies needed by
+both evaluations; inactive branches use the same defined unavailable-value
+convention. Every wind-query vertex is attributed to at least one
+leg record. Outgoing arcs from a change atom lead only to wind-query
+vertices in records contacted by that atom, and include every such input
+dependency. Atoms outside $\mathcal D_{n+1}^{\mathrm{rel}}$ are therefore
+isolated. Only change-atom roots may differ between projections; all other
+roots, including unchanged wind entries and observed states, agree.
+
+Within this diagnostic, state-transition arcs join successive legs of the
+same UAV. Shared-stock and bay constraints are evaluated separately as
+coupling constraints; they do not induce hidden queue delays or cross-UAV
+state propagation in $\Gamma$. Thus there is no cross-UAV transition arc
+in $\mathcal G_{n+1}$. A shared packet atom may nevertheless contact legs of
+several UAVs.
+
+Let the seed set and structural closure be
+\begin{align}
+\mathcal N_{n+1}^{\mathrm{seed}}
+&=\mathcal D_{n+1}^{\mathrm{rel}}
+\cup\{v\in\mathcal N^{\mathrm{wind}}:
+\exists\delta\in\mathcal D_{n+1}^{\mathrm{rel}},\ (\delta,v)\in
+\mathcal E_{n+1}^{G}\},
+\label{eq:seed_set}\\
+\mathcal N_{n+1}^{\mathrm{cl}}
+&=\operatorname{Reach}_{\mathcal G_{n+1}}
+  (\mathcal N_{n+1}^{\mathrm{seed}}).
+\label{eq:structural_closure}
+\end{align}
+Reachability includes its starting vertices. It describes structural
+dependence and does not assert a realized change.
+
+For every non-change vertex, declare a value space $\mathbb V_v$ and metric
+$d_v$ on its available values. Numerical coordinates use a fixed
+unit-consistent norm; categorical or canonical symbolic records use the
+discrete metric. For a mixed record, use the maximum of coordinate metrics
+capped at one, assigning distance one when exactly one coordinate value is
+unavailable and zero when both are unavailable. This defines a metric even
+for records with partially unavailable fields.
+Let $\nu^\omega(v)\in\mathbb V_v\cup\{\bot\}$ denote its projected value.
+Let $\varepsilon_v\ge0$ be its reporting tolerance, with
+$\varepsilon_v=0$ for categorical values. For two available values write
+$\Delta_v=d_v(\nu^-(v),\nu^+(v))$. Define the total predicate
+\begin{equation}
+\mu(v)=
+\begin{cases}
+0,&\nu^-(v)=\nu^+(v)=\bot,\\
+1,&\text{exactly one value is }\bot,\\
+\mathbf 1\{\Delta_v>\varepsilon_v\},
+ &\nu^-(v),\nu^+(v)\in\mathbb V_v.
+\end{cases}
+\label{eq:materiality}
+\end{equation}
+In particular, no subtraction or norm is applied to $\bot$.
+Set
+\begin{align}
+\mathcal N_{n+1}^{\mathrm{mat}}
+&=\{v\in\mathcal N_{n+1}^{\mathrm{cl}}\setminus\mathcal N^\Delta:
+\mu(v)=1\},
+\label{eq:material_support}\\
+\mathcal N_{n+1}^{\mathrm{op}}
+&=\mathcal N_{n+1}^{\mathrm{mat}}\setminus\mathcal N^{\mathrm{wind}},
+\label{eq:operational_support}\\
+\mathcal N_{n+1}^{\mathrm{rep}}
+&=\mathcal N_{n+1}^{\mathrm{seed}}\cup\mathcal N_{n+1}^{\mathrm{mat}}.
+\label{eq:reportable_support}
+\end{align}
+Reporting tolerances are applied after reachability and do not prune
+intermediate dependencies.
+
+Let $N_{u,h}$ contain the leg's entering-state, evaluation, quantity, and
+status vertices, together with its wind-query vertices.
+For $h=1$ it also contains the initial reserve-check vertices.
+Let $N_{u,h}^{\mathrm{in}}$ be its entering-state subset. Define
+\begin{align}
+\iota_{u,h}^{\mathrm{dir}}
+&=\mathbf 1\{\exists\delta\in\mathcal D_{n+1}^{\mathrm{rel}}:
+\operatorname{contact}(\delta,\bar e_{u,h})=1\},
+\label{eq:direct_flag}\\
+\iota_{u,h}^{\mathrm{prop}}
+&=\mathbf 1\{h>1,\ \exists v\in N_{u,h}^{\mathrm{in}}:\mu(v)=1\},
+\label{eq:propagated_flag}\\
+\iota_{u,h}^{\mathrm{mat}}
+&=\mathbf 1\{N_{u,h}\cap\mathcal N_{n+1}^{\mathrm{op}}\ne\varnothing\}.
+\label{eq:material_flag}
+\end{align}
+Direct and propagated flags may both equal one. The affected legs and tasks
+are
+\begin{align}
+\mathcal E_{n+1}^{\mathrm{aff}}
+&=\{\bar e_{u,h}:N_{u,h}\cap\mathcal N_{n+1}^{\mathrm{rep}}
+\ne\varnothing\},
+\label{eq:affected_legs}\\
+\mathcal V_{n+1}^{\mathrm{aff}}
+&=\mathcal V_{n+1}^{\mathrm{rem}}\cap
+\{i:i\text{ is incident to a leg in }\mathcal E_{n+1}^{\mathrm{aff}}\}.
+\label{eq:affected_tasks}
+\end{align}
+For an initial virtual origin physically at a relief site, its task label
+is used when identifying incidence.
+
+\medskip
+\noindent\textbf{Proposition 1 (outside-closure invariance).}
+Assume that table differencing covers every changed wind query,
+that the graph obeys the atom-to-query incidence rule above and includes
+all data and control dependencies of the two evaluations, and that the
+evaluator and non-change roots are identical.
+Then
+\begin{equation}
+v\in\mathcal N_{n+1}\setminus
+(\mathcal N_{n+1}^{\mathrm{cl}}\cup\mathcal N^\Delta)
+\quad\Longrightarrow\quad \nu^-(v)=\nu^+(v).
+\label{eq:outside_closure_invariance}
+\end{equation}
+\emph{Proof.}
+Every change atom with an outgoing arc is relevant and seeded; every
+unseeded change atom is isolated. All non-change roots agree.
+In topological order, a non-change vertex outside the closure has no parent
+inside it and cannot have an unseeded change atom as a parent. Its parents
+therefore agree by induction. The same structural equation, including its
+branch and unavailable-value rules, gives equal outputs.
+\hfill$\square$
+
+\subsection{Task Coupling and Reassignment Neighborhood}
+\label{subsec:reassignment_coupling}
+
+The incumbent diagnostic supplies $\mathcal V_{n+1}^{\mathrm{aff}}$.
+Reassignment coupling concerns alternative plans throughout
+$\mathcal Y_{n+1}^{\mathrm{rem}}$ under the received wind table.
+
+\subsubsection{Constraint instances and coordinate support}
+Let $\mathcal Q_{n+1}^{\mathrm{tc}}$ be a finite indexed family whose
+conjunction expresses the feasibility conditions in
+\eqref{eq:hard_feasible_set}. It contains
+$\mathcal Q_{n+1}^{\mathrm{hard}}$ together with active-leg and required
+ground-operation completion and definedness checks. Use the fixed slot
+bounds to index conditional instances; an inactive instance is satisfied.
+The instances retain their resource granularity: shared stock, per-task
+service bounds, per-stop resource, deadline and reserve checks, per-UAV
+terminal checks, and bay capacity when imposed. The all-time bay inequality
+is one predicate on the finite set of preparation intervals. Unrelated
+constraints are not merged into a single conjunction vertex.
+
+The tagged mutable-coordinate set is
+\begin{equation}
+\mathcal M_{n+1}
+=\mathop{\dot\bigcup}_{a\in\mathcal D_{\mathrm{cmp}}}
+\bigl(\{a\}\times M_{n+1}^a\bigr).
+\label{eq:tagged_mutable_coordinates}
+\end{equation}
+For $g\in\mathcal Q_{n+1}^{\mathrm{tc}}$, define its argument record
+$\eta_g(\Pi)$ to contain its activation flag and all plan-dependent
+arguments in its predicate, with induced-state recursions substituted.
+Include index-selection and branch guards and the definedness status of
+each argument. An inactive instance has a canonical inactive record;
+unavailable arguments use $\bot$. Fixed inputs belong to
+$\mathscr I_{n+1}$. For a reserve constraint, the record includes the
+induced state governing the existential set $\mathscr W_{u,n+1}(z)$,
+rather than the success of a particular diagnostic return path.
+This record and the fixed information determine the status of $g$.
+
+A conservative coordinate support $D_{n+1}(g)\subseteq\mathcal M_{n+1}$
+is required to satisfy
+\begin{equation}
+\begin{split}
+\rho_{D_{n+1}(g)}(\Pi)=\rho_{D_{n+1}(g)}(\Pi')
+\quad\Longrightarrow\quad\eta_g(\Pi)=\eta_g(\Pi'),\\
+\Pi,\Pi'\in\mathcal Y_{n+1}^{\mathrm{rem}}.
+\end{split}
+\label{eq:constraint_coordinate_support}
+\end{equation}
+Projection uses the tagged coordinates of all four components.
+$\mathcal M_{n+1}$ always satisfies this condition. A conservative
+construction takes every mutable leaf of the expanded expression for
+$\eta_g$, including all branches, slot-activation guards, and transitive
+state dependencies over the common domain. For example, a downstream
+battery argument includes earlier payload and path coordinates.
+Incumbent traces alone do not capture all permitted routes.
+
+Comparing complete plans avoids inferring independence from an impossible
+single-coordinate perturbation in the non-Cartesian master domain.
+Argument records retain dependencies even when the incumbent constraint
+is slack. Smaller supports require a proof of the same condition; removing
+a constraint vertex requires proof that it is satisfied throughout the
+common domain.
+
+\subsubsection{Task attribution and the incidence graph}
+For UAV $u$, let its potential task participants be
+\begin{equation}
+\mathcal T_{u,n+1}=\{i\in\mathcal V_{n+1}^{\mathrm{rem}}:
+\exists\Pi\in\mathcal Y_{n+1}^{\mathrm{rem}},\ a_i=u\}.
+\label{eq:potential_task_participants}
+\end{equation}
+This includes tasks with committed assignments. Define the attribution
+$\Lambda_{n+1}(d)$ of a mutable coordinate by
+\begin{equation}
+\Lambda_{n+1}(d)=
+\begin{cases}
+\{i\},&d=(A,i),\\
+\mathcal T_{u,n+1},&d\text{ is an }S,P,\text{ or }L
+\text{ coordinate of }u.
+\end{cases}
+\label{eq:coordinate_task_attribution}
+\end{equation}
+The second case includes depot transfers and conservatively covers changed
+neighbors, loads, and later sorties. A declared certified superset of
+$\mathcal T_{u,n+1}$ is permissible; the full remaining-task set is safe.
+Task-free constraints have no task incidence but remain in the feasibility
+test.
+
+Define the task support of $g$ by
+\begin{equation}
+T_{n+1}(g)=\bigcup_{d\in D_{n+1}(g)}\Lambda_{n+1}(d)
+\subseteq\mathcal V_{n+1}^{\mathrm{rem}}.
+\label{eq:constraint_task_support}
+\end{equation}
+The construction rules belong to $\vartheta$; their outputs use only
+$\mathscr I_{n+1}$ and are fixed before comparing levels, independently of
+the candidate. Different declared conservative constructions can yield
+different hierarchies.
+
+The undirected bipartite task--constraint graph is
+\begin{equation}
+\begin{split}
+\mathcal B_{n+1}
+=\bigl(&\mathcal V_{n+1}^{\mathrm{rem}}
+\mathbin{\dot\cup}\mathcal Q_{n+1}^{\mathrm{tc}},
+\mathcal E_{n+1}^{\mathrm{tc}}\bigr),\\
+\mathcal E_{n+1}^{\mathrm{tc}}
+=\{\{i,g\}:\;&g\in\mathcal Q_{n+1}^{\mathrm{tc}},\ i\in T_{n+1}(g)\}.
+\end{split}
+\label{eq:incidence_graph}
+\end{equation}
+Constraint vertices with zero or one incident task do not connect distinct
+tasks. The task projection is
+\begin{equation}
+\begin{split}
+\mathcal G_{n+1}^{\mathrm{task}}
+&=(\mathcal V_{n+1}^{\mathrm{rem}},\mathcal E_{n+1}^{\mathrm{task}}),\\
+\mathcal E_{n+1}^{\mathrm{task}}
+&=\{\{i,j\}:i\ne j,\ \exists g\in\mathcal Q_{n+1}^{\mathrm{tc}},\
+\{i,j\}\subseteq T_{n+1}(g)\}.
+\end{split}
+\label{eq:task_projection}
+\end{equation}
+Thus each multi-task support is a hyperedge represented by a constraint
+vertex in $\mathcal B_{n+1}$ and by a clique in its task projection.
+
+\subsubsection{Closure and Level-3 assignment release}
+For brevity write $U_\ell$ for the epoch-specific iteration
+\begin{equation}
+\begin{split}
+U_0&=\mathcal V_{n+1}^{\mathrm{aff}},\\
+U_{\ell+1}&=U_\ell\cup
+\bigcup_{g:\,T_{n+1}(g)\cap U_\ell\ne\varnothing}T_{n+1}(g),\\
+U_\infty&=\bigcup_{\ell\ge0}U_\ell.
+\end{split}
+\label{eq:task_closure_iteration}
+\end{equation}
+It stabilizes after at most
+$|\mathcal V_{n+1}^{\mathrm{rem}}|-|U_0|$ strict enlargements. Equivalently,
+\begin{equation}
+\begin{split}
+U_\infty
+&=\operatorname{Reach}_{\mathcal B_{n+1}}(U_0)
+\cap\mathcal V_{n+1}^{\mathrm{rem}}\\
+&=\operatorname{Reach}_{\mathcal G_{n+1}^{\mathrm{task}}}(U_0).
+\end{split}
+\label{eq:task_closure_reachability}
+\end{equation}
+Reachability includes the seeds, including isolated affected tasks.
+With $\mathcal V_{n+1}^{\mathrm{mut}}=M_{n+1}^A$, the assignment
+neighborhood is
+\begin{equation}
+\mathcal V_{n+1}^{\mathrm{reassign}}
+=U_\infty\cap\mathcal V_{n+1}^{\mathrm{mut}}.
+\label{eq:reassignment_neighborhood}
+\end{equation}
+
+\medskip
+\noindent\textbf{Proposition 2 (least constraint-closed task set).}
+$U_\infty$ is the unique least set containing $U_0$ that satisfies
+\begin{equation}
+T_{n+1}(g)\cap U_\infty\ne\varnothing
+\quad\Longrightarrow\quad T_{n+1}(g)\subseteq U_\infty,
+\qquad g\in\mathcal Q_{n+1}^{\mathrm{tc}}.
+\label{eq:constraint_closed_tasks}
+\end{equation}
+Consequently no declared constraint support crosses the partition
+$(U_\infty,\mathcal V_{n+1}^{\mathrm{rem}}\setminus U_\infty)$.
+\emph{Proof.}
+The iteration is increasing on a finite task set, so it reaches a fixed
+point, which satisfies the implication. If $W\supseteq U_0$ satisfies
+the same implication, induction gives $U_\ell\subseteq W$ at every step:
+any support meeting $U_\ell$ meets $W$ and is therefore contained in $W$.
+Hence $U_\infty\subseteq W$. Alternating task--constraint walks give the
+first reachability equality; replacing each two-edge step by its task
+projection gives the second. \hfill$\square$
+
+Closure must precede the mutable-assignment intersection. For example,
+take four tasks, supports $T(g_1)=\{1,2\}$ and $T(g_2)=\{2,3\}$, seed
+$U_0=\{1\}$, and mutable assignments $M^A=\{1,3,4\}$.
+Then $U_\infty=\{1,2,3\}$ and the reassignment set is $\{1,3\}$.
+Deleting task 2 would incorrectly disconnect task 3: its committed
+assignment does not fix its route, path, or quantity dependencies.
+
+Enlarging the seeds or any support cannot shrink the closure. Empty seeds
+give an empty neighborhood. A reached support containing all mutable tasks
+makes the neighborhood equal to $M_{n+1}^A$. Shared stock or bay capacity
+can cause this case. Under the stated attribution,
+$\mathcal T_{u,n+1}=\mathcal V_{n+1}^{\mathrm{rem}}$ also makes any
+constraint depending on a mutable route coordinate of $u$ incident to all
+tasks. Local wind therefore does not guarantee local reassignment.
+
+Minimality holds only among sets closed under the declared supports, not
+among assignment sets sufficient for repair. Membership permits a move;
+it does not require one. The no-crossing property concerns $U_\infty$
+before commitment filtering. It does not imply independent subproblems:
+structural rules remain in the common domain, and all mutable sequence,
+path, and quantity coordinates are released at levels two and three.
+Every candidate still requires full constraint validation.
+
+Given the supports, a multi-source traversal of $\mathcal B_{n+1}$ visits
+each constraint vertex once, using time and storage
+$O(|\mathcal V_{n+1}^{\mathrm{rem}}|+|\mathcal Q_{n+1}^{\mathrm{tc}}|
++\sum_g|T_{n+1}(g)|)$. This excludes support construction and avoids
+materializing the task projection.
+
+\subsection{Cumulative Intervention Spaces}
+\label{subsec:intervention_spaces}
+
+For $a\in\mathcal D_{\mathrm{cmp}}$, let
+$R_{k,n+1}^a\subseteq M_{n+1}^a$ be the released coordinates at level
+$k\in\mathbb K:=\{0,1,2,3,4\}$. Suppressing the epoch only inside the
+following table, the release schedule is
+\begin{equation}
+\begin{array}{@{}ccccc@{}}
+\toprule
+k&R_k^A&R_k^S&R_k^P&R_k^L\\
+\midrule
+0&\varnothing&\varnothing&\varnothing&\varnothing\\
+1&\varnothing&\varnothing&M^P&\varnothing\\
+2&\varnothing&M^S&M^P&M^L\\
+3&\mathcal V^{\mathrm{reassign}}&M^S&M^P&M^L\\
+4&M^A&M^S&M^P&M^L\\
+\bottomrule
+\end{array}.
+\label{eq:release_schedule}
+\end{equation}
+Let $B_{k,n+1}^a=M_{n+1}^a\setminus R_{k,n+1}^a$. All five spaces have
+the common definition
+\begin{equation}
+\begin{split}
+\mathcal X_{k,n+1}=\{\Pi\in\mathcal Y_{n+1}^{\mathrm{rem}}:\;&
+\rho_{B_{k,n+1}^a}(\Pi^a)
+=\rho_{B_{k,n+1}^a}(\bar\Pi_{n+1}^a),\\
+&a\in\mathcal D_{\mathrm{cmp}}\}.
+\end{split}
+\label{eq:intervention_space}
+\end{equation}
+Thus $\mathcal X_{0,n+1}=\{\bar\Pi_{n+1}^{\mathrm{rem}}\}$ and
+$\mathcal X_{4,n+1}=\mathcal Y_{n+1}^{\mathrm{rem}}$.
+Level one changes only uncommitted paths. Level two also changes service
+order and loading/delivery quantities, preserving assignment.
+Quantities are released there because resequencing changes the route on
+which payload is carried and replenished. Level three additionally
+releases assignments in the declared coupling closure; level four releases
+all mutable assignments. No level changes observed history, current state,
+slot bounds, fixed operation rules, or commitments.
+In particular, the graph-defined Level-3 space is exactly
+\begin{equation}
+\begin{split}
+\mathcal X_{3,n+1}=\{\Pi\in\mathcal Y_{n+1}^{\mathrm{rem}}:\;&
+a_i=\bar a_i\\
+&\forall i\in M_{n+1}^A\setminus
+\mathcal V_{n+1}^{\mathrm{reassign}}\}.
+\end{split}
+\label{eq:level_three_space}
+\end{equation}
+Assignments in the neighborhood may also retain their incumbent values.
+Feasible Level-3 repairs belong to
+$\mathcal X_{3,n+1}\cap\mathcal F_{n+1}$; graph membership alone gives no
+feasibility certificate.
+
+\medskip
+\noindent\textbf{Proposition 3 (nesting).}
+If all levels share the master domain, incumbent, coordinate convention,
+and commitment mask, and released coordinates are cumulative, then
+\begin{equation}
+\mathcal X_{k,n+1}\subseteq\mathcal X_{k+1,n+1},
+\qquad k=0,1,2,3.
+\label{eq:nesting}
+\end{equation}
+\emph{Proof.}
+Cumulative release gives
+$B_{k+1,n+1}^a\subseteq B_{k,n+1}^a$ for every component.
+Every equality required at level $k+1$ is therefore already satisfied at
+level $k$; the common domain imposes identical remaining restrictions.
+\hfill$\square$
+
+Equality is allowed. In particular, levels three and four coincide whenever
+$\mathcal V_{n+1}^{\mathrm{reassign}}=\mathcal V_{n+1}^{\mathrm{mut}}$.
+With an empty reassignment neighborhood, levels two and three coincide.
+The hierarchy is over permitted changes, not over the number of coordinates
+that an eventual candidate actually changes.
+
+
+\subsection{Minimum Decision Release and Certificates}
+\label{subsec:minimum_escalation}
+
+Define $\mathcal F_{k,n+1}:=\mathcal X_{k,n+1}\cap\mathcal F_{n+1}$.
+The minimum sufficient release level is
+\begin{equation}
+k_{n+1}^F=\min\{k\in\mathbb K:\mathcal F_{k,n+1}\ne\varnothing\},
+\qquad \min\varnothing:=+\infty.
+\label{eq:feasibility_escalation}
+\end{equation}
+Nesting gives
+\begin{equation}
+\mathcal F_{k,n+1}\ne\varnothing
+\ \Longrightarrow\
+\mathcal F_{j,n+1}\ne\varnothing,\qquad j\in\mathbb K,\ j\ge k.
+\label{eq:feasibility_monotonicity}
+\end{equation}
+Consequently, for a finite $k$,
+\begin{equation}
+\begin{split}
+k_{n+1}^F=k\quad\Longleftrightarrow\quad&
+\mathcal F_{k,n+1}\ne\varnothing,\\
+&\mathcal F_{j,n+1}=\varnothing
+\quad\text{for all }j\in\mathbb K,\ j<k.
+\end{split}
+\label{eq:minimumharacterization}
+\end{equation}
+This minimum is over the declared five-level hierarchy. Unreleased
+coordinates remain equal to the incumbent; released coordinates may also
+remain unchanged. The formulation does not claim to find a smallest
+arbitrary subset of individual coordinates. Disturbance severity or
+diagnostic reachability depth alone does not determine the minimum.
+
+The mathematical absence of a mission-feasible continuation is
+\begin{equation}
+k_{n+1}^F=+\infty
+\quad\Longleftrightarrow\quad
+\mathcal F_{4,n+1}=\varnothing.
+\label{eq:no_feasible_continuation}
+\end{equation}
+A computational procedure may report no feasible continuation only with
+a valid certificate of this emptiness; its status code is
+\begin{equation*}
+\mathsf{NO\_FEASIBLE\_CONTINUATION}.
+\end{equation*}
+Such emptiness is relative to the stated representation,
+commitments, mandatory service, ground-operation protocol, and received
+wind table. It does not establish impossibility after future wind
+information arrives or after the domain is changed by an emergency override.
+
+A supplied plan $\widetilde\Pi_k$, together with feasible reserve-path
+witnesses and its induced-state checks, can establish
+\begin{equation}
+\widetilde\Pi_k\in\mathcal F_{k,n+1}
+\quad\Longrightarrow\quad k_{n+1}^F\le k.
+\label{eq:candidate_upper_bound}
+\end{equation}
+The converse is false for a particular candidate. Failed construction,
+rejected validation, and a time or iteration limit are not certificates
+that $\mathcal F_{k,n+1}$ is empty.
+
+More generally, let $\mathbb K^{\mathrm{wit}}$ contain the levels with
+validated feasible witnesses, and $\mathbb K^{\mathrm{emp}}$ those with
+valid emptiness certificates. Define
+\begin{align}
+u_{n+1}^F&=\min\mathbb K^{\mathrm{wit}},
+\label{eq:certified_upper}\\
+\ell_{n+1}^F
+&=\begin{cases}
++\infty,&4\in\mathbb K^{\mathrm{emp}},\\
+1+\max(\{-1\}\cup\mathbb K^{\mathrm{emp}}),&\text{otherwise}.
+\end{cases}
+\label{eq:certified_lower}
+\end{align}
+The empty minimum convention also applies to $u_{n+1}^F$.
+Then
+\begin{equation}
+\ell_{n+1}^F\le k_{n+1}^F\le u_{n+1}^F.
+\label{eq:certificate_interval}
+\end{equation}
+\emph{Justification.}
+A witness proves nonemptiness at its level. If level $j$ is empty,
+nesting makes every lower level empty; if level four is empty, all levels
+are empty. These two implications give the bounds. Equality of finite
+bounds certifies the minimum. An empty witness set alone gives only the
+vacuous upper bound $+\infty$. \hfill$\square$
+
+The statuses \emph{witness found}, \emph{space certified empty}, and
+\emph{search unresolved} concern a search problem. They are distinct from
+the flight statuses complete and late in
+\eqref{eq:flight_status}.
+Likewise, an emptiness proof over a restricted path library is not an
+emptiness proof over the entire piecewise-linear path domain. Its
+representation restriction must accompany the certificate.
+
+\balance
+\subsection{Optional Intervention Magnitude}
+\label{subsec:intervention_magnitude}
+
+When $k_{n+1}^F<+\infty$, every plan in
+$\mathcal F_{k_{n+1}^F,n+1}$ is an acceptable restored plan.
+The distance below is optional for reporting or selecting among these
+witnesses. It is not a feasibility constraint and does not alter
+$k_{n+1}^F$.
+
+Write $\bar\Pi=\bar\Pi_{n+1}^{\mathrm{rem}}$ and
+$H_{\mathrm{slot}}=\sum_u\bar n_u>0$. Define
+$N_{\mathrm{rem}}=|\mathcal V_{n+1}^{\mathrm{rem}}|$ and the fixed quantity
+scale $\sigma=1+\sum_i d_i$, expressed in commodity units.
+Write
+\begin{equation*}
+\Delta_{u,h}^{P}=\sup_{\theta\in[0,1]}
+\|P_{u,h}(\theta)-\bar P_{u,h}(\theta)\|_2.
+\end{equation*}
+The common coordinate representation gives the explicit component distances
+\begin{align}
+d_A&=\frac{\sum_{i\in\mathcal V_{n+1}^{\mathrm{rem}}}
+\mathbf 1\{a_i\ne\bar a_i\}}{\max\{1,N_{\mathrm{rem}}\}},
+\label{eq:assignment_distance}\\
+d_S&=\frac{1}{H_{\mathrm{slot}}}
+\sum_u\sum_{h=1}^{\bar n_u}\mathbf 1\{s_{u,h}\ne\bar s_{u,h}\},
+\label{eq:sequence_distance}\\
+d_P&=\frac{1}{H_{\mathrm{slot}}D_{\mathcal W}}
+\sum_u\sum_{h=1}^{\bar n_u}
+\Delta_{u,h}^{P},
+\label{eq:path_distance}\\
+d_L&=\frac{\displaystyle\sum_u\sum_{h=0}^{\bar n_u}
+\bigl(|x_{u,h}-\bar x_{u,h}|+|y_{u,h}-\bar y_{u,h}|\bigr)}
+{2\sigma(H_{\mathrm{slot}}+M)}.
+\label{eq:quantity_distance}
+\end{align}
+Here $x_{u,0}=0$ in both plans and all inactive entries use their
+canonical padding. Sequence distance measures slot changes.
+Path distance compares geometry under the fixed arclength convention,
+including its endpoints; it is not a binary path-change flag.
+For fixed positive weights $\alpha_a$ satisfying $\sum_a\alpha_a=1$, set
+\begin{equation}
+d_{n+1}(\Pi,\bar\Pi)=\alpha_A d_A+\alpha_S d_S+\alpha_P d_P+\alpha_L d_L.
+\label{eq:intervention_distance}
+\end{equation}
+It is finite and nonnegative, and vanishes exactly when the represented
+remaining decisions agree. All weights and scales are held fixed across
+levels. Neither alternative waypoint encodings of the same arclength
+curve nor inactive padding create spurious path changes.
+
+If $k_{n+1}^F<+\infty$, let
+\begin{equation}
+d_{n+1}^{F,\star}
+=\inf_{\Pi\in\mathcal F_{k_{n+1}^F,n+1}}d_{n+1}(\Pi,\bar\Pi).
+\label{eq:minimum_disruption}
+\end{equation}
+When the infimum is attained, a least-disruptive continuation belongs to
+the corresponding $\argmin$. Without an attainment assumption, for any
+$\delta_d>0$ one may select
+\begin{equation}
+\Pi_{n+1}^{F,\delta_d}\in\mathcal F_{k_{n+1}^F,n+1},
+\qquad
+d_{n+1}(\Pi_{n+1}^{F,\delta_d},\bar\Pi)
+\le d_{n+1}^{F,\star}+\delta_d.
+\label{eq:secondary_selection}
+\end{equation}
+Such a plan exists by the definition of infimum. Scope remains the primary
+criterion; distance cannot trade a broader level for a smaller change.
+
+The formulation therefore separates diagnosis on the fixed incumbent from
+existence of a mission-feasible continuation. A valid witness establishes
+feasibility at its declared level; determining the minimum also requires
+certified exclusion of lower levels. These statements are relative to the
+received information, commitments, and declared representation.

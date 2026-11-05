@@ -1,0 +1,544 @@
+{
+  "schema_version": "wind-benchmark-v1",
+  "formulation_date": "2026-09-17",
+  "benchmark_id": "unchanged_speed",
+  "units": {
+    "distance": "km",
+    "time": "h",
+    "mass": "kg",
+    "energy": "Wh",
+    "quantity": "commodity_unit"
+  },
+  "mission": {
+    "epoch_h": 0.0,
+    "horizon_h": 4.0,
+    "commodity_unit_mass_kg": 1.0,
+    "operating_region_xy": [
+      [
+        -1,
+        -1
+      ],
+      [
+        1,
+        -1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        -1,
+        1
+      ]
+    ],
+    "depot_xy": [
+      0,
+      0
+    ],
+    "tasks": [
+      {
+        "id": "T1",
+        "position_xy": [
+          1,
+          0
+        ],
+        "demand": 1.0,
+        "mandatory": 1.0,
+        "deadline_h": 1.5
+      },
+      {
+        "id": "T2",
+        "position_xy": [
+          1,
+          0
+        ],
+        "demand": 1.0,
+        "mandatory": 1.0,
+        "deadline_h": 3.0
+      },
+      {
+        "id": "T3",
+        "position_xy": [
+          -1,
+          0
+        ],
+        "demand": 1.0,
+        "mandatory": 1.0,
+        "deadline_h": 3.0
+      },
+      {
+        "id": "T4",
+        "position_xy": [
+          -1,
+          0
+        ],
+        "demand": 1.0,
+        "mandatory": 1.0,
+        "deadline_h": 3.0
+      }
+    ],
+    "vehicles": [
+      {
+        "id": "U1",
+        "airspeed_kmh": 1.0,
+        "empty_mass_kg": 1.0,
+        "energy_coefficient_wh_per_kg_km": 0.1,
+        "battery_capacity_wh": 10.0,
+        "reserve_wh": 1.0,
+        "payload_capacity_kg": 1.0,
+        "slot_bound": 2
+      },
+      {
+        "id": "U2",
+        "airspeed_kmh": 2.0,
+        "empty_mass_kg": 1.0,
+        "energy_coefficient_wh_per_kg_km": 0.1,
+        "battery_capacity_wh": 10.0,
+        "reserve_wh": 1.0,
+        "payload_capacity_kg": 1.0,
+        "slot_bound": 2
+      },
+      {
+        "id": "U3",
+        "airspeed_kmh": 1.0,
+        "empty_mass_kg": 1.0,
+        "energy_coefficient_wh_per_kg_km": 0.1,
+        "battery_capacity_wh": 10.0,
+        "reserve_wh": 1.0,
+        "payload_capacity_kg": 1.0,
+        "slot_bound": 2
+      },
+      {
+        "id": "U4",
+        "airspeed_kmh": 1.0,
+        "empty_mass_kg": 1.0,
+        "energy_coefficient_wh_per_kg_km": 0.1,
+        "battery_capacity_wh": 10.0,
+        "reserve_wh": 1.0,
+        "payload_capacity_kg": 1.0,
+        "slot_bound": 2
+      }
+    ]
+  },
+  "state": {
+    "depot_stock": 4.0,
+    "cumulative_delivered": {
+      "T1": 0.0,
+      "T2": 0.0,
+      "T3": 0.0,
+      "T4": 0.0
+    },
+    "fleet": {
+      "U1": {
+        "position_xy": [
+          0,
+          0
+        ],
+        "battery_wh": 10.0,
+        "onboard": 0.0,
+        "mode": "idle",
+        "residual_operation": null
+      },
+      "U2": {
+        "position_xy": [
+          0,
+          0
+        ],
+        "battery_wh": 10.0,
+        "onboard": 0.0,
+        "mode": "idle",
+        "residual_operation": null
+      },
+      "U3": {
+        "position_xy": [
+          0,
+          0
+        ],
+        "battery_wh": 10.0,
+        "onboard": 0.0,
+        "mode": "idle",
+        "residual_operation": null
+      },
+      "U4": {
+        "position_xy": [
+          0,
+          0
+        ],
+        "battery_wh": 10.0,
+        "onboard": 0.0,
+        "mode": "idle",
+        "residual_operation": null
+      }
+    }
+  },
+  "operations": {
+    "service_duration_h": 0.0,
+    "service_energy_wh": 0.0,
+    "preparation_duration_h": 0.0,
+    "depot_bays": null
+  },
+  "wind": {
+    "cells": [
+      {
+        "id": "WEST",
+        "polygon_xy": [
+          [
+            -1,
+            -1
+          ],
+          [
+            0,
+            -1
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            -1,
+            1
+          ]
+        ]
+      },
+      {
+        "id": "east",
+        "polygon_xy": [
+          [
+            0,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1
+          ]
+        ]
+      }
+    ],
+    "boundary_owner": "lowest_cell_id",
+    "time_knots_h": [
+      0.0,
+      4.0
+    ],
+    "speed_bound_kmh": 0.6,
+    "previous": {
+      "issued_at_h": 0.0,
+      "values": [
+        [
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          [
+            0.0,
+            0.2
+          ]
+        ]
+      ]
+    },
+    "received": {
+      "issued_at_h": 0.0,
+      "values": [
+        [
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          [
+            0.0,
+            -0.2
+          ]
+        ]
+      ]
+    },
+    "update_support": [
+      [
+        "east",
+        0
+      ]
+    ]
+  },
+  "incumbent": {
+    "assignment": {
+      "T1": "U1",
+      "T2": "U2",
+      "T3": "U3",
+      "T4": "U4"
+    },
+    "routes": {
+      "U1": {
+        "stops": [
+          "T1",
+          "DEPOT"
+        ],
+        "paths": [
+          [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          [
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              0
+            ]
+          ]
+        ],
+        "loads": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "deliveries": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      "U2": {
+        "stops": [
+          "T2",
+          "DEPOT"
+        ],
+        "paths": [
+          [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          [
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              0
+            ]
+          ]
+        ],
+        "loads": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "deliveries": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      "U3": {
+        "stops": [
+          "T3",
+          "DEPOT"
+        ],
+        "paths": [
+          [
+            [
+              0,
+              0
+            ],
+            [
+              -1,
+              0
+            ]
+          ],
+          [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ]
+          ]
+        ],
+        "loads": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "deliveries": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      "U4": {
+        "stops": [
+          "T4",
+          "DEPOT"
+        ],
+        "paths": [
+          [
+            [
+              0,
+              0
+            ],
+            [
+              -1,
+              0
+            ]
+          ],
+          [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              0
+            ]
+          ]
+        ],
+        "loads": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "deliveries": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      }
+    }
+  },
+  "commitments": {
+    "A": [],
+    "S": [
+      "U1:2",
+      "U2:2",
+      "U3:2",
+      "U4:2"
+    ],
+    "P": [],
+    "L": [
+      "U1:0:x",
+      "U1:0:y",
+      "U1:1:x",
+      "U1:1:y",
+      "U1:2:x",
+      "U1:2:y",
+      "U2:0:x",
+      "U2:0:y",
+      "U2:1:x",
+      "U2:1:y",
+      "U2:2:x",
+      "U2:2:y",
+      "U3:0:x",
+      "U3:0:y",
+      "U3:1:x",
+      "U3:1:y",
+      "U3:2:x",
+      "U3:2:y",
+      "U4:0:x",
+      "U4:0:y",
+      "U4:1:x",
+      "U4:1:y",
+      "U4:2:x",
+      "U4:2:y"
+    ]
+  },
+  "reserve_paths": {
+    "U1": {
+      "initial": [
+        [
+          0,
+          0
+        ]
+      ],
+      "1": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    "U2": {
+      "initial": [
+        [
+          0,
+          0
+        ]
+      ],
+      "1": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    "U3": {
+      "initial": [
+        [
+          0,
+          0
+        ]
+      ],
+      "1": [
+        [
+          -1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    "U4": {
+      "initial": [
+        [
+          0,
+          0
+        ]
+      ],
+      "1": [
+        [
+          -1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    }
+  }
+}

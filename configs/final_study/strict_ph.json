@@ -1,0 +1,27 @@
+{
+  "study": "strict_ph",
+  "design": "docs/EXPERIMENT_REDESIGN_RAL_2026_10_30.md, Section 10: PH as defined in COMPARISON_PROTOCOL_2026_10_14.md Section 4 (levels left only by time share or an exhausted plan search), next to PH as run and CMI, on the frozen FS instances",
+  "source_run": "results/final_study_2026_10_17",
+  "arms": [
+    "PH",
+    "PH-strict",
+    "CMI"
+  ],
+  "budget_short": 10,
+  "budget_long": 60,
+  "smoke": {
+    "instances": 30,
+    "seed": 76101
+  },
+  "settings": {
+    "ph_shares": [
+      0.05,
+      0.15,
+      0.2,
+      0.3,
+      0.3
+    ],
+    "base_slice_fraction": 0.025,
+    "cmi": {}
+  }
+}

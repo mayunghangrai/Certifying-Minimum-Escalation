@@ -1,0 +1,184 @@
+{
+  "study": "level4-pilot-battery-stock",
+  "design": "docs/SCENARIO_DESIGN_2026_10_14.md, docs/COMPARISON_PROTOCOL_2026_10_14.md, method v2 (docs/CERTIFICATION_METHOD_PLAN_2026_10_09.md with the 10 October amendments)",
+  "fs": {
+    "fleets": [
+      4,
+      6,
+      8
+    ],
+    "tasks_per_uav": [
+      2,
+      3,
+      4
+    ],
+    "sigma": {
+      "tight": "1/400",
+      "medium": "1/100",
+      "loose": "1/25"
+    },
+    "beta": {
+      "tight": "3/20",
+      "medium": "1/2",
+      "ample": "4"
+    },
+    "families": [
+      "uniform",
+      "clustered"
+    ],
+    "seed": 77101,
+    "rule": "D1p",
+    "max_attempts": 48,
+    "design": "L9"
+  },
+  "ls": {
+    "fleets": [
+      4,
+      6,
+      8
+    ],
+    "quota_per_fleet": 2,
+    "residue": 3,
+    "residue_seed": 78001,
+    "max_draws_per_cell": 60,
+    "batch": 8,
+    "seed": 77991
+  },
+  "label_budget_s": 600,
+  "arena": {
+    "budget_short": 10,
+    "budget_long": 60,
+    "arms_short": [
+      "GR",
+      "GR-c",
+      "LR",
+      "PH",
+      "CMI",
+      "noAF",
+      "noER"
+    ],
+    "arms_long": [
+      "GR",
+      "GR-c",
+      "LR",
+      "PH",
+      "CMI"
+    ],
+    "third_seed": 76002
+  },
+  "p1": {
+    "source": "results/escalation_study_primary",
+    "budget_s": 10,
+    "arms": [
+      "GR",
+      "GR-c",
+      "LR",
+      "PH",
+      "CMI"
+    ],
+    "limit": 40,
+    "seed": 7
+  },
+  "xr": {
+    "budget_s": 10,
+    "limit": 8,
+    "seed": 7
+  },
+  "scaling": {
+    "sizes": [
+      [
+        24,
+        6
+      ],
+      [
+        24,
+        8
+      ],
+      [
+        48,
+        6
+      ],
+      [
+        48,
+        8
+      ]
+    ],
+    "families": [
+      "uniform",
+      "clustered"
+    ],
+    "seeds": [
+      73001,
+      73002,
+      73003,
+      73004,
+      73005
+    ],
+    "strength": "2/5",
+    "slack": "1/1000",
+    "max_attempts": 24,
+    "budgets": [
+      60,
+      300
+    ],
+    "arms": [
+      "GR",
+      "GR-c",
+      "LR",
+      "PH",
+      "CMI"
+    ],
+    "r1_source": "results/escalation_study_r1_large",
+    "missions": [
+      "P1_24_6_clustered_73001",
+      "P1_24_6_clustered_73004",
+      "P1_24_8_clustered_73004",
+      "P1_24_8_uniform_73005",
+      "P1_48_6_clustered_73004",
+      "P1_48_6_uniform_73004",
+      "P1_48_8_uniform_73002",
+      "P1_48_8_uniform_73004"
+    ]
+  },
+  "contention": {
+    "instances": 6,
+    "seed": 76003,
+    "arms": [
+      "GR",
+      "GR-c",
+      "LR",
+      "PH",
+      "CMI",
+      "noAF",
+      "noER"
+    ]
+  },
+  "settings": {
+    "ph_shares": [
+      0.05,
+      0.15,
+      0.2,
+      0.3,
+      0.3
+    ],
+    "base_slice_fraction": 0.025,
+    "cmi": {}
+  },
+  "variance": {
+    "instances": 6,
+    "seeds": [
+      1,
+      2
+    ],
+    "seed": 76004,
+    "arms": [
+      "GR",
+      "GR-c"
+    ]
+  },
+  "hypotheses": {
+    "h2_min_certified": 0.8,
+    "h3_max_ratio": 3
+  },
+  "pilot_note": "Targeted Level-4 test run (17 October 2026) after the battery-aware constructions, the placement preferences, the 1.5 x depot stock and the in-flight deadline floor: the level-suite stages only, on a fresh seed, 600 s reference, up to 60 draws per class and fleet. Run with --stages ls-build,ls-arena-short,ls-arena-long,report."
+}

@@ -1,0 +1,101 @@
+{
+  "study": "P1",
+  "phase": "primary",
+  "freeze_note": "Fixed on 8 Oct 2026 after pilot seeds 71001-71002 (p1_pilot.json; results/escalation_study_pilot_2026_10_08). The slack grid moved from the plan's 2/5..1/50 to 1/10..1/1000: a one-cell update delays incumbent deliveries by at most 39% of the makespan (median largest delay 0.5%; no delivery delayed in 13 of 36 mission-strength pairs), so 2/5 left every pilot variant at Level 0. Caps unchanged: pass 1 certified 243 of 252 pilot variants and pass 2 the remaining 9. No outcome quotas; failed generation slots are kept, not replaced.",
+  "tasks": [
+    4,
+    8,
+    12
+  ],
+  "uavs": 4,
+  "families": [
+    "uniform",
+    "clustered"
+  ],
+  "seeds": [
+    72001,
+    72002,
+    72003,
+    72004,
+    72005,
+    72006,
+    72007,
+    72008,
+    72009,
+    72010,
+    72011,
+    72012,
+    72013,
+    72014,
+    72015,
+    72016,
+    72017,
+    72018,
+    72019,
+    72020
+  ],
+  "strengths": [
+    "1/5",
+    "2/5",
+    "3/5"
+  ],
+  "slacks": [
+    "1/10",
+    "1/30",
+    "1/100",
+    "1/300",
+    "1/1000"
+  ],
+  "battery_slack": "3/2",
+  "max_attempts": 24,
+  "budget": {
+    "refinements": [
+      2,
+      4
+    ],
+    "digits": 18,
+    "max_operations": 100000,
+    "max_rows": 10000,
+    "screen": {
+      "max_seconds": 10,
+      "max_proposals": 120
+    },
+    "level2": {
+      "max_seconds": 8,
+      "max_nodes": 100000
+    },
+    "level3": {
+      "max_seconds": 6,
+      "max_nodes": 100000
+    },
+    "level4": {
+      "max_seconds": 6,
+      "max_nodes": 100000
+    }
+  },
+  "pass2_budget": {
+    "refinements": [
+      2,
+      4
+    ],
+    "digits": 18,
+    "max_operations": 100000,
+    "max_rows": 10000,
+    "screen": {
+      "max_seconds": 20,
+      "max_proposals": 120
+    },
+    "level2": {
+      "max_seconds": 40,
+      "max_nodes": 100000
+    },
+    "level3": {
+      "max_seconds": 30,
+      "max_nodes": 100000
+    },
+    "level4": {
+      "max_seconds": 30,
+      "max_nodes": 100000
+    }
+  }
+}

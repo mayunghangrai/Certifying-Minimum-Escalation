@@ -1,0 +1,12 @@
+{
+  "study": "near_boundary",
+  "phase": "primary",
+  "freeze_note": "Fixed after development pilots 31001; no recovery-label quotas or replacement of failed generation slots.",
+  "sizes": [[3, 3], [6, 3], [12, 4], [24, 6]],
+  "families": ["uniform", "clustered"],
+  "seeds": [41001, 41002, 41003, 41004],
+  "anchors": ["incumbent", "fixed_sequence"],
+  "offset": "1/10",
+  "max_attempts": 48,
+  "budget": {"max_seconds": 5, "max_proposals": 120}
+}

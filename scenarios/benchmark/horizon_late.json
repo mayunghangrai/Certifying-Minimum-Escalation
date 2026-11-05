@@ -1,0 +1,510 @@
+{
+  "schema_version": "wind-benchmark-v1",
+  "formulation_date": "2026-09-17",
+  "benchmark_id": "horizon_late",
+  "units": {
+    "distance": "km",
+    "time": "h",
+    "mass": "kg",
+    "energy": "Wh",
+    "quantity": "commodity_unit"
+  },
+  "mission": {
+    "epoch_h": 1.0,
+    "horizon_h": 8.0,
+    "commodity_unit_mass_kg": 2.0,
+    "operating_region_xy": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        12.0,
+        8.0
+      ],
+      [
+        0.0,
+        8.0
+      ]
+    ],
+    "depot_xy": [
+      1.0,
+      1.0
+    ],
+    "tasks": [
+      {
+        "id": "A",
+        "position_xy": [
+          9.0,
+          1.0
+        ],
+        "demand": 4.0,
+        "mandatory": 4.0,
+        "deadline_h": 3.9
+      },
+      {
+        "id": "B",
+        "position_xy": [
+          9.0,
+          5.0
+        ],
+        "demand": 1.5,
+        "mandatory": 1.5,
+        "deadline_h": 6.0
+      },
+      {
+        "id": "C",
+        "position_xy": [
+          3.0,
+          5.0
+        ],
+        "demand": 2.0,
+        "mandatory": 1.5,
+        "deadline_h": 6.0
+      }
+    ],
+    "vehicles": [
+      {
+        "id": "U1",
+        "airspeed_kmh": 10.0,
+        "empty_mass_kg": 2.0,
+        "energy_coefficient_wh_per_kg_km": 0.5,
+        "battery_capacity_wh": 100.0,
+        "reserve_wh": 10.0,
+        "payload_capacity_kg": 6.0,
+        "slot_bound": 5
+      },
+      {
+        "id": "U2",
+        "airspeed_kmh": 10.0,
+        "empty_mass_kg": 2.0,
+        "energy_coefficient_wh_per_kg_km": 0.5,
+        "battery_capacity_wh": 100.0,
+        "reserve_wh": 10.0,
+        "payload_capacity_kg": 6.0,
+        "slot_bound": 5
+      }
+    ]
+  },
+  "state": {
+    "depot_stock": 6.0,
+    "cumulative_delivered": {
+      "A": 1.0,
+      "B": 0.0,
+      "C": 0.5
+    },
+    "fleet": {
+      "U1": {
+        "position_xy": [
+          1.0,
+          1.0
+        ],
+        "battery_wh": 80.0,
+        "onboard": 0.0,
+        "mode": "idle",
+        "residual_operation": null
+      },
+      "U2": {
+        "position_xy": [
+          3.0,
+          5.0
+        ],
+        "battery_wh": 90.0,
+        "onboard": 0.5,
+        "mode": "servicing",
+        "residual_operation": {
+          "duration_h": 0.05,
+          "energy_wh": 0.2,
+          "delivery": 0.5,
+          "load": 0.0
+        }
+      }
+    }
+  },
+  "operations": {
+    "service_duration_h": 0.05,
+    "service_energy_wh": 0.2,
+    "preparation_duration_h": 0.1,
+    "depot_bays": 2
+  },
+  "wind": {
+    "cells": [
+      {
+        "id": "L",
+        "polygon_xy": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            6.0,
+            0.0
+          ],
+          [
+            6.0,
+            8.0
+          ],
+          [
+            0.0,
+            8.0
+          ]
+        ]
+      },
+      {
+        "id": "R",
+        "polygon_xy": [
+          [
+            6.0,
+            0.0
+          ],
+          [
+            12.0,
+            0.0
+          ],
+          [
+            12.0,
+            8.0
+          ],
+          [
+            6.0,
+            8.0
+          ]
+        ]
+      }
+    ],
+    "boundary_owner": "lowest_cell_id",
+    "time_knots_h": [
+      1.0,
+      2.0,
+      3.0,
+      8.0
+    ],
+    "speed_bound_kmh": 9.5,
+    "previous": {
+      "issued_at_h": 0.5,
+      "values": [
+        [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ]
+      ]
+    },
+    "received": {
+      "issued_at_h": 1.0,
+      "values": [
+        [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          [
+            -9.5,
+            0.0
+          ],
+          [
+            -9.5,
+            0.0
+          ],
+          [
+            -9.5,
+            0.0
+          ]
+        ]
+      ]
+    },
+    "update_support": [
+      [
+        "R",
+        0
+      ],
+      [
+        "R",
+        1
+      ],
+      [
+        "R",
+        2
+      ]
+    ]
+  },
+  "incumbent": {
+    "assignment": {
+      "A": "U1",
+      "B": "U2",
+      "C": "U2"
+    },
+    "routes": {
+      "U1": {
+        "stops": [
+          "A",
+          "DEPOT",
+          "A",
+          "DEPOT",
+          null
+        ],
+        "paths": [
+          [
+            [
+              1.0,
+              1.0
+            ],
+            [
+              9.0,
+              1.0
+            ]
+          ],
+          [
+            [
+              9.0,
+              1.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          [
+            [
+              1.0,
+              1.0
+            ],
+            [
+              9.0,
+              1.0
+            ]
+          ],
+          [
+            [
+              9.0,
+              1.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          [
+            [
+              1.0,
+              1.0
+            ]
+          ]
+        ],
+        "deliveries": [
+          0.0,
+          1.5,
+          0.0,
+          1.5,
+          0.0,
+          0.0
+        ],
+        "loads": [
+          2.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "U2": {
+        "stops": [
+          "C",
+          "DEPOT",
+          "B",
+          "C",
+          "DEPOT"
+        ],
+        "paths": [
+          [
+            [
+              3.0,
+              5.0
+            ]
+          ],
+          [
+            [
+              3.0,
+              5.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          [
+            [
+              1.0,
+              1.0
+            ],
+            [
+              9.0,
+              5.0
+            ]
+          ],
+          [
+            [
+              9.0,
+              5.0
+            ],
+            [
+              3.0,
+              5.0
+            ]
+          ],
+          [
+            [
+              3.0,
+              5.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ]
+        ],
+        "deliveries": [
+          0.0,
+          0.5,
+          0.0,
+          1.5,
+          0.5,
+          0.0
+        ],
+        "loads": [
+          0.0,
+          0.0,
+          2.5,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    }
+  },
+  "commitments": {
+    "A": [
+      "C"
+    ],
+    "S": [
+      "U1:1",
+      "U2:1"
+    ],
+    "P": [
+      "U2:1"
+    ],
+    "L": [
+      "U2:1:x"
+    ]
+  },
+  "reserve_paths": {
+    "U1": {
+      "initial": [
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "1": [
+        [
+          9.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "3": [
+        [
+          9.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ]
+    },
+    "U2": {
+      "initial": [
+        [
+          3.0,
+          5.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "1": [
+        [
+          3.0,
+          5.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "3": [
+        [
+          9.0,
+          5.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "4": [
+        [
+          3.0,
+          5.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ]
+    }
+  }
+}

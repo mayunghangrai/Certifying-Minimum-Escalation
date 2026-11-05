@@ -1,0 +1,5 @@
+{
+  "stage": "controlled",
+  "phase": "development",
+  "budget": {"max_seconds": 10, "max_proposals": 120, "refinements": [1, 2], "digits": 18}
+}

@@ -1,0 +1,1609 @@
+{
+  "affected_tasks": [
+    "T1",
+    "T2"
+  ],
+  "arithmetic": "Normalized JSON decimals interpreted as rationals; unsupported radicals use numerical proposals.",
+  "certified_empty_levels": [
+    0,
+    1,
+    2
+  ],
+  "claim": "Exact bounds concern this finite path representation and the fixed operation protocol. They concern received-wind feasible sets; previous_premise separately reports whether the incumbent qualifies as an exact feasible-before-update benchmark. Numerical witnesses use simulator tolerances and do not certify an exact upper bound.",
+  "levels": [
+    {
+      "branch_evidence": [
+        {
+          "branch_hash": "a84006b9bf6ef9ee978d9d11defd383eba34af95c311b17f11c39b874bd46d2f",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "17": "1"
+            }
+          },
+          "exact": true,
+          "index": 0,
+          "outcome": "EMPTY"
+        }
+      ],
+      "branches": 1,
+      "budgets": [
+        {
+          "exhaustive": true,
+          "max_branches": 2000,
+          "max_iterations": 10000,
+          "max_nodes": 100000,
+          "max_operations": 10000,
+          "max_rows": 2000,
+          "numerical": true
+        }
+      ],
+      "cursor": {
+        "live_continuation_only": true,
+        "next_branch": 1,
+        "nodes": 18
+      },
+      "enumeration_complete": true,
+      "exact_feasible_branches": 0,
+      "excluded_branches": 1,
+      "feasible_branches": 0,
+      "level": 0,
+      "nodes": 18,
+      "representation_hash": "954c03840e5fca726d2b5f840ab7b5737486fbee4cb6f4075247b0edb87fe45e",
+      "retry_attempts": 0,
+      "scenario_hash": "4a6fe224f73c35f1a73be797543187c5b4882684c5dc1880796fdd8c105c81fe",
+      "status": "EMPTY",
+      "unresolved_branches": 0,
+      "version": "recovery-level-v1",
+      "witness": null
+    },
+    {
+      "branch_evidence": [
+        {
+          "branch_hash": "a84006b9bf6ef9ee978d9d11defd383eba34af95c311b17f11c39b874bd46d2f",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "17": "1"
+            }
+          },
+          "exact": true,
+          "index": 0,
+          "outcome": "EMPTY"
+        }
+      ],
+      "branches": 1,
+      "budgets": [
+        {
+          "exhaustive": true,
+          "max_branches": 2000,
+          "max_iterations": 10000,
+          "max_nodes": 100000,
+          "max_operations": 10000,
+          "max_rows": 2000,
+          "numerical": true
+        }
+      ],
+      "cursor": {
+        "live_continuation_only": true,
+        "next_branch": 1,
+        "nodes": 18
+      },
+      "enumeration_complete": true,
+      "exact_feasible_branches": 0,
+      "excluded_branches": 1,
+      "feasible_branches": 0,
+      "level": 1,
+      "nodes": 18,
+      "representation_hash": "954c03840e5fca726d2b5f840ab7b5737486fbee4cb6f4075247b0edb87fe45e",
+      "retry_attempts": 0,
+      "scenario_hash": "4a6fe224f73c35f1a73be797543187c5b4882684c5dc1880796fdd8c105c81fe",
+      "status": "EMPTY",
+      "unresolved_branches": 0,
+      "version": "recovery-level-v1",
+      "witness": null
+    },
+    {
+      "branch_evidence": [
+        {
+          "branch_hash": "a84006b9bf6ef9ee978d9d11defd383eba34af95c311b17f11c39b874bd46d2f",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "17": "1"
+            }
+          },
+          "exact": true,
+          "index": 0,
+          "outcome": "EMPTY"
+        }
+      ],
+      "branches": 1,
+      "budgets": [
+        {
+          "exhaustive": true,
+          "max_branches": 2000,
+          "max_iterations": 10000,
+          "max_nodes": 100000,
+          "max_operations": 10000,
+          "max_rows": 2000,
+          "numerical": true
+        }
+      ],
+      "cursor": {
+        "live_continuation_only": true,
+        "next_branch": 1,
+        "nodes": 38
+      },
+      "enumeration_complete": true,
+      "exact_feasible_branches": 0,
+      "excluded_branches": 1,
+      "feasible_branches": 0,
+      "level": 2,
+      "nodes": 38,
+      "representation_hash": "954c03840e5fca726d2b5f840ab7b5737486fbee4cb6f4075247b0edb87fe45e",
+      "retry_attempts": 0,
+      "scenario_hash": "4a6fe224f73c35f1a73be797543187c5b4882684c5dc1880796fdd8c105c81fe",
+      "status": "EMPTY",
+      "unresolved_branches": 0,
+      "version": "recovery-level-v1",
+      "witness": null
+    },
+    {
+      "branch_evidence": [
+        {
+          "branch_hash": "a84006b9bf6ef9ee978d9d11defd383eba34af95c311b17f11c39b874bd46d2f",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "17": "1"
+            }
+          },
+          "exact": true,
+          "index": 0,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "7b0aac72f1033e8ea10f4b23ceab667eff67fcc6dbcd0562e80a93f9e1c41e3a",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "17": "1"
+            }
+          },
+          "exact": true,
+          "index": 1,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "b0f737de4d603e75ea7c5f0f2cff9876eef7e4aafbbc9a77c93564314eccb150",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "17": "1"
+            }
+          },
+          "exact": true,
+          "index": 2,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "16de7a690780c42947c485ad64f80e79bc747183697f6408e1730ec2014a42f1",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "17": "1"
+            }
+          },
+          "exact": true,
+          "index": 3,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "b17db35f6395d2b31d163ef638a761cf7ede6264726e5d4451a421481945071b",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "17": "1"
+            }
+          },
+          "exact": true,
+          "index": 4,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "da19c0fa58cf0a2162756619b7729bc158482f17a87513521a68c24bc410bd92",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "17": "1"
+            }
+          },
+          "exact": true,
+          "index": 5,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "61f09f8b0609ff733434e17f1d7fa6e5c6a546c505d084ba9a33848603f0322f",
+          "exact": true,
+          "index": 6,
+          "outcome": "WITNESS"
+        },
+        {
+          "branch_hash": "b2fe3246f0a3360c180ff7c2940d100070dbbfec9abb9d6492e1fd679131df40",
+          "exact": true,
+          "index": 7,
+          "outcome": "WITNESS"
+        },
+        {
+          "branch_hash": "71c42868e974650986e54007f747a99bb5cefbeb5a60e48c43cf995480bb0053",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "73": "1"
+            }
+          },
+          "exact": true,
+          "index": 8,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "b2cc6433e41bd493cf23fcf878adf91a14158e070a40318d18637210a6e184e8",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "101": "1"
+            }
+          },
+          "exact": true,
+          "index": 9,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "fd99c53eac02b91e9ab6014e25f17bbcfd15ed25e147095a0affd8230e3aa872",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "101": "1"
+            }
+          },
+          "exact": true,
+          "index": 10,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "95635b2fbfe332907b53ae0c26b67e8ee9f68da3b6668d8bddc81f8a7f6a03ae",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "73": "1"
+            }
+          },
+          "exact": true,
+          "index": 11,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "a800db026590a151c9498d7d2355ab402c6fb5fe5c361e7247f903f58c6948fb",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "73": "1"
+            }
+          },
+          "exact": true,
+          "index": 12,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "79182e0a040078bef7a234260443d7de7701f52df1125490f0a50d6a37848fda",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "101": "1"
+            }
+          },
+          "exact": true,
+          "index": 13,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "014ac14bc508912d3caaa9eae23082d52511b28d076d5004fef2040d12a9e274",
+          "exact": true,
+          "index": 14,
+          "outcome": "WITNESS"
+        },
+        {
+          "branch_hash": "8a349467816bd69d00aa5dc284e85c6c0fea16c7003f12f630e96fa82d65d093",
+          "exact": true,
+          "index": 15,
+          "outcome": "WITNESS"
+        },
+        {
+          "branch_hash": "96de044d30f446d24fb949a877b930c41bdc80118c8cab118be01871cca0a800",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "73": "1"
+            }
+          },
+          "exact": true,
+          "index": 16,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "837544c6fa05c57e61ab6d2423b75bb22a680f5bdb63c55980635dbd93565960",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "101": "1"
+            }
+          },
+          "exact": true,
+          "index": 17,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "ab40705cd4987d1db4153db3fbdd24a38aa6c1b571057abbbd520ba80df7ccdf",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "101": "1"
+            }
+          },
+          "exact": true,
+          "index": 18,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "3ef77d322c5c9b7648b1f4237abfa80b8d9bbb6793046f9cdbc9d93f29026443",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "73": "1"
+            }
+          },
+          "exact": true,
+          "index": 19,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "29f4fea89b7eadb20a37d1a3d44175e014573e54d33d5e08323d1442d973a636",
+          "exact": true,
+          "index": 20,
+          "outcome": "WITNESS"
+        },
+        {
+          "branch_hash": "b7f287c4577fb0d2893ea56eb654381d8b697af8b143b09b9a0fefc1f3f9e9f7",
+          "exact": true,
+          "index": 21,
+          "outcome": "WITNESS"
+        },
+        {
+          "branch_hash": "59f626d2c1932714a2fa812518abe5b9dcd4193e98818586c24ac72c6f3eeb31",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "73": "1"
+            }
+          },
+          "exact": true,
+          "index": 22,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "213c462433381c7ba63cf3ec849b0a1e4747806c4065c96d56b1f130e3159057",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "101": "1"
+            }
+          },
+          "exact": true,
+          "index": 23,
+          "outcome": "EMPTY"
+        }
+      ],
+      "branches": 24,
+      "budgets": [
+        {
+          "exhaustive": true,
+          "max_branches": 2000,
+          "max_iterations": 10000,
+          "max_nodes": 100000,
+          "max_operations": 10000,
+          "max_rows": 2000,
+          "numerical": true
+        }
+      ],
+      "cursor": {
+        "live_continuation_only": true,
+        "next_branch": 24,
+        "nodes": 786
+      },
+      "enumeration_complete": true,
+      "exact_feasible_branches": 6,
+      "excluded_branches": 18,
+      "feasible_branches": 6,
+      "level": 3,
+      "nodes": 786,
+      "representation_hash": "954c03840e5fca726d2b5f840ab7b5737486fbee4cb6f4075247b0edb87fe45e",
+      "retry_attempts": 0,
+      "scenario_hash": "4a6fe224f73c35f1a73be797543187c5b4882684c5dc1880796fdd8c105c81fe",
+      "status": "WITNESS",
+      "unresolved_branches": 0,
+      "version": "recovery-level-v1",
+      "witness": {
+        "exact": true,
+        "exact_transfers": {},
+        "plan": {
+          "assignment": {
+            "T1": "U2",
+            "T2": "U1",
+            "T3": "U3",
+            "T4": "U4"
+          },
+          "routes": {
+            "U1": {
+              "deliveries": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "loads": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "paths": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    1,
+                    0
+                  ]
+                ],
+                [
+                  [
+                    1,
+                    0
+                  ],
+                  [
+                    0,
+                    0
+                  ]
+                ]
+              ],
+              "stops": [
+                "T2",
+                "DEPOT"
+              ]
+            },
+            "U2": {
+              "deliveries": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "loads": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "paths": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    1,
+                    0
+                  ]
+                ],
+                [
+                  [
+                    1,
+                    0
+                  ],
+                  [
+                    0,
+                    0
+                  ]
+                ]
+              ],
+              "stops": [
+                "T1",
+                "DEPOT"
+              ]
+            },
+            "U3": {
+              "deliveries": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "loads": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "paths": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    -1,
+                    0
+                  ]
+                ],
+                [
+                  [
+                    -1,
+                    0
+                  ],
+                  [
+                    0,
+                    0
+                  ]
+                ]
+              ],
+              "stops": [
+                "T3",
+                "DEPOT"
+              ]
+            },
+            "U4": {
+              "deliveries": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "loads": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "paths": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    -1,
+                    0
+                  ]
+                ],
+                [
+                  [
+                    -1,
+                    0
+                  ],
+                  [
+                    0,
+                    0
+                  ]
+                ]
+              ],
+              "stops": [
+                "T4",
+                "DEPOT"
+              ]
+            }
+          }
+        },
+        "reserve_paths": {
+          "U1": {
+            "1": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "initial": [
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          "U2": {
+            "1": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "initial": [
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          "U3": {
+            "1": [
+              [
+                -1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "initial": [
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          "U4": {
+            "1": [
+              [
+                -1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "initial": [
+              [
+                0,
+                0
+              ]
+            ]
+          }
+        },
+        "validation": {
+          "accepted": true,
+          "candidate_hash": "4872f8cf1358f7c74effe0ba3c3cd074cd38a91a3bf2cdee16b88ea512ca060a",
+          "exact": true,
+          "level": 3,
+          "numerical_level": 3,
+          "numerical_model": "Simulator predicate tolerance 1e-9; exact flag requires rational primal checks.",
+          "scenario_hash": "4a6fe224f73c35f1a73be797543187c5b4882684c5dc1880796fdd8c105c81fe"
+        }
+      }
+    },
+    {
+      "branch_evidence": [
+        {
+          "branch_hash": "a84006b9bf6ef9ee978d9d11defd383eba34af95c311b17f11c39b874bd46d2f",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "17": "1"
+            }
+          },
+          "exact": true,
+          "index": 0,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "7b0aac72f1033e8ea10f4b23ceab667eff67fcc6dbcd0562e80a93f9e1c41e3a",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "17": "1"
+            }
+          },
+          "exact": true,
+          "index": 1,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "b0f737de4d603e75ea7c5f0f2cff9876eef7e4aafbbc9a77c93564314eccb150",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "17": "1"
+            }
+          },
+          "exact": true,
+          "index": 2,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "16de7a690780c42947c485ad64f80e79bc747183697f6408e1730ec2014a42f1",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "17": "1"
+            }
+          },
+          "exact": true,
+          "index": 3,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "b17db35f6395d2b31d163ef638a761cf7ede6264726e5d4451a421481945071b",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "17": "1"
+            }
+          },
+          "exact": true,
+          "index": 4,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "da19c0fa58cf0a2162756619b7729bc158482f17a87513521a68c24bc410bd92",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "17": "1"
+            }
+          },
+          "exact": true,
+          "index": 5,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "61f09f8b0609ff733434e17f1d7fa6e5c6a546c505d084ba9a33848603f0322f",
+          "exact": true,
+          "index": 6,
+          "outcome": "WITNESS"
+        },
+        {
+          "branch_hash": "b2fe3246f0a3360c180ff7c2940d100070dbbfec9abb9d6492e1fd679131df40",
+          "exact": true,
+          "index": 7,
+          "outcome": "WITNESS"
+        },
+        {
+          "branch_hash": "71c42868e974650986e54007f747a99bb5cefbeb5a60e48c43cf995480bb0053",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "73": "1"
+            }
+          },
+          "exact": true,
+          "index": 8,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "b2cc6433e41bd493cf23fcf878adf91a14158e070a40318d18637210a6e184e8",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "101": "1"
+            }
+          },
+          "exact": true,
+          "index": 9,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "fd99c53eac02b91e9ab6014e25f17bbcfd15ed25e147095a0affd8230e3aa872",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "101": "1"
+            }
+          },
+          "exact": true,
+          "index": 10,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "95635b2fbfe332907b53ae0c26b67e8ee9f68da3b6668d8bddc81f8a7f6a03ae",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "73": "1"
+            }
+          },
+          "exact": true,
+          "index": 11,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "a800db026590a151c9498d7d2355ab402c6fb5fe5c361e7247f903f58c6948fb",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "73": "1"
+            }
+          },
+          "exact": true,
+          "index": 12,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "79182e0a040078bef7a234260443d7de7701f52df1125490f0a50d6a37848fda",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "101": "1"
+            }
+          },
+          "exact": true,
+          "index": 13,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "014ac14bc508912d3caaa9eae23082d52511b28d076d5004fef2040d12a9e274",
+          "exact": true,
+          "index": 14,
+          "outcome": "WITNESS"
+        },
+        {
+          "branch_hash": "8a349467816bd69d00aa5dc284e85c6c0fea16c7003f12f630e96fa82d65d093",
+          "exact": true,
+          "index": 15,
+          "outcome": "WITNESS"
+        },
+        {
+          "branch_hash": "96de044d30f446d24fb949a877b930c41bdc80118c8cab118be01871cca0a800",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "73": "1"
+            }
+          },
+          "exact": true,
+          "index": 16,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "837544c6fa05c57e61ab6d2423b75bb22a680f5bdb63c55980635dbd93565960",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "101": "1"
+            }
+          },
+          "exact": true,
+          "index": 17,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "ab40705cd4987d1db4153db3fbdd24a38aa6c1b571057abbbd520ba80df7ccdf",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "101": "1"
+            }
+          },
+          "exact": true,
+          "index": 18,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "3ef77d322c5c9b7648b1f4237abfa80b8d9bbb6793046f9cdbc9d93f29026443",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "73": "1"
+            }
+          },
+          "exact": true,
+          "index": 19,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "29f4fea89b7eadb20a37d1a3d44175e014573e54d33d5e08323d1442d973a636",
+          "exact": true,
+          "index": 20,
+          "outcome": "WITNESS"
+        },
+        {
+          "branch_hash": "b7f287c4577fb0d2893ea56eb654381d8b697af8b143b09b9a0fefc1f3f9e9f7",
+          "exact": true,
+          "index": 21,
+          "outcome": "WITNESS"
+        },
+        {
+          "branch_hash": "59f626d2c1932714a2fa812518abe5b9dcd4193e98818586c24ac72c6f3eeb31",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "73": "1"
+            }
+          },
+          "exact": true,
+          "index": 22,
+          "outcome": "EMPTY"
+        },
+        {
+          "branch_hash": "213c462433381c7ba63cf3ec849b0a1e4747806c4065c96d56b1f130e3159057",
+          "certificate": {
+            "kind": "farkas",
+            "multipliers": {
+              "101": "1"
+            }
+          },
+          "exact": true,
+          "index": 23,
+          "outcome": "EMPTY"
+        }
+      ],
+      "branches": 24,
+      "budgets": [
+        {
+          "exhaustive": true,
+          "max_branches": 2000,
+          "max_iterations": 10000,
+          "max_nodes": 100000,
+          "max_operations": 10000,
+          "max_rows": 2000,
+          "numerical": true
+        }
+      ],
+      "cursor": {
+        "live_continuation_only": true,
+        "next_branch": 24,
+        "nodes": 786
+      },
+      "enumeration_complete": true,
+      "equivalent_to": 3,
+      "exact_feasible_branches": 6,
+      "excluded_branches": 18,
+      "feasible_branches": 6,
+      "level": 4,
+      "nodes": 786,
+      "representation_hash": "954c03840e5fca726d2b5f840ab7b5737486fbee4cb6f4075247b0edb87fe45e",
+      "retry_attempts": 0,
+      "scenario_hash": "4a6fe224f73c35f1a73be797543187c5b4882684c5dc1880796fdd8c105c81fe",
+      "status": "WITNESS",
+      "unresolved_branches": 0,
+      "version": "recovery-level-v1",
+      "witness": {
+        "exact": true,
+        "exact_transfers": {},
+        "plan": {
+          "assignment": {
+            "T1": "U2",
+            "T2": "U1",
+            "T3": "U3",
+            "T4": "U4"
+          },
+          "routes": {
+            "U1": {
+              "deliveries": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "loads": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "paths": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    1,
+                    0
+                  ]
+                ],
+                [
+                  [
+                    1,
+                    0
+                  ],
+                  [
+                    0,
+                    0
+                  ]
+                ]
+              ],
+              "stops": [
+                "T2",
+                "DEPOT"
+              ]
+            },
+            "U2": {
+              "deliveries": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "loads": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "paths": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    1,
+                    0
+                  ]
+                ],
+                [
+                  [
+                    1,
+                    0
+                  ],
+                  [
+                    0,
+                    0
+                  ]
+                ]
+              ],
+              "stops": [
+                "T1",
+                "DEPOT"
+              ]
+            },
+            "U3": {
+              "deliveries": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "loads": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "paths": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    -1,
+                    0
+                  ]
+                ],
+                [
+                  [
+                    -1,
+                    0
+                  ],
+                  [
+                    0,
+                    0
+                  ]
+                ]
+              ],
+              "stops": [
+                "T3",
+                "DEPOT"
+              ]
+            },
+            "U4": {
+              "deliveries": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "loads": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "paths": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    -1,
+                    0
+                  ]
+                ],
+                [
+                  [
+                    -1,
+                    0
+                  ],
+                  [
+                    0,
+                    0
+                  ]
+                ]
+              ],
+              "stops": [
+                "T4",
+                "DEPOT"
+              ]
+            }
+          }
+        },
+        "reserve_paths": {
+          "U1": {
+            "1": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "initial": [
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          "U2": {
+            "1": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "initial": [
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          "U3": {
+            "1": [
+              [
+                -1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "initial": [
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          "U4": {
+            "1": [
+              [
+                -1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "initial": [
+              [
+                0,
+                0
+              ]
+            ]
+          }
+        },
+        "validation": {
+          "accepted": true,
+          "candidate_hash": "4872f8cf1358f7c74effe0ba3c3cd074cd38a91a3bf2cdee16b88ea512ca060a",
+          "exact": true,
+          "level": 3,
+          "numerical_level": 3,
+          "numerical_model": "Simulator predicate tolerance 1e-9; exact flag requires rational primal checks.",
+          "scenario_hash": "4a6fe224f73c35f1a73be797543187c5b4882684c5dc1880796fdd8c105c81fe"
+        }
+      }
+    }
+  ],
+  "lower_bound": 3,
+  "neighborhood": [
+    "T1",
+    "T2",
+    "T3",
+    "T4"
+  ],
+  "nodes_used": 860,
+  "numerical_upper_bound": null,
+  "previous_premise": {
+    "exact_feasible": true,
+    "numerical_feasible": true,
+    "reason": null
+  },
+  "representation": {
+    "nominal_paths": [
+      [
+        [
+          -1,
+          0
+        ]
+      ],
+      [
+        [
+          -1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      [
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      [
+        [
+          0,
+          0
+        ]
+      ],
+      [
+        [
+          0,
+          0
+        ],
+        [
+          -1,
+          0
+        ]
+      ],
+      [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      [
+        [
+          1,
+          0
+        ]
+      ],
+      [
+        [
+          1,
+          0
+        ],
+        [
+          -1,
+          0
+        ]
+      ],
+      [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    ],
+    "return_paths": [
+      [
+        [
+          -1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      [
+        [
+          0,
+          0
+        ]
+      ],
+      [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    ],
+    "scenario_hash": "4a6fe224f73c35f1a73be797543187c5b4882684c5dc1880796fdd8c105c81fe",
+    "slot_bounds": {
+      "U1": 2,
+      "U2": 2,
+      "U3": 2,
+      "U4": 2
+    },
+    "version": "finite-paths-v1"
+  },
+  "representation_hash": "954c03840e5fca726d2b5f840ab7b5737486fbee4cb6f4075247b0edb87fe45e",
+  "scenario_hash": "4a6fe224f73c35f1a73be797543187c5b4882684c5dc1880796fdd8c105c81fe",
+  "status": "MINIMUM_CERTIFIED_R",
+  "total_node_budget": 500000,
+  "upper_bound": 3,
+  "version": "recovery-search-v1",
+  "witness": {
+    "exact": true,
+    "exact_transfers": {},
+    "plan": {
+      "assignment": {
+        "T1": "U2",
+        "T2": "U1",
+        "T3": "U3",
+        "T4": "U4"
+      },
+      "routes": {
+        "U1": {
+          "deliveries": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "loads": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "paths": [
+            [
+              [
+                0,
+                0
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          ],
+          "stops": [
+            "T2",
+            "DEPOT"
+          ]
+        },
+        "U2": {
+          "deliveries": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "loads": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "paths": [
+            [
+              [
+                0,
+                0
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          ],
+          "stops": [
+            "T1",
+            "DEPOT"
+          ]
+        },
+        "U3": {
+          "deliveries": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "loads": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "paths": [
+            [
+              [
+                0,
+                0
+              ],
+              [
+                -1,
+                0
+              ]
+            ],
+            [
+              [
+                -1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          ],
+          "stops": [
+            "T3",
+            "DEPOT"
+          ]
+        },
+        "U4": {
+          "deliveries": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "loads": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "paths": [
+            [
+              [
+                0,
+                0
+              ],
+              [
+                -1,
+                0
+              ]
+            ],
+            [
+              [
+                -1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          ],
+          "stops": [
+            "T4",
+            "DEPOT"
+          ]
+        }
+      }
+    },
+    "reserve_paths": {
+      "U1": {
+        "1": [
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "initial": [
+          [
+            0,
+            0
+          ]
+        ]
+      },
+      "U2": {
+        "1": [
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "initial": [
+          [
+            0,
+            0
+          ]
+        ]
+      },
+      "U3": {
+        "1": [
+          [
+            -1,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "initial": [
+          [
+            0,
+            0
+          ]
+        ]
+      },
+      "U4": {
+        "1": [
+          [
+            -1,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "initial": [
+          [
+            0,
+            0
+          ]
+        ]
+      }
+    },
+    "validation": {
+      "accepted": true,
+      "candidate_hash": "4872f8cf1358f7c74effe0ba3c3cd074cd38a91a3bf2cdee16b88ea512ca060a",
+      "exact": true,
+      "level": 3,
+      "numerical_level": 3,
+      "numerical_model": "Simulator predicate tolerance 1e-9; exact flag requires rational primal checks.",
+      "scenario_hash": "4a6fe224f73c35f1a73be797543187c5b4882684c5dc1880796fdd8c105c81fe"
+    }
+  }
+}

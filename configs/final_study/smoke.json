@@ -1,0 +1,144 @@
+{
+  "study": "smoke",
+  "design": "docs/SCENARIO_DESIGN_2026_10_14.md, docs/COMPARISON_PROTOCOL_2026_10_14.md, method v2 (docs/CERTIFICATION_METHOD_PLAN_2026_10_09.md with the 10 October amendments)",
+  "fs": {
+    "fleets": [
+      4
+    ],
+    "tasks_per_uav": [
+      2
+    ],
+    "sigma": {
+      "tight": "1/400",
+      "medium": "1/100"
+    },
+    "beta": {
+      "tight": "3/20"
+    },
+    "families": [
+      "uniform",
+      "clustered"
+    ],
+    "seed": 79001,
+    "rule": "D1p",
+    "max_attempts": 48
+  },
+  "ls": {
+    "fleets": [
+      4
+    ],
+    "quota_per_fleet": 1,
+    "residue": 2,
+    "residue_seed": 78001,
+    "max_draws_per_cell": 4,
+    "batch": 4,
+    "seed": 79501
+  },
+  "label_budget_s": 60,
+  "arena": {
+    "budget_short": 5,
+    "budget_long": 15,
+    "arms_short": [
+      "GR",
+      "GR-c",
+      "LR",
+      "PH",
+      "CMI",
+      "noAF",
+      "noER"
+    ],
+    "arms_long": [
+      "GR",
+      "GR-c",
+      "LR",
+      "PH",
+      "CMI"
+    ],
+    "third_seed": 76002
+  },
+  "p1": {
+    "source": "results/escalation_study_primary",
+    "budget_s": 5,
+    "arms": [
+      "GR",
+      "GR-c",
+      "LR",
+      "PH",
+      "CMI"
+    ],
+    "limit": 6,
+    "seed": 1
+  },
+  "xr": {
+    "budget_s": 5,
+    "limit": 2,
+    "seed": 1
+  },
+  "scaling": {
+    "sizes": [
+      [
+        24,
+        6
+      ]
+    ],
+    "families": [
+      "uniform"
+    ],
+    "seeds": [
+      73001
+    ],
+    "strength": "2/5",
+    "slack": "1/1000",
+    "max_attempts": 24,
+    "budgets": [
+      10
+    ],
+    "arms": [
+      "GR",
+      "GR-c",
+      "LR",
+      "PH",
+      "CMI"
+    ]
+  },
+  "contention": {
+    "instances": 3,
+    "seed": 76003,
+    "arms": [
+      "GR",
+      "GR-c",
+      "LR",
+      "PH",
+      "CMI",
+      "noAF",
+      "noER"
+    ]
+  },
+  "settings": {
+    "ph_shares": [
+      0.05,
+      0.15,
+      0.2,
+      0.3,
+      0.3
+    ],
+    "base_slice_fraction": 0.025,
+    "cmi": {}
+  },
+  "variance": {
+    "instances": 2,
+    "seeds": [
+      1
+    ],
+    "seed": 76004,
+    "arms": [
+      "GR",
+      "GR-c"
+    ]
+  },
+  "pilot_note": "Smoke test of every stage on a tiny design (about 15-30 minutes).",
+  "hypotheses": {
+    "h2_min_certified": 0.8,
+    "h3_max_ratio": 3
+  }
+}

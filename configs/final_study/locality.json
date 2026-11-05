@@ -1,0 +1,31 @@
+{
+  "study": "locality",
+  "design": "docs/EXPERIMENT_REDESIGN_RAL_2026_10_30.md, Section 18: FS-generator missions (8 x 3, medium slack and battery) on the FS 4 x 4 wind grid, nested update supports with |U0| in {1, 2, 3, 4, 6, 8}; CMI-mu labels, arena at 10 s",
+  "seed": 77001,
+  "families": ["uniform", "clustered"],
+  "missions_per_family": 45,
+  "sigma": "medium",
+  "beta": "medium",
+  "max_attempts": 48,
+  "admission_s": 30,
+  "targets": [1, 2, 3, 4, 6, 8],
+  "label_budget_s": 600,
+  "label_arms": ["CMI-mu"],
+  "arena_arms": ["GR", "GR-c", "LR", "PH", "PH-strict", "CMI", "CMI-mu"],
+  "comparators": ["GR", "GR-c", "PH-strict", "CMI"],
+  "smoke": {
+    "missions_per_family": 2,
+    "label_budget_s": 60
+  },
+  "settings": {
+    "base_slice_fraction": 0.025,
+    "cmi": {},
+    "ph_shares": [
+      0.05,
+      0.15,
+      0.2,
+      0.3,
+      0.3
+    ]
+  }
+}

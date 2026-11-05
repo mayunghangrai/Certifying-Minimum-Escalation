@@ -1,0 +1,159 @@
+{
+  "study": "pilot",
+  "design": "docs/SCENARIO_DESIGN_2026_10_14.md, docs/COMPARISON_PROTOCOL_2026_10_14.md, method v2 (docs/CERTIFICATION_METHOD_PLAN_2026_10_09.md with the 10 October amendments)",
+  "fs": {
+    "fleets": [
+      4,
+      6,
+      8
+    ],
+    "tasks_per_uav": [
+      2,
+      3,
+      4
+    ],
+    "sigma": {
+      "tight": "1/400",
+      "medium": "1/100",
+      "loose": "1/25"
+    },
+    "beta": {
+      "tight": "3/20",
+      "medium": "1/2",
+      "ample": "4"
+    },
+    "families": [
+      "uniform",
+      "clustered"
+    ],
+    "seed": 77101,
+    "rule": "D1p",
+    "max_attempts": 48,
+    "design": "L9"
+  },
+  "ls": {
+    "fleets": [
+      4,
+      6,
+      8
+    ],
+    "quota_per_fleet": 2,
+    "residue": 3,
+    "residue_seed": 78001,
+    "max_draws_per_cell": 12,
+    "batch": 8,
+    "seed": 77901
+  },
+  "label_budget_s": 120,
+  "arena": {
+    "budget_short": 10,
+    "budget_long": 60,
+    "arms_short": [
+      "GR",
+      "GR-c",
+      "LR",
+      "PH",
+      "CMI",
+      "noAF",
+      "noER"
+    ],
+    "arms_long": [
+      "GR",
+      "GR-c",
+      "LR",
+      "PH",
+      "CMI"
+    ],
+    "third_seed": 76002
+  },
+  "p1": {
+    "source": "results/escalation_study_primary",
+    "budget_s": 10,
+    "arms": [
+      "GR",
+      "GR-c",
+      "LR",
+      "PH",
+      "CMI"
+    ],
+    "limit": 40,
+    "seed": 7
+  },
+  "xr": {
+    "budget_s": 10,
+    "limit": 8,
+    "seed": 7
+  },
+  "scaling": {
+    "sizes": [
+      [
+        24,
+        6
+      ],
+      [
+        48,
+        8
+      ]
+    ],
+    "families": [
+      "uniform"
+    ],
+    "seeds": [
+      73001
+    ],
+    "strength": "2/5",
+    "slack": "1/1000",
+    "max_attempts": 24,
+    "budgets": [
+      60
+    ],
+    "arms": [
+      "GR",
+      "GR-c",
+      "LR",
+      "PH",
+      "CMI"
+    ]
+  },
+  "contention": {
+    "instances": 6,
+    "seed": 76003,
+    "arms": [
+      "GR",
+      "GR-c",
+      "LR",
+      "PH",
+      "CMI",
+      "noAF",
+      "noER"
+    ]
+  },
+  "settings": {
+    "ph_shares": [
+      0.05,
+      0.15,
+      0.2,
+      0.3,
+      0.3
+    ],
+    "base_slice_fraction": 0.025,
+    "cmi": {}
+  },
+  "variance": {
+    "instances": 6,
+    "seeds": [
+      1,
+      2
+    ],
+    "seed": 76004,
+    "arms": [
+      "GR",
+      "GR-c"
+    ]
+  },
+  "pilot_note": "Pilot on its own seeds (FS 77101+, LS 77901): L9 orthogonal array of the four mission factors x 2 layouts, labels at 120 s; LS quotas 2 per class and fleet; P1, XR and scaling subsets.",
+  "hypotheses": {
+    "h2_min_certified": 0.8,
+    "h3_max_ratio": 3
+  }
+}

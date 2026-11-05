@@ -1,0 +1,7362 @@
+{
+  "candidate_hash": "4872f8cf1358f7c74effe0ba3c3cd074cd38a91a3bf2cdee16b88ea512ca060a",
+  "claim": "A validated candidate gives a feasible level upper bound; no lower level is excluded.",
+  "commitments": {
+    "valid": true,
+    "violations": []
+  },
+  "diagnostic": {
+    "affected_tasks": [
+      "T1",
+      "T2"
+    ],
+    "changed_atoms": [
+      "change:east:0"
+    ],
+    "graph": {
+      "U1:1:arrival_h": {
+        "kind": "qty",
+        "leg": "U1:1",
+        "name": "arrival_h",
+        "parents": [
+          "U1:1:entering",
+          "U1:1:ground_guard",
+          "U1:1:nominal:arrival_h",
+          "U1:1:nominal:duration_h",
+          "U1:1:nominal:energy_wh",
+          "U1:1:nominal:evaluation",
+          "U1:1:nominal:horizon"
+        ],
+        "previous": 1.0,
+        "received": 2.0,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U1:1:battery_after": {
+        "kind": "qty",
+        "leg": "U1:1",
+        "name": "battery_after",
+        "parents": [
+          "U1:1:entering",
+          "U1:1:ground_guard",
+          "U1:1:nominal:arrival_h",
+          "U1:1:nominal:duration_h",
+          "U1:1:nominal:energy_wh",
+          "U1:1:nominal:evaluation",
+          "U1:1:nominal:horizon"
+        ],
+        "previous": 9.8,
+        "received": 9.6,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U1:1:battery_before": {
+        "kind": "qty",
+        "leg": "U1:1",
+        "name": "battery_before",
+        "parents": [
+          "U1:1:entering",
+          "U1:1:ground_guard",
+          "U1:1:nominal:arrival_h",
+          "U1:1:nominal:duration_h",
+          "U1:1:nominal:energy_wh",
+          "U1:1:nominal:evaluation",
+          "U1:1:nominal:horizon"
+        ],
+        "previous": 9.8,
+        "received": 9.6,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U1:1:deadline": {
+        "kind": "stat",
+        "leg": "U1:1",
+        "name": "deadline_status",
+        "parents": [
+          "U1:1:deadline_slack"
+        ],
+        "previous": "passed",
+        "received": "failed",
+        "role": "nominal",
+        "unit": null
+      },
+      "U1:1:deadline_slack": {
+        "kind": "qty",
+        "leg": "U1:1",
+        "name": "deadline_slack_h",
+        "parents": [
+          "U1:1:arrival_h",
+          "U1:1:battery_after",
+          "U1:1:battery_before",
+          "U1:1:delivery_h",
+          "U1:1:departure_h",
+          "U1:1:onboard_after",
+          "U1:1:onboard_before",
+          "U1:1:service_energy_wh"
+        ],
+        "previous": 0.5,
+        "received": -0.5,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U1:1:delivery_h": {
+        "kind": "qty",
+        "leg": "U1:1",
+        "name": "delivery_h",
+        "parents": [
+          "U1:1:entering",
+          "U1:1:ground_guard",
+          "U1:1:nominal:arrival_h",
+          "U1:1:nominal:duration_h",
+          "U1:1:nominal:energy_wh",
+          "U1:1:nominal:evaluation",
+          "U1:1:nominal:horizon"
+        ],
+        "previous": 1.0,
+        "received": 2.0,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U1:1:departure_h": {
+        "kind": "qty",
+        "leg": "U1:1",
+        "name": "departure_h",
+        "parents": [
+          "U1:1:entering",
+          "U1:1:ground_guard",
+          "U1:1:nominal:arrival_h",
+          "U1:1:nominal:duration_h",
+          "U1:1:nominal:energy_wh",
+          "U1:1:nominal:evaluation",
+          "U1:1:nominal:horizon"
+        ],
+        "previous": 1.0,
+        "received": 2.0,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U1:1:entering": {
+        "kind": "state",
+        "leg": "U1:1",
+        "name": "entering_state",
+        "parents": [
+          "U1:origin"
+        ],
+        "previous": {
+          "battery_wh": 10.0,
+          "onboard": 1.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "received": {
+          "battery_wh": 10.0,
+          "onboard": 1.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U1:1:ground_guard": {
+        "kind": "stat",
+        "leg": "U1:1",
+        "name": "ground_horizon_guard",
+        "parents": [
+          "U1:1:entering",
+          "U1:1:nominal:arrival_h",
+          "U1:1:nominal:duration_h",
+          "U1:1:nominal:energy_wh",
+          "U1:1:nominal:evaluation",
+          "U1:1:nominal:horizon"
+        ],
+        "previous": "complete",
+        "received": "complete",
+        "role": "nominal",
+        "unit": null
+      },
+      "U1:1:nominal:arrival_h": {
+        "kind": "qty",
+        "leg": "U1:1",
+        "name": "arrival_h",
+        "parents": [
+          "U1:1:nominal:evaluation"
+        ],
+        "previous": 1.0,
+        "received": 2.0,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U1:1:nominal:bins": {
+        "kind": "stat",
+        "leg": "U1:1",
+        "name": "time_bin_selection",
+        "parents": [
+          "U1:1:entering",
+          "U1:1:nominal:wind:east:0"
+        ],
+        "previous": [
+          [
+            "east",
+            0
+          ]
+        ],
+        "received": [
+          [
+            "east",
+            0
+          ]
+        ],
+        "role": "nominal",
+        "unit": null
+      },
+      "U1:1:nominal:duration_h": {
+        "kind": "qty",
+        "leg": "U1:1",
+        "name": "duration_h",
+        "parents": [
+          "U1:1:nominal:evaluation"
+        ],
+        "previous": 1.0,
+        "received": 2.0,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U1:1:nominal:energy_wh": {
+        "kind": "qty",
+        "leg": "U1:1",
+        "name": "energy_wh",
+        "parents": [
+          "U1:1:nominal:evaluation"
+        ],
+        "previous": 0.2,
+        "received": 0.4,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U1:1:nominal:evaluation": {
+        "kind": "eval",
+        "leg": "U1:1",
+        "name": "path_integration",
+        "parents": [
+          "U1:1:entering",
+          "U1:1:nominal:bins",
+          "U1:1:nominal:horizon",
+          "U1:1:nominal:wind:east:0"
+        ],
+        "previous": {
+          "arrival_h": 1.0,
+          "duration_h": 1.0,
+          "energy_wh": 0.2,
+          "slices": [
+            {
+              "bin_index": 0,
+              "cell_id": "east",
+              "distance_km": 1.0,
+              "end_h": 1.0,
+              "energy_wh": 0.2,
+              "ground_speed_kmh": 1.0,
+              "start_h": 0.0
+            }
+          ],
+          "status": "complete"
+        },
+        "received": {
+          "arrival_h": 2.0,
+          "duration_h": 2.0,
+          "energy_wh": 0.4,
+          "slices": [
+            {
+              "bin_index": 0,
+              "cell_id": "east",
+              "distance_km": 1.0,
+              "end_h": 2.0,
+              "energy_wh": 0.4,
+              "ground_speed_kmh": 0.5,
+              "start_h": 0.0
+            }
+          ],
+          "status": "complete"
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U1:1:nominal:horizon": {
+        "kind": "stat",
+        "leg": "U1:1",
+        "name": "horizon_guard",
+        "parents": [
+          "U1:1:entering",
+          "U1:1:nominal:wind:east:0"
+        ],
+        "previous": "complete",
+        "received": "complete",
+        "role": "nominal",
+        "unit": null
+      },
+      "U1:1:nominal:wind:east:0": {
+        "kind": "wind",
+        "leg": "U1:1",
+        "name": "wind_query",
+        "parents": [
+          "change:east:0"
+        ],
+        "previous": [
+          0.0,
+          0.0
+        ],
+        "received": [
+          -0.5,
+          0.0
+        ],
+        "role": "nominal",
+        "unit": "speed_kmh"
+      },
+      "U1:1:onboard_after": {
+        "kind": "qty",
+        "leg": "U1:1",
+        "name": "onboard_after",
+        "parents": [
+          "U1:1:entering",
+          "U1:1:ground_guard",
+          "U1:1:nominal:arrival_h",
+          "U1:1:nominal:duration_h",
+          "U1:1:nominal:energy_wh",
+          "U1:1:nominal:evaluation",
+          "U1:1:nominal:horizon"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "nominal",
+        "unit": "quantity"
+      },
+      "U1:1:onboard_before": {
+        "kind": "qty",
+        "leg": "U1:1",
+        "name": "onboard_before",
+        "parents": [
+          "U1:1:entering",
+          "U1:1:ground_guard",
+          "U1:1:nominal:arrival_h",
+          "U1:1:nominal:duration_h",
+          "U1:1:nominal:energy_wh",
+          "U1:1:nominal:evaluation",
+          "U1:1:nominal:horizon"
+        ],
+        "previous": 1.0,
+        "received": 1.0,
+        "role": "nominal",
+        "unit": "quantity"
+      },
+      "U1:1:post": {
+        "kind": "state",
+        "leg": "U1:1",
+        "name": "post_stop_state",
+        "parents": [
+          "U1:1:arrival_h",
+          "U1:1:battery_after",
+          "U1:1:battery_before",
+          "U1:1:delivery_h",
+          "U1:1:departure_h",
+          "U1:1:ground_guard",
+          "U1:1:onboard_after",
+          "U1:1:onboard_before",
+          "U1:1:service_energy_wh"
+        ],
+        "previous": {
+          "battery_wh": 9.8,
+          "onboard": 0.0,
+          "site": "T1",
+          "time_h": 1.0
+        },
+        "received": {
+          "battery_wh": 9.6,
+          "onboard": 0.0,
+          "site": "T1",
+          "time_h": 2.0
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U1:1:reserve:1:arrival_h": {
+        "kind": "qty",
+        "leg": "U1:1",
+        "name": "arrival_h",
+        "parents": [
+          "U1:1:reserve:1:evaluation"
+        ],
+        "previous": 2.0,
+        "received": 2.6666666666666665,
+        "role": "reserve",
+        "unit": "time_h"
+      },
+      "U1:1:reserve:1:bins": {
+        "kind": "stat",
+        "leg": "U1:1",
+        "name": "time_bin_selection",
+        "parents": [
+          "U1:1:reserve:1:state",
+          "U1:1:reserve:1:wind:east:0"
+        ],
+        "previous": [
+          [
+            "east",
+            0
+          ]
+        ],
+        "received": [
+          [
+            "east",
+            0
+          ]
+        ],
+        "role": "reserve",
+        "unit": null
+      },
+      "U1:1:reserve:1:duration_h": {
+        "kind": "qty",
+        "leg": "U1:1",
+        "name": "duration_h",
+        "parents": [
+          "U1:1:reserve:1:evaluation"
+        ],
+        "previous": 1.0,
+        "received": 0.6666666666666665,
+        "role": "reserve",
+        "unit": "time_h"
+      },
+      "U1:1:reserve:1:energy_wh": {
+        "kind": "qty",
+        "leg": "U1:1",
+        "name": "energy_wh",
+        "parents": [
+          "U1:1:reserve:1:evaluation"
+        ],
+        "previous": 0.1,
+        "received": 0.06666666666666665,
+        "role": "reserve",
+        "unit": "energy_wh"
+      },
+      "U1:1:reserve:1:evaluation": {
+        "kind": "eval",
+        "leg": "U1:1",
+        "name": "path_integration",
+        "parents": [
+          "U1:1:reserve:1:bins",
+          "U1:1:reserve:1:horizon",
+          "U1:1:reserve:1:state",
+          "U1:1:reserve:1:wind:east:0"
+        ],
+        "previous": {
+          "arrival_h": 2.0,
+          "duration_h": 1.0,
+          "energy_wh": 0.1,
+          "slices": [
+            {
+              "bin_index": 0,
+              "cell_id": "east",
+              "distance_km": 1.0,
+              "end_h": 2.0,
+              "energy_wh": 0.1,
+              "ground_speed_kmh": 1.0,
+              "start_h": 1.0
+            }
+          ],
+          "status": "complete"
+        },
+        "received": {
+          "arrival_h": 2.6666666666666665,
+          "duration_h": 0.6666666666666665,
+          "energy_wh": 0.06666666666666665,
+          "slices": [
+            {
+              "bin_index": 0,
+              "cell_id": "east",
+              "distance_km": 1.0,
+              "end_h": 2.6666666666666665,
+              "energy_wh": 0.06666666666666665,
+              "ground_speed_kmh": 1.5,
+              "start_h": 2.0
+            }
+          ],
+          "status": "complete"
+        },
+        "role": "reserve",
+        "unit": null
+      },
+      "U1:1:reserve:1:horizon": {
+        "kind": "stat",
+        "leg": "U1:1",
+        "name": "horizon_guard",
+        "parents": [
+          "U1:1:reserve:1:state",
+          "U1:1:reserve:1:wind:east:0"
+        ],
+        "previous": "complete",
+        "received": "complete",
+        "role": "reserve",
+        "unit": null
+      },
+      "U1:1:reserve:1:margin": {
+        "kind": "qty",
+        "leg": "U1:1",
+        "name": "margin_wh",
+        "parents": [
+          "U1:1:reserve:1:arrival_h",
+          "U1:1:reserve:1:duration_h",
+          "U1:1:reserve:1:energy_wh",
+          "U1:1:reserve:1:evaluation",
+          "U1:1:reserve:1:horizon",
+          "U1:1:reserve:1:state"
+        ],
+        "previous": 8.700000000000001,
+        "received": 8.533333333333333,
+        "role": "reserve",
+        "unit": "energy_wh"
+      },
+      "U1:1:reserve:1:state": {
+        "kind": "state",
+        "leg": "U1:1",
+        "name": "reserve_state",
+        "parents": [
+          "U1:1:post"
+        ],
+        "previous": {
+          "battery_wh": 9.8,
+          "onboard": 0.0,
+          "position_xy": [
+            1,
+            0
+          ],
+          "time_h": 1.0
+        },
+        "received": {
+          "battery_wh": 9.6,
+          "onboard": 0.0,
+          "position_xy": [
+            1,
+            0
+          ],
+          "time_h": 2.0
+        },
+        "role": "reserve",
+        "unit": null
+      },
+      "U1:1:reserve:1:status": {
+        "kind": "stat",
+        "leg": "U1:1",
+        "name": "reserve_status",
+        "parents": [
+          "U1:1:reserve:1:arrival_h",
+          "U1:1:reserve:1:duration_h",
+          "U1:1:reserve:1:energy_wh",
+          "U1:1:reserve:1:evaluation",
+          "U1:1:reserve:1:horizon",
+          "U1:1:reserve:1:margin"
+        ],
+        "previous": "witness",
+        "received": "witness",
+        "role": "reserve",
+        "unit": null
+      },
+      "U1:1:reserve:1:wind:east:0": {
+        "kind": "wind",
+        "leg": "U1:1",
+        "name": "wind_query",
+        "parents": [
+          "change:east:0"
+        ],
+        "previous": [
+          0.0,
+          0.0
+        ],
+        "received": [
+          -0.5,
+          0.0
+        ],
+        "role": "reserve",
+        "unit": "speed_kmh"
+      },
+      "U1:1:reserve:initial:arrival_h": {
+        "kind": "qty",
+        "leg": "U1:1",
+        "name": "arrival_h",
+        "parents": [
+          "U1:1:reserve:initial:evaluation"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "initial_reserve",
+        "unit": "time_h"
+      },
+      "U1:1:reserve:initial:bins": {
+        "kind": "stat",
+        "leg": "U1:1",
+        "name": "time_bin_selection",
+        "parents": [
+          "U1:1:reserve:initial:state"
+        ],
+        "previous": [],
+        "received": [],
+        "role": "initial_reserve",
+        "unit": null
+      },
+      "U1:1:reserve:initial:duration_h": {
+        "kind": "qty",
+        "leg": "U1:1",
+        "name": "duration_h",
+        "parents": [
+          "U1:1:reserve:initial:evaluation"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "initial_reserve",
+        "unit": "time_h"
+      },
+      "U1:1:reserve:initial:energy_wh": {
+        "kind": "qty",
+        "leg": "U1:1",
+        "name": "energy_wh",
+        "parents": [
+          "U1:1:reserve:initial:evaluation"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "initial_reserve",
+        "unit": "energy_wh"
+      },
+      "U1:1:reserve:initial:evaluation": {
+        "kind": "eval",
+        "leg": "U1:1",
+        "name": "path_integration",
+        "parents": [
+          "U1:1:reserve:initial:bins",
+          "U1:1:reserve:initial:horizon",
+          "U1:1:reserve:initial:state"
+        ],
+        "previous": {
+          "arrival_h": 0.0,
+          "duration_h": 0.0,
+          "energy_wh": 0.0,
+          "slices": [],
+          "status": "complete"
+        },
+        "received": {
+          "arrival_h": 0.0,
+          "duration_h": 0.0,
+          "energy_wh": 0.0,
+          "slices": [],
+          "status": "complete"
+        },
+        "role": "initial_reserve",
+        "unit": null
+      },
+      "U1:1:reserve:initial:horizon": {
+        "kind": "stat",
+        "leg": "U1:1",
+        "name": "horizon_guard",
+        "parents": [
+          "U1:1:reserve:initial:state"
+        ],
+        "previous": "complete",
+        "received": "complete",
+        "role": "initial_reserve",
+        "unit": null
+      },
+      "U1:1:reserve:initial:margin": {
+        "kind": "qty",
+        "leg": "U1:1",
+        "name": "margin_wh",
+        "parents": [
+          "U1:1:reserve:initial:arrival_h",
+          "U1:1:reserve:initial:duration_h",
+          "U1:1:reserve:initial:energy_wh",
+          "U1:1:reserve:initial:evaluation",
+          "U1:1:reserve:initial:horizon",
+          "U1:1:reserve:initial:state"
+        ],
+        "previous": 9.0,
+        "received": 9.0,
+        "role": "initial_reserve",
+        "unit": "energy_wh"
+      },
+      "U1:1:reserve:initial:state": {
+        "kind": "state",
+        "leg": "U1:1",
+        "name": "reserve_state",
+        "parents": [
+          "U1:origin"
+        ],
+        "previous": {
+          "battery_wh": 10.0,
+          "onboard": 1.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "received": {
+          "battery_wh": 10.0,
+          "onboard": 1.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "role": "initial_reserve",
+        "unit": null
+      },
+      "U1:1:reserve:initial:status": {
+        "kind": "stat",
+        "leg": "U1:1",
+        "name": "reserve_status",
+        "parents": [
+          "U1:1:reserve:initial:arrival_h",
+          "U1:1:reserve:initial:duration_h",
+          "U1:1:reserve:initial:energy_wh",
+          "U1:1:reserve:initial:evaluation",
+          "U1:1:reserve:initial:horizon",
+          "U1:1:reserve:initial:margin"
+        ],
+        "previous": "witness",
+        "received": "witness",
+        "role": "initial_reserve",
+        "unit": null
+      },
+      "U1:1:resources": {
+        "kind": "stat",
+        "leg": "U1:1",
+        "name": "resource_checks",
+        "parents": [
+          "U1:1:arrival_h",
+          "U1:1:battery_after",
+          "U1:1:battery_before",
+          "U1:1:delivery_h",
+          "U1:1:departure_h",
+          "U1:1:onboard_after",
+          "U1:1:onboard_before",
+          "U1:1:service_energy_wh"
+        ],
+        "previous": {
+          "battery:U1:1:arrival": "passed",
+          "battery:U1:1:service": "passed",
+          "delivery_availability:U1:1": "passed",
+          "depot_arrival_reserve:U1:1": "inactive",
+          "payload:U1:1": "passed"
+        },
+        "received": {
+          "battery:U1:1:arrival": "passed",
+          "battery:U1:1:service": "passed",
+          "delivery_availability:U1:1": "passed",
+          "depot_arrival_reserve:U1:1": "inactive",
+          "payload:U1:1": "passed"
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U1:1:service_energy_wh": {
+        "kind": "qty",
+        "leg": "U1:1",
+        "name": "service_energy_wh",
+        "parents": [
+          "U1:1:entering",
+          "U1:1:ground_guard",
+          "U1:1:nominal:arrival_h",
+          "U1:1:nominal:duration_h",
+          "U1:1:nominal:energy_wh",
+          "U1:1:nominal:evaluation",
+          "U1:1:nominal:horizon"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U1:2:arrival_h": {
+        "kind": "qty",
+        "leg": "U1:2",
+        "name": "arrival_h",
+        "parents": [
+          "U1:2:entering",
+          "U1:2:ground_guard",
+          "U1:2:nominal:arrival_h",
+          "U1:2:nominal:duration_h",
+          "U1:2:nominal:energy_wh",
+          "U1:2:nominal:evaluation",
+          "U1:2:nominal:horizon"
+        ],
+        "previous": 2.0,
+        "received": 2.6666666666666665,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U1:2:battery_after": {
+        "kind": "qty",
+        "leg": "U1:2",
+        "name": "battery_after",
+        "parents": [
+          "U1:2:entering",
+          "U1:2:ground_guard",
+          "U1:2:nominal:arrival_h",
+          "U1:2:nominal:duration_h",
+          "U1:2:nominal:energy_wh",
+          "U1:2:nominal:evaluation",
+          "U1:2:nominal:horizon"
+        ],
+        "previous": 9.700000000000001,
+        "received": 9.533333333333333,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U1:2:battery_before": {
+        "kind": "qty",
+        "leg": "U1:2",
+        "name": "battery_before",
+        "parents": [
+          "U1:2:entering",
+          "U1:2:ground_guard",
+          "U1:2:nominal:arrival_h",
+          "U1:2:nominal:duration_h",
+          "U1:2:nominal:energy_wh",
+          "U1:2:nominal:evaluation",
+          "U1:2:nominal:horizon"
+        ],
+        "previous": 9.700000000000001,
+        "received": 9.533333333333333,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U1:2:delivery_h": {
+        "kind": "qty",
+        "leg": "U1:2",
+        "name": "delivery_h",
+        "parents": [
+          "U1:2:entering",
+          "U1:2:ground_guard",
+          "U1:2:nominal:arrival_h",
+          "U1:2:nominal:duration_h",
+          "U1:2:nominal:energy_wh",
+          "U1:2:nominal:evaluation",
+          "U1:2:nominal:horizon"
+        ],
+        "previous": 2.0,
+        "received": 2.6666666666666665,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U1:2:departure_h": {
+        "kind": "qty",
+        "leg": "U1:2",
+        "name": "departure_h",
+        "parents": [
+          "U1:2:entering",
+          "U1:2:ground_guard",
+          "U1:2:nominal:arrival_h",
+          "U1:2:nominal:duration_h",
+          "U1:2:nominal:energy_wh",
+          "U1:2:nominal:evaluation",
+          "U1:2:nominal:horizon"
+        ],
+        "previous": null,
+        "received": null,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U1:2:entering": {
+        "kind": "state",
+        "leg": "U1:2",
+        "name": "entering_state",
+        "parents": [
+          "U1:1:post"
+        ],
+        "previous": {
+          "battery_wh": 9.8,
+          "onboard": 0.0,
+          "position_xy": [
+            1,
+            0
+          ],
+          "time_h": 1.0
+        },
+        "received": {
+          "battery_wh": 9.6,
+          "onboard": 0.0,
+          "position_xy": [
+            1,
+            0
+          ],
+          "time_h": 2.0
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U1:2:ground_guard": {
+        "kind": "stat",
+        "leg": "U1:2",
+        "name": "ground_horizon_guard",
+        "parents": [
+          "U1:2:entering",
+          "U1:2:nominal:arrival_h",
+          "U1:2:nominal:duration_h",
+          "U1:2:nominal:energy_wh",
+          "U1:2:nominal:evaluation",
+          "U1:2:nominal:horizon"
+        ],
+        "previous": "complete",
+        "received": "complete",
+        "role": "nominal",
+        "unit": null
+      },
+      "U1:2:nominal:arrival_h": {
+        "kind": "qty",
+        "leg": "U1:2",
+        "name": "arrival_h",
+        "parents": [
+          "U1:2:nominal:evaluation"
+        ],
+        "previous": 2.0,
+        "received": 2.6666666666666665,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U1:2:nominal:bins": {
+        "kind": "stat",
+        "leg": "U1:2",
+        "name": "time_bin_selection",
+        "parents": [
+          "U1:2:entering",
+          "U1:2:nominal:wind:east:0"
+        ],
+        "previous": [
+          [
+            "east",
+            0
+          ]
+        ],
+        "received": [
+          [
+            "east",
+            0
+          ]
+        ],
+        "role": "nominal",
+        "unit": null
+      },
+      "U1:2:nominal:duration_h": {
+        "kind": "qty",
+        "leg": "U1:2",
+        "name": "duration_h",
+        "parents": [
+          "U1:2:nominal:evaluation"
+        ],
+        "previous": 1.0,
+        "received": 0.6666666666666665,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U1:2:nominal:energy_wh": {
+        "kind": "qty",
+        "leg": "U1:2",
+        "name": "energy_wh",
+        "parents": [
+          "U1:2:nominal:evaluation"
+        ],
+        "previous": 0.1,
+        "received": 0.06666666666666665,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U1:2:nominal:evaluation": {
+        "kind": "eval",
+        "leg": "U1:2",
+        "name": "path_integration",
+        "parents": [
+          "U1:2:entering",
+          "U1:2:nominal:bins",
+          "U1:2:nominal:horizon",
+          "U1:2:nominal:wind:east:0"
+        ],
+        "previous": {
+          "arrival_h": 2.0,
+          "duration_h": 1.0,
+          "energy_wh": 0.1,
+          "slices": [
+            {
+              "bin_index": 0,
+              "cell_id": "east",
+              "distance_km": 1.0,
+              "end_h": 2.0,
+              "energy_wh": 0.1,
+              "ground_speed_kmh": 1.0,
+              "start_h": 1.0
+            }
+          ],
+          "status": "complete"
+        },
+        "received": {
+          "arrival_h": 2.6666666666666665,
+          "duration_h": 0.6666666666666665,
+          "energy_wh": 0.06666666666666665,
+          "slices": [
+            {
+              "bin_index": 0,
+              "cell_id": "east",
+              "distance_km": 1.0,
+              "end_h": 2.6666666666666665,
+              "energy_wh": 0.06666666666666665,
+              "ground_speed_kmh": 1.5,
+              "start_h": 2.0
+            }
+          ],
+          "status": "complete"
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U1:2:nominal:horizon": {
+        "kind": "stat",
+        "leg": "U1:2",
+        "name": "horizon_guard",
+        "parents": [
+          "U1:2:entering",
+          "U1:2:nominal:wind:east:0"
+        ],
+        "previous": "complete",
+        "received": "complete",
+        "role": "nominal",
+        "unit": null
+      },
+      "U1:2:nominal:wind:east:0": {
+        "kind": "wind",
+        "leg": "U1:2",
+        "name": "wind_query",
+        "parents": [
+          "change:east:0"
+        ],
+        "previous": [
+          0.0,
+          0.0
+        ],
+        "received": [
+          -0.5,
+          0.0
+        ],
+        "role": "nominal",
+        "unit": "speed_kmh"
+      },
+      "U1:2:onboard_after": {
+        "kind": "qty",
+        "leg": "U1:2",
+        "name": "onboard_after",
+        "parents": [
+          "U1:2:entering",
+          "U1:2:ground_guard",
+          "U1:2:nominal:arrival_h",
+          "U1:2:nominal:duration_h",
+          "U1:2:nominal:energy_wh",
+          "U1:2:nominal:evaluation",
+          "U1:2:nominal:horizon"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "nominal",
+        "unit": "quantity"
+      },
+      "U1:2:onboard_before": {
+        "kind": "qty",
+        "leg": "U1:2",
+        "name": "onboard_before",
+        "parents": [
+          "U1:2:entering",
+          "U1:2:ground_guard",
+          "U1:2:nominal:arrival_h",
+          "U1:2:nominal:duration_h",
+          "U1:2:nominal:energy_wh",
+          "U1:2:nominal:evaluation",
+          "U1:2:nominal:horizon"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "nominal",
+        "unit": "quantity"
+      },
+      "U1:2:post": {
+        "kind": "state",
+        "leg": "U1:2",
+        "name": "post_stop_state",
+        "parents": [
+          "U1:2:arrival_h",
+          "U1:2:battery_after",
+          "U1:2:battery_before",
+          "U1:2:delivery_h",
+          "U1:2:departure_h",
+          "U1:2:ground_guard",
+          "U1:2:onboard_after",
+          "U1:2:onboard_before",
+          "U1:2:service_energy_wh"
+        ],
+        "previous": {
+          "battery_wh": 9.700000000000001,
+          "onboard": 0.0,
+          "site": "DEPOT",
+          "time_h": 2.0
+        },
+        "received": {
+          "battery_wh": 9.533333333333333,
+          "onboard": 0.0,
+          "site": "DEPOT",
+          "time_h": 2.6666666666666665
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U1:2:resources": {
+        "kind": "stat",
+        "leg": "U1:2",
+        "name": "resource_checks",
+        "parents": [
+          "U1:2:arrival_h",
+          "U1:2:battery_after",
+          "U1:2:battery_before",
+          "U1:2:delivery_h",
+          "U1:2:departure_h",
+          "U1:2:onboard_after",
+          "U1:2:onboard_before",
+          "U1:2:service_energy_wh"
+        ],
+        "previous": {
+          "battery:U1:2:arrival": "passed",
+          "battery:U1:2:service": "passed",
+          "delivery_availability:U1:2": "passed",
+          "depot_arrival_reserve:U1:2": "passed",
+          "payload:U1:2": "passed"
+        },
+        "received": {
+          "battery:U1:2:arrival": "passed",
+          "battery:U1:2:service": "passed",
+          "delivery_availability:U1:2": "passed",
+          "depot_arrival_reserve:U1:2": "passed",
+          "payload:U1:2": "passed"
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U1:2:service_energy_wh": {
+        "kind": "qty",
+        "leg": "U1:2",
+        "name": "service_energy_wh",
+        "parents": [
+          "U1:2:entering",
+          "U1:2:ground_guard",
+          "U1:2:nominal:arrival_h",
+          "U1:2:nominal:duration_h",
+          "U1:2:nominal:energy_wh",
+          "U1:2:nominal:evaluation",
+          "U1:2:nominal:horizon"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U1:observed": {
+        "kind": "state",
+        "leg": null,
+        "name": "observed_state",
+        "parents": [],
+        "previous": {
+          "battery_wh": 10.0,
+          "onboard": 0.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "received": {
+          "battery_wh": 10.0,
+          "onboard": 0.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U1:origin": {
+        "kind": "eval",
+        "leg": null,
+        "name": "initial_ground_operation",
+        "parents": [
+          "U1:observed"
+        ],
+        "previous": {
+          "arrival_h": 0.0,
+          "battery_after": 10.0,
+          "battery_before": 10.0,
+          "delivery_h": 0.0,
+          "departure_h": 0.0,
+          "entering_state": {
+            "battery_wh": 10.0,
+            "onboard": 0.0,
+            "position_xy": [
+              0,
+              0
+            ],
+            "time_h": 0.0
+          },
+          "flight": null,
+          "flight_duration_h": 0.0,
+          "flight_energy_wh": 0.0,
+          "flight_status": "origin",
+          "onboard_after": 1.0,
+          "onboard_before": 0.0,
+          "service_energy_wh": 0.0,
+          "site": "ORIGIN",
+          "slot": 0,
+          "status": "complete",
+          "wind_queries": []
+        },
+        "received": {
+          "arrival_h": 0.0,
+          "battery_after": 10.0,
+          "battery_before": 10.0,
+          "delivery_h": 0.0,
+          "departure_h": 0.0,
+          "entering_state": {
+            "battery_wh": 10.0,
+            "onboard": 0.0,
+            "position_xy": [
+              0,
+              0
+            ],
+            "time_h": 0.0
+          },
+          "flight": null,
+          "flight_duration_h": 0.0,
+          "flight_energy_wh": 0.0,
+          "flight_status": "origin",
+          "onboard_after": 1.0,
+          "onboard_before": 0.0,
+          "service_energy_wh": 0.0,
+          "site": "ORIGIN",
+          "slot": 0,
+          "status": "complete",
+          "wind_queries": []
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U1:terminal": {
+        "kind": "stat",
+        "leg": null,
+        "name": "terminal_check",
+        "parents": [
+          "U1:2:post"
+        ],
+        "previous": {
+          "state": {
+            "battery_wh": 9.700000000000001,
+            "onboard": 0.0,
+            "position_xy": [
+              0,
+              0
+            ],
+            "time_h": 2.0
+          },
+          "status": "passed"
+        },
+        "received": {
+          "state": {
+            "battery_wh": 9.533333333333333,
+            "onboard": 0.0,
+            "position_xy": [
+              0,
+              0
+            ],
+            "time_h": 2.6666666666666665
+          },
+          "status": "passed"
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U2:1:arrival_h": {
+        "kind": "qty",
+        "leg": "U2:1",
+        "name": "arrival_h",
+        "parents": [
+          "U2:1:entering",
+          "U2:1:ground_guard",
+          "U2:1:nominal:arrival_h",
+          "U2:1:nominal:duration_h",
+          "U2:1:nominal:energy_wh",
+          "U2:1:nominal:evaluation",
+          "U2:1:nominal:horizon"
+        ],
+        "previous": 0.5,
+        "received": 0.6666666666666666,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U2:1:battery_after": {
+        "kind": "qty",
+        "leg": "U2:1",
+        "name": "battery_after",
+        "parents": [
+          "U2:1:entering",
+          "U2:1:ground_guard",
+          "U2:1:nominal:arrival_h",
+          "U2:1:nominal:duration_h",
+          "U2:1:nominal:energy_wh",
+          "U2:1:nominal:evaluation",
+          "U2:1:nominal:horizon"
+        ],
+        "previous": 9.8,
+        "received": 9.733333333333333,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U2:1:battery_before": {
+        "kind": "qty",
+        "leg": "U2:1",
+        "name": "battery_before",
+        "parents": [
+          "U2:1:entering",
+          "U2:1:ground_guard",
+          "U2:1:nominal:arrival_h",
+          "U2:1:nominal:duration_h",
+          "U2:1:nominal:energy_wh",
+          "U2:1:nominal:evaluation",
+          "U2:1:nominal:horizon"
+        ],
+        "previous": 9.8,
+        "received": 9.733333333333333,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U2:1:deadline": {
+        "kind": "stat",
+        "leg": "U2:1",
+        "name": "deadline_status",
+        "parents": [
+          "U2:1:deadline_slack"
+        ],
+        "previous": "passed",
+        "received": "passed",
+        "role": "nominal",
+        "unit": null
+      },
+      "U2:1:deadline_slack": {
+        "kind": "qty",
+        "leg": "U2:1",
+        "name": "deadline_slack_h",
+        "parents": [
+          "U2:1:arrival_h",
+          "U2:1:battery_after",
+          "U2:1:battery_before",
+          "U2:1:delivery_h",
+          "U2:1:departure_h",
+          "U2:1:onboard_after",
+          "U2:1:onboard_before",
+          "U2:1:service_energy_wh"
+        ],
+        "previous": 2.5,
+        "received": 2.3333333333333335,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U2:1:delivery_h": {
+        "kind": "qty",
+        "leg": "U2:1",
+        "name": "delivery_h",
+        "parents": [
+          "U2:1:entering",
+          "U2:1:ground_guard",
+          "U2:1:nominal:arrival_h",
+          "U2:1:nominal:duration_h",
+          "U2:1:nominal:energy_wh",
+          "U2:1:nominal:evaluation",
+          "U2:1:nominal:horizon"
+        ],
+        "previous": 0.5,
+        "received": 0.6666666666666666,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U2:1:departure_h": {
+        "kind": "qty",
+        "leg": "U2:1",
+        "name": "departure_h",
+        "parents": [
+          "U2:1:entering",
+          "U2:1:ground_guard",
+          "U2:1:nominal:arrival_h",
+          "U2:1:nominal:duration_h",
+          "U2:1:nominal:energy_wh",
+          "U2:1:nominal:evaluation",
+          "U2:1:nominal:horizon"
+        ],
+        "previous": 0.5,
+        "received": 0.6666666666666666,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U2:1:entering": {
+        "kind": "state",
+        "leg": "U2:1",
+        "name": "entering_state",
+        "parents": [
+          "U2:origin"
+        ],
+        "previous": {
+          "battery_wh": 10.0,
+          "onboard": 1.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "received": {
+          "battery_wh": 10.0,
+          "onboard": 1.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U2:1:ground_guard": {
+        "kind": "stat",
+        "leg": "U2:1",
+        "name": "ground_horizon_guard",
+        "parents": [
+          "U2:1:entering",
+          "U2:1:nominal:arrival_h",
+          "U2:1:nominal:duration_h",
+          "U2:1:nominal:energy_wh",
+          "U2:1:nominal:evaluation",
+          "U2:1:nominal:horizon"
+        ],
+        "previous": "complete",
+        "received": "complete",
+        "role": "nominal",
+        "unit": null
+      },
+      "U2:1:nominal:arrival_h": {
+        "kind": "qty",
+        "leg": "U2:1",
+        "name": "arrival_h",
+        "parents": [
+          "U2:1:nominal:evaluation"
+        ],
+        "previous": 0.5,
+        "received": 0.6666666666666666,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U2:1:nominal:bins": {
+        "kind": "stat",
+        "leg": "U2:1",
+        "name": "time_bin_selection",
+        "parents": [
+          "U2:1:entering",
+          "U2:1:nominal:wind:east:0"
+        ],
+        "previous": [
+          [
+            "east",
+            0
+          ]
+        ],
+        "received": [
+          [
+            "east",
+            0
+          ]
+        ],
+        "role": "nominal",
+        "unit": null
+      },
+      "U2:1:nominal:duration_h": {
+        "kind": "qty",
+        "leg": "U2:1",
+        "name": "duration_h",
+        "parents": [
+          "U2:1:nominal:evaluation"
+        ],
+        "previous": 0.5,
+        "received": 0.6666666666666666,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U2:1:nominal:energy_wh": {
+        "kind": "qty",
+        "leg": "U2:1",
+        "name": "energy_wh",
+        "parents": [
+          "U2:1:nominal:evaluation"
+        ],
+        "previous": 0.2,
+        "received": 0.26666666666666666,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U2:1:nominal:evaluation": {
+        "kind": "eval",
+        "leg": "U2:1",
+        "name": "path_integration",
+        "parents": [
+          "U2:1:entering",
+          "U2:1:nominal:bins",
+          "U2:1:nominal:horizon",
+          "U2:1:nominal:wind:east:0"
+        ],
+        "previous": {
+          "arrival_h": 0.5,
+          "duration_h": 0.5,
+          "energy_wh": 0.2,
+          "slices": [
+            {
+              "bin_index": 0,
+              "cell_id": "east",
+              "distance_km": 1.0,
+              "end_h": 0.5,
+              "energy_wh": 0.2,
+              "ground_speed_kmh": 2.0,
+              "start_h": 0.0
+            }
+          ],
+          "status": "complete"
+        },
+        "received": {
+          "arrival_h": 0.6666666666666666,
+          "duration_h": 0.6666666666666666,
+          "energy_wh": 0.26666666666666666,
+          "slices": [
+            {
+              "bin_index": 0,
+              "cell_id": "east",
+              "distance_km": 1.0,
+              "end_h": 0.6666666666666666,
+              "energy_wh": 0.26666666666666666,
+              "ground_speed_kmh": 1.5,
+              "start_h": 0.0
+            }
+          ],
+          "status": "complete"
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U2:1:nominal:horizon": {
+        "kind": "stat",
+        "leg": "U2:1",
+        "name": "horizon_guard",
+        "parents": [
+          "U2:1:entering",
+          "U2:1:nominal:wind:east:0"
+        ],
+        "previous": "complete",
+        "received": "complete",
+        "role": "nominal",
+        "unit": null
+      },
+      "U2:1:nominal:wind:east:0": {
+        "kind": "wind",
+        "leg": "U2:1",
+        "name": "wind_query",
+        "parents": [
+          "change:east:0"
+        ],
+        "previous": [
+          0.0,
+          0.0
+        ],
+        "received": [
+          -0.5,
+          0.0
+        ],
+        "role": "nominal",
+        "unit": "speed_kmh"
+      },
+      "U2:1:onboard_after": {
+        "kind": "qty",
+        "leg": "U2:1",
+        "name": "onboard_after",
+        "parents": [
+          "U2:1:entering",
+          "U2:1:ground_guard",
+          "U2:1:nominal:arrival_h",
+          "U2:1:nominal:duration_h",
+          "U2:1:nominal:energy_wh",
+          "U2:1:nominal:evaluation",
+          "U2:1:nominal:horizon"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "nominal",
+        "unit": "quantity"
+      },
+      "U2:1:onboard_before": {
+        "kind": "qty",
+        "leg": "U2:1",
+        "name": "onboard_before",
+        "parents": [
+          "U2:1:entering",
+          "U2:1:ground_guard",
+          "U2:1:nominal:arrival_h",
+          "U2:1:nominal:duration_h",
+          "U2:1:nominal:energy_wh",
+          "U2:1:nominal:evaluation",
+          "U2:1:nominal:horizon"
+        ],
+        "previous": 1.0,
+        "received": 1.0,
+        "role": "nominal",
+        "unit": "quantity"
+      },
+      "U2:1:post": {
+        "kind": "state",
+        "leg": "U2:1",
+        "name": "post_stop_state",
+        "parents": [
+          "U2:1:arrival_h",
+          "U2:1:battery_after",
+          "U2:1:battery_before",
+          "U2:1:delivery_h",
+          "U2:1:departure_h",
+          "U2:1:ground_guard",
+          "U2:1:onboard_after",
+          "U2:1:onboard_before",
+          "U2:1:service_energy_wh"
+        ],
+        "previous": {
+          "battery_wh": 9.8,
+          "onboard": 0.0,
+          "site": "T2",
+          "time_h": 0.5
+        },
+        "received": {
+          "battery_wh": 9.733333333333333,
+          "onboard": 0.0,
+          "site": "T2",
+          "time_h": 0.6666666666666666
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U2:1:reserve:1:arrival_h": {
+        "kind": "qty",
+        "leg": "U2:1",
+        "name": "arrival_h",
+        "parents": [
+          "U2:1:reserve:1:evaluation"
+        ],
+        "previous": 1.0,
+        "received": 1.0666666666666667,
+        "role": "reserve",
+        "unit": "time_h"
+      },
+      "U2:1:reserve:1:bins": {
+        "kind": "stat",
+        "leg": "U2:1",
+        "name": "time_bin_selection",
+        "parents": [
+          "U2:1:reserve:1:state",
+          "U2:1:reserve:1:wind:east:0"
+        ],
+        "previous": [
+          [
+            "east",
+            0
+          ]
+        ],
+        "received": [
+          [
+            "east",
+            0
+          ]
+        ],
+        "role": "reserve",
+        "unit": null
+      },
+      "U2:1:reserve:1:duration_h": {
+        "kind": "qty",
+        "leg": "U2:1",
+        "name": "duration_h",
+        "parents": [
+          "U2:1:reserve:1:evaluation"
+        ],
+        "previous": 0.5,
+        "received": 0.4,
+        "role": "reserve",
+        "unit": "time_h"
+      },
+      "U2:1:reserve:1:energy_wh": {
+        "kind": "qty",
+        "leg": "U2:1",
+        "name": "energy_wh",
+        "parents": [
+          "U2:1:reserve:1:evaluation"
+        ],
+        "previous": 0.1,
+        "received": 0.08000000000000002,
+        "role": "reserve",
+        "unit": "energy_wh"
+      },
+      "U2:1:reserve:1:evaluation": {
+        "kind": "eval",
+        "leg": "U2:1",
+        "name": "path_integration",
+        "parents": [
+          "U2:1:reserve:1:bins",
+          "U2:1:reserve:1:horizon",
+          "U2:1:reserve:1:state",
+          "U2:1:reserve:1:wind:east:0"
+        ],
+        "previous": {
+          "arrival_h": 1.0,
+          "duration_h": 0.5,
+          "energy_wh": 0.1,
+          "slices": [
+            {
+              "bin_index": 0,
+              "cell_id": "east",
+              "distance_km": 1.0,
+              "end_h": 1.0,
+              "energy_wh": 0.1,
+              "ground_speed_kmh": 2.0,
+              "start_h": 0.5
+            }
+          ],
+          "status": "complete"
+        },
+        "received": {
+          "arrival_h": 1.0666666666666667,
+          "duration_h": 0.4,
+          "energy_wh": 0.08000000000000002,
+          "slices": [
+            {
+              "bin_index": 0,
+              "cell_id": "east",
+              "distance_km": 1.0,
+              "end_h": 1.0666666666666667,
+              "energy_wh": 0.08000000000000002,
+              "ground_speed_kmh": 2.5,
+              "start_h": 0.6666666666666666
+            }
+          ],
+          "status": "complete"
+        },
+        "role": "reserve",
+        "unit": null
+      },
+      "U2:1:reserve:1:horizon": {
+        "kind": "stat",
+        "leg": "U2:1",
+        "name": "horizon_guard",
+        "parents": [
+          "U2:1:reserve:1:state",
+          "U2:1:reserve:1:wind:east:0"
+        ],
+        "previous": "complete",
+        "received": "complete",
+        "role": "reserve",
+        "unit": null
+      },
+      "U2:1:reserve:1:margin": {
+        "kind": "qty",
+        "leg": "U2:1",
+        "name": "margin_wh",
+        "parents": [
+          "U2:1:reserve:1:arrival_h",
+          "U2:1:reserve:1:duration_h",
+          "U2:1:reserve:1:energy_wh",
+          "U2:1:reserve:1:evaluation",
+          "U2:1:reserve:1:horizon",
+          "U2:1:reserve:1:state"
+        ],
+        "previous": 8.700000000000001,
+        "received": 8.653333333333332,
+        "role": "reserve",
+        "unit": "energy_wh"
+      },
+      "U2:1:reserve:1:state": {
+        "kind": "state",
+        "leg": "U2:1",
+        "name": "reserve_state",
+        "parents": [
+          "U2:1:post"
+        ],
+        "previous": {
+          "battery_wh": 9.8,
+          "onboard": 0.0,
+          "position_xy": [
+            1,
+            0
+          ],
+          "time_h": 0.5
+        },
+        "received": {
+          "battery_wh": 9.733333333333333,
+          "onboard": 0.0,
+          "position_xy": [
+            1,
+            0
+          ],
+          "time_h": 0.6666666666666666
+        },
+        "role": "reserve",
+        "unit": null
+      },
+      "U2:1:reserve:1:status": {
+        "kind": "stat",
+        "leg": "U2:1",
+        "name": "reserve_status",
+        "parents": [
+          "U2:1:reserve:1:arrival_h",
+          "U2:1:reserve:1:duration_h",
+          "U2:1:reserve:1:energy_wh",
+          "U2:1:reserve:1:evaluation",
+          "U2:1:reserve:1:horizon",
+          "U2:1:reserve:1:margin"
+        ],
+        "previous": "witness",
+        "received": "witness",
+        "role": "reserve",
+        "unit": null
+      },
+      "U2:1:reserve:1:wind:east:0": {
+        "kind": "wind",
+        "leg": "U2:1",
+        "name": "wind_query",
+        "parents": [
+          "change:east:0"
+        ],
+        "previous": [
+          0.0,
+          0.0
+        ],
+        "received": [
+          -0.5,
+          0.0
+        ],
+        "role": "reserve",
+        "unit": "speed_kmh"
+      },
+      "U2:1:reserve:initial:arrival_h": {
+        "kind": "qty",
+        "leg": "U2:1",
+        "name": "arrival_h",
+        "parents": [
+          "U2:1:reserve:initial:evaluation"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "initial_reserve",
+        "unit": "time_h"
+      },
+      "U2:1:reserve:initial:bins": {
+        "kind": "stat",
+        "leg": "U2:1",
+        "name": "time_bin_selection",
+        "parents": [
+          "U2:1:reserve:initial:state"
+        ],
+        "previous": [],
+        "received": [],
+        "role": "initial_reserve",
+        "unit": null
+      },
+      "U2:1:reserve:initial:duration_h": {
+        "kind": "qty",
+        "leg": "U2:1",
+        "name": "duration_h",
+        "parents": [
+          "U2:1:reserve:initial:evaluation"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "initial_reserve",
+        "unit": "time_h"
+      },
+      "U2:1:reserve:initial:energy_wh": {
+        "kind": "qty",
+        "leg": "U2:1",
+        "name": "energy_wh",
+        "parents": [
+          "U2:1:reserve:initial:evaluation"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "initial_reserve",
+        "unit": "energy_wh"
+      },
+      "U2:1:reserve:initial:evaluation": {
+        "kind": "eval",
+        "leg": "U2:1",
+        "name": "path_integration",
+        "parents": [
+          "U2:1:reserve:initial:bins",
+          "U2:1:reserve:initial:horizon",
+          "U2:1:reserve:initial:state"
+        ],
+        "previous": {
+          "arrival_h": 0.0,
+          "duration_h": 0.0,
+          "energy_wh": 0.0,
+          "slices": [],
+          "status": "complete"
+        },
+        "received": {
+          "arrival_h": 0.0,
+          "duration_h": 0.0,
+          "energy_wh": 0.0,
+          "slices": [],
+          "status": "complete"
+        },
+        "role": "initial_reserve",
+        "unit": null
+      },
+      "U2:1:reserve:initial:horizon": {
+        "kind": "stat",
+        "leg": "U2:1",
+        "name": "horizon_guard",
+        "parents": [
+          "U2:1:reserve:initial:state"
+        ],
+        "previous": "complete",
+        "received": "complete",
+        "role": "initial_reserve",
+        "unit": null
+      },
+      "U2:1:reserve:initial:margin": {
+        "kind": "qty",
+        "leg": "U2:1",
+        "name": "margin_wh",
+        "parents": [
+          "U2:1:reserve:initial:arrival_h",
+          "U2:1:reserve:initial:duration_h",
+          "U2:1:reserve:initial:energy_wh",
+          "U2:1:reserve:initial:evaluation",
+          "U2:1:reserve:initial:horizon",
+          "U2:1:reserve:initial:state"
+        ],
+        "previous": 9.0,
+        "received": 9.0,
+        "role": "initial_reserve",
+        "unit": "energy_wh"
+      },
+      "U2:1:reserve:initial:state": {
+        "kind": "state",
+        "leg": "U2:1",
+        "name": "reserve_state",
+        "parents": [
+          "U2:origin"
+        ],
+        "previous": {
+          "battery_wh": 10.0,
+          "onboard": 1.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "received": {
+          "battery_wh": 10.0,
+          "onboard": 1.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "role": "initial_reserve",
+        "unit": null
+      },
+      "U2:1:reserve:initial:status": {
+        "kind": "stat",
+        "leg": "U2:1",
+        "name": "reserve_status",
+        "parents": [
+          "U2:1:reserve:initial:arrival_h",
+          "U2:1:reserve:initial:duration_h",
+          "U2:1:reserve:initial:energy_wh",
+          "U2:1:reserve:initial:evaluation",
+          "U2:1:reserve:initial:horizon",
+          "U2:1:reserve:initial:margin"
+        ],
+        "previous": "witness",
+        "received": "witness",
+        "role": "initial_reserve",
+        "unit": null
+      },
+      "U2:1:resources": {
+        "kind": "stat",
+        "leg": "U2:1",
+        "name": "resource_checks",
+        "parents": [
+          "U2:1:arrival_h",
+          "U2:1:battery_after",
+          "U2:1:battery_before",
+          "U2:1:delivery_h",
+          "U2:1:departure_h",
+          "U2:1:onboard_after",
+          "U2:1:onboard_before",
+          "U2:1:service_energy_wh"
+        ],
+        "previous": {
+          "battery:U2:1:arrival": "passed",
+          "battery:U2:1:service": "passed",
+          "delivery_availability:U2:1": "passed",
+          "depot_arrival_reserve:U2:1": "inactive",
+          "payload:U2:1": "passed"
+        },
+        "received": {
+          "battery:U2:1:arrival": "passed",
+          "battery:U2:1:service": "passed",
+          "delivery_availability:U2:1": "passed",
+          "depot_arrival_reserve:U2:1": "inactive",
+          "payload:U2:1": "passed"
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U2:1:service_energy_wh": {
+        "kind": "qty",
+        "leg": "U2:1",
+        "name": "service_energy_wh",
+        "parents": [
+          "U2:1:entering",
+          "U2:1:ground_guard",
+          "U2:1:nominal:arrival_h",
+          "U2:1:nominal:duration_h",
+          "U2:1:nominal:energy_wh",
+          "U2:1:nominal:evaluation",
+          "U2:1:nominal:horizon"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U2:2:arrival_h": {
+        "kind": "qty",
+        "leg": "U2:2",
+        "name": "arrival_h",
+        "parents": [
+          "U2:2:entering",
+          "U2:2:ground_guard",
+          "U2:2:nominal:arrival_h",
+          "U2:2:nominal:duration_h",
+          "U2:2:nominal:energy_wh",
+          "U2:2:nominal:evaluation",
+          "U2:2:nominal:horizon"
+        ],
+        "previous": 1.0,
+        "received": 1.0666666666666667,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U2:2:battery_after": {
+        "kind": "qty",
+        "leg": "U2:2",
+        "name": "battery_after",
+        "parents": [
+          "U2:2:entering",
+          "U2:2:ground_guard",
+          "U2:2:nominal:arrival_h",
+          "U2:2:nominal:duration_h",
+          "U2:2:nominal:energy_wh",
+          "U2:2:nominal:evaluation",
+          "U2:2:nominal:horizon"
+        ],
+        "previous": 9.700000000000001,
+        "received": 9.653333333333332,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U2:2:battery_before": {
+        "kind": "qty",
+        "leg": "U2:2",
+        "name": "battery_before",
+        "parents": [
+          "U2:2:entering",
+          "U2:2:ground_guard",
+          "U2:2:nominal:arrival_h",
+          "U2:2:nominal:duration_h",
+          "U2:2:nominal:energy_wh",
+          "U2:2:nominal:evaluation",
+          "U2:2:nominal:horizon"
+        ],
+        "previous": 9.700000000000001,
+        "received": 9.653333333333332,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U2:2:delivery_h": {
+        "kind": "qty",
+        "leg": "U2:2",
+        "name": "delivery_h",
+        "parents": [
+          "U2:2:entering",
+          "U2:2:ground_guard",
+          "U2:2:nominal:arrival_h",
+          "U2:2:nominal:duration_h",
+          "U2:2:nominal:energy_wh",
+          "U2:2:nominal:evaluation",
+          "U2:2:nominal:horizon"
+        ],
+        "previous": 1.0,
+        "received": 1.0666666666666667,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U2:2:departure_h": {
+        "kind": "qty",
+        "leg": "U2:2",
+        "name": "departure_h",
+        "parents": [
+          "U2:2:entering",
+          "U2:2:ground_guard",
+          "U2:2:nominal:arrival_h",
+          "U2:2:nominal:duration_h",
+          "U2:2:nominal:energy_wh",
+          "U2:2:nominal:evaluation",
+          "U2:2:nominal:horizon"
+        ],
+        "previous": null,
+        "received": null,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U2:2:entering": {
+        "kind": "state",
+        "leg": "U2:2",
+        "name": "entering_state",
+        "parents": [
+          "U2:1:post"
+        ],
+        "previous": {
+          "battery_wh": 9.8,
+          "onboard": 0.0,
+          "position_xy": [
+            1,
+            0
+          ],
+          "time_h": 0.5
+        },
+        "received": {
+          "battery_wh": 9.733333333333333,
+          "onboard": 0.0,
+          "position_xy": [
+            1,
+            0
+          ],
+          "time_h": 0.6666666666666666
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U2:2:ground_guard": {
+        "kind": "stat",
+        "leg": "U2:2",
+        "name": "ground_horizon_guard",
+        "parents": [
+          "U2:2:entering",
+          "U2:2:nominal:arrival_h",
+          "U2:2:nominal:duration_h",
+          "U2:2:nominal:energy_wh",
+          "U2:2:nominal:evaluation",
+          "U2:2:nominal:horizon"
+        ],
+        "previous": "complete",
+        "received": "complete",
+        "role": "nominal",
+        "unit": null
+      },
+      "U2:2:nominal:arrival_h": {
+        "kind": "qty",
+        "leg": "U2:2",
+        "name": "arrival_h",
+        "parents": [
+          "U2:2:nominal:evaluation"
+        ],
+        "previous": 1.0,
+        "received": 1.0666666666666667,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U2:2:nominal:bins": {
+        "kind": "stat",
+        "leg": "U2:2",
+        "name": "time_bin_selection",
+        "parents": [
+          "U2:2:entering",
+          "U2:2:nominal:wind:east:0"
+        ],
+        "previous": [
+          [
+            "east",
+            0
+          ]
+        ],
+        "received": [
+          [
+            "east",
+            0
+          ]
+        ],
+        "role": "nominal",
+        "unit": null
+      },
+      "U2:2:nominal:duration_h": {
+        "kind": "qty",
+        "leg": "U2:2",
+        "name": "duration_h",
+        "parents": [
+          "U2:2:nominal:evaluation"
+        ],
+        "previous": 0.5,
+        "received": 0.4,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U2:2:nominal:energy_wh": {
+        "kind": "qty",
+        "leg": "U2:2",
+        "name": "energy_wh",
+        "parents": [
+          "U2:2:nominal:evaluation"
+        ],
+        "previous": 0.1,
+        "received": 0.08000000000000002,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U2:2:nominal:evaluation": {
+        "kind": "eval",
+        "leg": "U2:2",
+        "name": "path_integration",
+        "parents": [
+          "U2:2:entering",
+          "U2:2:nominal:bins",
+          "U2:2:nominal:horizon",
+          "U2:2:nominal:wind:east:0"
+        ],
+        "previous": {
+          "arrival_h": 1.0,
+          "duration_h": 0.5,
+          "energy_wh": 0.1,
+          "slices": [
+            {
+              "bin_index": 0,
+              "cell_id": "east",
+              "distance_km": 1.0,
+              "end_h": 1.0,
+              "energy_wh": 0.1,
+              "ground_speed_kmh": 2.0,
+              "start_h": 0.5
+            }
+          ],
+          "status": "complete"
+        },
+        "received": {
+          "arrival_h": 1.0666666666666667,
+          "duration_h": 0.4,
+          "energy_wh": 0.08000000000000002,
+          "slices": [
+            {
+              "bin_index": 0,
+              "cell_id": "east",
+              "distance_km": 1.0,
+              "end_h": 1.0666666666666667,
+              "energy_wh": 0.08000000000000002,
+              "ground_speed_kmh": 2.5,
+              "start_h": 0.6666666666666666
+            }
+          ],
+          "status": "complete"
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U2:2:nominal:horizon": {
+        "kind": "stat",
+        "leg": "U2:2",
+        "name": "horizon_guard",
+        "parents": [
+          "U2:2:entering",
+          "U2:2:nominal:wind:east:0"
+        ],
+        "previous": "complete",
+        "received": "complete",
+        "role": "nominal",
+        "unit": null
+      },
+      "U2:2:nominal:wind:east:0": {
+        "kind": "wind",
+        "leg": "U2:2",
+        "name": "wind_query",
+        "parents": [
+          "change:east:0"
+        ],
+        "previous": [
+          0.0,
+          0.0
+        ],
+        "received": [
+          -0.5,
+          0.0
+        ],
+        "role": "nominal",
+        "unit": "speed_kmh"
+      },
+      "U2:2:onboard_after": {
+        "kind": "qty",
+        "leg": "U2:2",
+        "name": "onboard_after",
+        "parents": [
+          "U2:2:entering",
+          "U2:2:ground_guard",
+          "U2:2:nominal:arrival_h",
+          "U2:2:nominal:duration_h",
+          "U2:2:nominal:energy_wh",
+          "U2:2:nominal:evaluation",
+          "U2:2:nominal:horizon"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "nominal",
+        "unit": "quantity"
+      },
+      "U2:2:onboard_before": {
+        "kind": "qty",
+        "leg": "U2:2",
+        "name": "onboard_before",
+        "parents": [
+          "U2:2:entering",
+          "U2:2:ground_guard",
+          "U2:2:nominal:arrival_h",
+          "U2:2:nominal:duration_h",
+          "U2:2:nominal:energy_wh",
+          "U2:2:nominal:evaluation",
+          "U2:2:nominal:horizon"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "nominal",
+        "unit": "quantity"
+      },
+      "U2:2:post": {
+        "kind": "state",
+        "leg": "U2:2",
+        "name": "post_stop_state",
+        "parents": [
+          "U2:2:arrival_h",
+          "U2:2:battery_after",
+          "U2:2:battery_before",
+          "U2:2:delivery_h",
+          "U2:2:departure_h",
+          "U2:2:ground_guard",
+          "U2:2:onboard_after",
+          "U2:2:onboard_before",
+          "U2:2:service_energy_wh"
+        ],
+        "previous": {
+          "battery_wh": 9.700000000000001,
+          "onboard": 0.0,
+          "site": "DEPOT",
+          "time_h": 1.0
+        },
+        "received": {
+          "battery_wh": 9.653333333333332,
+          "onboard": 0.0,
+          "site": "DEPOT",
+          "time_h": 1.0666666666666667
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U2:2:resources": {
+        "kind": "stat",
+        "leg": "U2:2",
+        "name": "resource_checks",
+        "parents": [
+          "U2:2:arrival_h",
+          "U2:2:battery_after",
+          "U2:2:battery_before",
+          "U2:2:delivery_h",
+          "U2:2:departure_h",
+          "U2:2:onboard_after",
+          "U2:2:onboard_before",
+          "U2:2:service_energy_wh"
+        ],
+        "previous": {
+          "battery:U2:2:arrival": "passed",
+          "battery:U2:2:service": "passed",
+          "delivery_availability:U2:2": "passed",
+          "depot_arrival_reserve:U2:2": "passed",
+          "payload:U2:2": "passed"
+        },
+        "received": {
+          "battery:U2:2:arrival": "passed",
+          "battery:U2:2:service": "passed",
+          "delivery_availability:U2:2": "passed",
+          "depot_arrival_reserve:U2:2": "passed",
+          "payload:U2:2": "passed"
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U2:2:service_energy_wh": {
+        "kind": "qty",
+        "leg": "U2:2",
+        "name": "service_energy_wh",
+        "parents": [
+          "U2:2:entering",
+          "U2:2:ground_guard",
+          "U2:2:nominal:arrival_h",
+          "U2:2:nominal:duration_h",
+          "U2:2:nominal:energy_wh",
+          "U2:2:nominal:evaluation",
+          "U2:2:nominal:horizon"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U2:observed": {
+        "kind": "state",
+        "leg": null,
+        "name": "observed_state",
+        "parents": [],
+        "previous": {
+          "battery_wh": 10.0,
+          "onboard": 0.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "received": {
+          "battery_wh": 10.0,
+          "onboard": 0.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U2:origin": {
+        "kind": "eval",
+        "leg": null,
+        "name": "initial_ground_operation",
+        "parents": [
+          "U2:observed"
+        ],
+        "previous": {
+          "arrival_h": 0.0,
+          "battery_after": 10.0,
+          "battery_before": 10.0,
+          "delivery_h": 0.0,
+          "departure_h": 0.0,
+          "entering_state": {
+            "battery_wh": 10.0,
+            "onboard": 0.0,
+            "position_xy": [
+              0,
+              0
+            ],
+            "time_h": 0.0
+          },
+          "flight": null,
+          "flight_duration_h": 0.0,
+          "flight_energy_wh": 0.0,
+          "flight_status": "origin",
+          "onboard_after": 1.0,
+          "onboard_before": 0.0,
+          "service_energy_wh": 0.0,
+          "site": "ORIGIN",
+          "slot": 0,
+          "status": "complete",
+          "wind_queries": []
+        },
+        "received": {
+          "arrival_h": 0.0,
+          "battery_after": 10.0,
+          "battery_before": 10.0,
+          "delivery_h": 0.0,
+          "departure_h": 0.0,
+          "entering_state": {
+            "battery_wh": 10.0,
+            "onboard": 0.0,
+            "position_xy": [
+              0,
+              0
+            ],
+            "time_h": 0.0
+          },
+          "flight": null,
+          "flight_duration_h": 0.0,
+          "flight_energy_wh": 0.0,
+          "flight_status": "origin",
+          "onboard_after": 1.0,
+          "onboard_before": 0.0,
+          "service_energy_wh": 0.0,
+          "site": "ORIGIN",
+          "slot": 0,
+          "status": "complete",
+          "wind_queries": []
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U2:terminal": {
+        "kind": "stat",
+        "leg": null,
+        "name": "terminal_check",
+        "parents": [
+          "U2:2:post"
+        ],
+        "previous": {
+          "state": {
+            "battery_wh": 9.700000000000001,
+            "onboard": 0.0,
+            "position_xy": [
+              0,
+              0
+            ],
+            "time_h": 1.0
+          },
+          "status": "passed"
+        },
+        "received": {
+          "state": {
+            "battery_wh": 9.653333333333332,
+            "onboard": 0.0,
+            "position_xy": [
+              0,
+              0
+            ],
+            "time_h": 1.0666666666666667
+          },
+          "status": "passed"
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U3:1:arrival_h": {
+        "kind": "qty",
+        "leg": "U3:1",
+        "name": "arrival_h",
+        "parents": [
+          "U3:1:entering",
+          "U3:1:ground_guard",
+          "U3:1:nominal:arrival_h",
+          "U3:1:nominal:duration_h",
+          "U3:1:nominal:energy_wh",
+          "U3:1:nominal:evaluation",
+          "U3:1:nominal:horizon"
+        ],
+        "previous": 1.0,
+        "received": 1.0,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U3:1:battery_after": {
+        "kind": "qty",
+        "leg": "U3:1",
+        "name": "battery_after",
+        "parents": [
+          "U3:1:entering",
+          "U3:1:ground_guard",
+          "U3:1:nominal:arrival_h",
+          "U3:1:nominal:duration_h",
+          "U3:1:nominal:energy_wh",
+          "U3:1:nominal:evaluation",
+          "U3:1:nominal:horizon"
+        ],
+        "previous": 9.8,
+        "received": 9.8,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U3:1:battery_before": {
+        "kind": "qty",
+        "leg": "U3:1",
+        "name": "battery_before",
+        "parents": [
+          "U3:1:entering",
+          "U3:1:ground_guard",
+          "U3:1:nominal:arrival_h",
+          "U3:1:nominal:duration_h",
+          "U3:1:nominal:energy_wh",
+          "U3:1:nominal:evaluation",
+          "U3:1:nominal:horizon"
+        ],
+        "previous": 9.8,
+        "received": 9.8,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U3:1:deadline": {
+        "kind": "stat",
+        "leg": "U3:1",
+        "name": "deadline_status",
+        "parents": [
+          "U3:1:deadline_slack"
+        ],
+        "previous": "passed",
+        "received": "passed",
+        "role": "nominal",
+        "unit": null
+      },
+      "U3:1:deadline_slack": {
+        "kind": "qty",
+        "leg": "U3:1",
+        "name": "deadline_slack_h",
+        "parents": [
+          "U3:1:arrival_h",
+          "U3:1:battery_after",
+          "U3:1:battery_before",
+          "U3:1:delivery_h",
+          "U3:1:departure_h",
+          "U3:1:onboard_after",
+          "U3:1:onboard_before",
+          "U3:1:service_energy_wh"
+        ],
+        "previous": 2.0,
+        "received": 2.0,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U3:1:delivery_h": {
+        "kind": "qty",
+        "leg": "U3:1",
+        "name": "delivery_h",
+        "parents": [
+          "U3:1:entering",
+          "U3:1:ground_guard",
+          "U3:1:nominal:arrival_h",
+          "U3:1:nominal:duration_h",
+          "U3:1:nominal:energy_wh",
+          "U3:1:nominal:evaluation",
+          "U3:1:nominal:horizon"
+        ],
+        "previous": 1.0,
+        "received": 1.0,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U3:1:departure_h": {
+        "kind": "qty",
+        "leg": "U3:1",
+        "name": "departure_h",
+        "parents": [
+          "U3:1:entering",
+          "U3:1:ground_guard",
+          "U3:1:nominal:arrival_h",
+          "U3:1:nominal:duration_h",
+          "U3:1:nominal:energy_wh",
+          "U3:1:nominal:evaluation",
+          "U3:1:nominal:horizon"
+        ],
+        "previous": 1.0,
+        "received": 1.0,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U3:1:entering": {
+        "kind": "state",
+        "leg": "U3:1",
+        "name": "entering_state",
+        "parents": [
+          "U3:origin"
+        ],
+        "previous": {
+          "battery_wh": 10.0,
+          "onboard": 1.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "received": {
+          "battery_wh": 10.0,
+          "onboard": 1.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U3:1:ground_guard": {
+        "kind": "stat",
+        "leg": "U3:1",
+        "name": "ground_horizon_guard",
+        "parents": [
+          "U3:1:entering",
+          "U3:1:nominal:arrival_h",
+          "U3:1:nominal:duration_h",
+          "U3:1:nominal:energy_wh",
+          "U3:1:nominal:evaluation",
+          "U3:1:nominal:horizon"
+        ],
+        "previous": "complete",
+        "received": "complete",
+        "role": "nominal",
+        "unit": null
+      },
+      "U3:1:nominal:arrival_h": {
+        "kind": "qty",
+        "leg": "U3:1",
+        "name": "arrival_h",
+        "parents": [
+          "U3:1:nominal:evaluation"
+        ],
+        "previous": 1.0,
+        "received": 1.0,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U3:1:nominal:bins": {
+        "kind": "stat",
+        "leg": "U3:1",
+        "name": "time_bin_selection",
+        "parents": [
+          "U3:1:entering",
+          "U3:1:nominal:wind:WEST:0"
+        ],
+        "previous": [
+          [
+            "WEST",
+            0
+          ]
+        ],
+        "received": [
+          [
+            "WEST",
+            0
+          ]
+        ],
+        "role": "nominal",
+        "unit": null
+      },
+      "U3:1:nominal:duration_h": {
+        "kind": "qty",
+        "leg": "U3:1",
+        "name": "duration_h",
+        "parents": [
+          "U3:1:nominal:evaluation"
+        ],
+        "previous": 1.0,
+        "received": 1.0,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U3:1:nominal:energy_wh": {
+        "kind": "qty",
+        "leg": "U3:1",
+        "name": "energy_wh",
+        "parents": [
+          "U3:1:nominal:evaluation"
+        ],
+        "previous": 0.2,
+        "received": 0.2,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U3:1:nominal:evaluation": {
+        "kind": "eval",
+        "leg": "U3:1",
+        "name": "path_integration",
+        "parents": [
+          "U3:1:entering",
+          "U3:1:nominal:bins",
+          "U3:1:nominal:horizon",
+          "U3:1:nominal:wind:WEST:0"
+        ],
+        "previous": {
+          "arrival_h": 1.0,
+          "duration_h": 1.0,
+          "energy_wh": 0.2,
+          "slices": [
+            {
+              "bin_index": 0,
+              "cell_id": "WEST",
+              "distance_km": 1.0,
+              "end_h": 1.0,
+              "energy_wh": 0.2,
+              "ground_speed_kmh": 1.0,
+              "start_h": 0.0
+            }
+          ],
+          "status": "complete"
+        },
+        "received": {
+          "arrival_h": 1.0,
+          "duration_h": 1.0,
+          "energy_wh": 0.2,
+          "slices": [
+            {
+              "bin_index": 0,
+              "cell_id": "WEST",
+              "distance_km": 1.0,
+              "end_h": 1.0,
+              "energy_wh": 0.2,
+              "ground_speed_kmh": 1.0,
+              "start_h": 0.0
+            }
+          ],
+          "status": "complete"
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U3:1:nominal:horizon": {
+        "kind": "stat",
+        "leg": "U3:1",
+        "name": "horizon_guard",
+        "parents": [
+          "U3:1:entering",
+          "U3:1:nominal:wind:WEST:0"
+        ],
+        "previous": "complete",
+        "received": "complete",
+        "role": "nominal",
+        "unit": null
+      },
+      "U3:1:nominal:wind:WEST:0": {
+        "kind": "wind",
+        "leg": "U3:1",
+        "name": "wind_query",
+        "parents": [],
+        "previous": [
+          0.0,
+          0.0
+        ],
+        "received": [
+          0.0,
+          0.0
+        ],
+        "role": "nominal",
+        "unit": "speed_kmh"
+      },
+      "U3:1:onboard_after": {
+        "kind": "qty",
+        "leg": "U3:1",
+        "name": "onboard_after",
+        "parents": [
+          "U3:1:entering",
+          "U3:1:ground_guard",
+          "U3:1:nominal:arrival_h",
+          "U3:1:nominal:duration_h",
+          "U3:1:nominal:energy_wh",
+          "U3:1:nominal:evaluation",
+          "U3:1:nominal:horizon"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "nominal",
+        "unit": "quantity"
+      },
+      "U3:1:onboard_before": {
+        "kind": "qty",
+        "leg": "U3:1",
+        "name": "onboard_before",
+        "parents": [
+          "U3:1:entering",
+          "U3:1:ground_guard",
+          "U3:1:nominal:arrival_h",
+          "U3:1:nominal:duration_h",
+          "U3:1:nominal:energy_wh",
+          "U3:1:nominal:evaluation",
+          "U3:1:nominal:horizon"
+        ],
+        "previous": 1.0,
+        "received": 1.0,
+        "role": "nominal",
+        "unit": "quantity"
+      },
+      "U3:1:post": {
+        "kind": "state",
+        "leg": "U3:1",
+        "name": "post_stop_state",
+        "parents": [
+          "U3:1:arrival_h",
+          "U3:1:battery_after",
+          "U3:1:battery_before",
+          "U3:1:delivery_h",
+          "U3:1:departure_h",
+          "U3:1:ground_guard",
+          "U3:1:onboard_after",
+          "U3:1:onboard_before",
+          "U3:1:service_energy_wh"
+        ],
+        "previous": {
+          "battery_wh": 9.8,
+          "onboard": 0.0,
+          "site": "T3",
+          "time_h": 1.0
+        },
+        "received": {
+          "battery_wh": 9.8,
+          "onboard": 0.0,
+          "site": "T3",
+          "time_h": 1.0
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U3:1:reserve:1:arrival_h": {
+        "kind": "qty",
+        "leg": "U3:1",
+        "name": "arrival_h",
+        "parents": [
+          "U3:1:reserve:1:evaluation"
+        ],
+        "previous": 2.0,
+        "received": 2.0,
+        "role": "reserve",
+        "unit": "time_h"
+      },
+      "U3:1:reserve:1:bins": {
+        "kind": "stat",
+        "leg": "U3:1",
+        "name": "time_bin_selection",
+        "parents": [
+          "U3:1:reserve:1:state",
+          "U3:1:reserve:1:wind:WEST:0"
+        ],
+        "previous": [
+          [
+            "WEST",
+            0
+          ]
+        ],
+        "received": [
+          [
+            "WEST",
+            0
+          ]
+        ],
+        "role": "reserve",
+        "unit": null
+      },
+      "U3:1:reserve:1:duration_h": {
+        "kind": "qty",
+        "leg": "U3:1",
+        "name": "duration_h",
+        "parents": [
+          "U3:1:reserve:1:evaluation"
+        ],
+        "previous": 1.0,
+        "received": 1.0,
+        "role": "reserve",
+        "unit": "time_h"
+      },
+      "U3:1:reserve:1:energy_wh": {
+        "kind": "qty",
+        "leg": "U3:1",
+        "name": "energy_wh",
+        "parents": [
+          "U3:1:reserve:1:evaluation"
+        ],
+        "previous": 0.1,
+        "received": 0.1,
+        "role": "reserve",
+        "unit": "energy_wh"
+      },
+      "U3:1:reserve:1:evaluation": {
+        "kind": "eval",
+        "leg": "U3:1",
+        "name": "path_integration",
+        "parents": [
+          "U3:1:reserve:1:bins",
+          "U3:1:reserve:1:horizon",
+          "U3:1:reserve:1:state",
+          "U3:1:reserve:1:wind:WEST:0"
+        ],
+        "previous": {
+          "arrival_h": 2.0,
+          "duration_h": 1.0,
+          "energy_wh": 0.1,
+          "slices": [
+            {
+              "bin_index": 0,
+              "cell_id": "WEST",
+              "distance_km": 1.0,
+              "end_h": 2.0,
+              "energy_wh": 0.1,
+              "ground_speed_kmh": 1.0,
+              "start_h": 1.0
+            }
+          ],
+          "status": "complete"
+        },
+        "received": {
+          "arrival_h": 2.0,
+          "duration_h": 1.0,
+          "energy_wh": 0.1,
+          "slices": [
+            {
+              "bin_index": 0,
+              "cell_id": "WEST",
+              "distance_km": 1.0,
+              "end_h": 2.0,
+              "energy_wh": 0.1,
+              "ground_speed_kmh": 1.0,
+              "start_h": 1.0
+            }
+          ],
+          "status": "complete"
+        },
+        "role": "reserve",
+        "unit": null
+      },
+      "U3:1:reserve:1:horizon": {
+        "kind": "stat",
+        "leg": "U3:1",
+        "name": "horizon_guard",
+        "parents": [
+          "U3:1:reserve:1:state",
+          "U3:1:reserve:1:wind:WEST:0"
+        ],
+        "previous": "complete",
+        "received": "complete",
+        "role": "reserve",
+        "unit": null
+      },
+      "U3:1:reserve:1:margin": {
+        "kind": "qty",
+        "leg": "U3:1",
+        "name": "margin_wh",
+        "parents": [
+          "U3:1:reserve:1:arrival_h",
+          "U3:1:reserve:1:duration_h",
+          "U3:1:reserve:1:energy_wh",
+          "U3:1:reserve:1:evaluation",
+          "U3:1:reserve:1:horizon",
+          "U3:1:reserve:1:state"
+        ],
+        "previous": 8.700000000000001,
+        "received": 8.700000000000001,
+        "role": "reserve",
+        "unit": "energy_wh"
+      },
+      "U3:1:reserve:1:state": {
+        "kind": "state",
+        "leg": "U3:1",
+        "name": "reserve_state",
+        "parents": [
+          "U3:1:post"
+        ],
+        "previous": {
+          "battery_wh": 9.8,
+          "onboard": 0.0,
+          "position_xy": [
+            -1,
+            0
+          ],
+          "time_h": 1.0
+        },
+        "received": {
+          "battery_wh": 9.8,
+          "onboard": 0.0,
+          "position_xy": [
+            -1,
+            0
+          ],
+          "time_h": 1.0
+        },
+        "role": "reserve",
+        "unit": null
+      },
+      "U3:1:reserve:1:status": {
+        "kind": "stat",
+        "leg": "U3:1",
+        "name": "reserve_status",
+        "parents": [
+          "U3:1:reserve:1:arrival_h",
+          "U3:1:reserve:1:duration_h",
+          "U3:1:reserve:1:energy_wh",
+          "U3:1:reserve:1:evaluation",
+          "U3:1:reserve:1:horizon",
+          "U3:1:reserve:1:margin"
+        ],
+        "previous": "witness",
+        "received": "witness",
+        "role": "reserve",
+        "unit": null
+      },
+      "U3:1:reserve:1:wind:WEST:0": {
+        "kind": "wind",
+        "leg": "U3:1",
+        "name": "wind_query",
+        "parents": [],
+        "previous": [
+          0.0,
+          0.0
+        ],
+        "received": [
+          0.0,
+          0.0
+        ],
+        "role": "reserve",
+        "unit": "speed_kmh"
+      },
+      "U3:1:reserve:initial:arrival_h": {
+        "kind": "qty",
+        "leg": "U3:1",
+        "name": "arrival_h",
+        "parents": [
+          "U3:1:reserve:initial:evaluation"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "initial_reserve",
+        "unit": "time_h"
+      },
+      "U3:1:reserve:initial:bins": {
+        "kind": "stat",
+        "leg": "U3:1",
+        "name": "time_bin_selection",
+        "parents": [
+          "U3:1:reserve:initial:state"
+        ],
+        "previous": [],
+        "received": [],
+        "role": "initial_reserve",
+        "unit": null
+      },
+      "U3:1:reserve:initial:duration_h": {
+        "kind": "qty",
+        "leg": "U3:1",
+        "name": "duration_h",
+        "parents": [
+          "U3:1:reserve:initial:evaluation"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "initial_reserve",
+        "unit": "time_h"
+      },
+      "U3:1:reserve:initial:energy_wh": {
+        "kind": "qty",
+        "leg": "U3:1",
+        "name": "energy_wh",
+        "parents": [
+          "U3:1:reserve:initial:evaluation"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "initial_reserve",
+        "unit": "energy_wh"
+      },
+      "U3:1:reserve:initial:evaluation": {
+        "kind": "eval",
+        "leg": "U3:1",
+        "name": "path_integration",
+        "parents": [
+          "U3:1:reserve:initial:bins",
+          "U3:1:reserve:initial:horizon",
+          "U3:1:reserve:initial:state"
+        ],
+        "previous": {
+          "arrival_h": 0.0,
+          "duration_h": 0.0,
+          "energy_wh": 0.0,
+          "slices": [],
+          "status": "complete"
+        },
+        "received": {
+          "arrival_h": 0.0,
+          "duration_h": 0.0,
+          "energy_wh": 0.0,
+          "slices": [],
+          "status": "complete"
+        },
+        "role": "initial_reserve",
+        "unit": null
+      },
+      "U3:1:reserve:initial:horizon": {
+        "kind": "stat",
+        "leg": "U3:1",
+        "name": "horizon_guard",
+        "parents": [
+          "U3:1:reserve:initial:state"
+        ],
+        "previous": "complete",
+        "received": "complete",
+        "role": "initial_reserve",
+        "unit": null
+      },
+      "U3:1:reserve:initial:margin": {
+        "kind": "qty",
+        "leg": "U3:1",
+        "name": "margin_wh",
+        "parents": [
+          "U3:1:reserve:initial:arrival_h",
+          "U3:1:reserve:initial:duration_h",
+          "U3:1:reserve:initial:energy_wh",
+          "U3:1:reserve:initial:evaluation",
+          "U3:1:reserve:initial:horizon",
+          "U3:1:reserve:initial:state"
+        ],
+        "previous": 9.0,
+        "received": 9.0,
+        "role": "initial_reserve",
+        "unit": "energy_wh"
+      },
+      "U3:1:reserve:initial:state": {
+        "kind": "state",
+        "leg": "U3:1",
+        "name": "reserve_state",
+        "parents": [
+          "U3:origin"
+        ],
+        "previous": {
+          "battery_wh": 10.0,
+          "onboard": 1.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "received": {
+          "battery_wh": 10.0,
+          "onboard": 1.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "role": "initial_reserve",
+        "unit": null
+      },
+      "U3:1:reserve:initial:status": {
+        "kind": "stat",
+        "leg": "U3:1",
+        "name": "reserve_status",
+        "parents": [
+          "U3:1:reserve:initial:arrival_h",
+          "U3:1:reserve:initial:duration_h",
+          "U3:1:reserve:initial:energy_wh",
+          "U3:1:reserve:initial:evaluation",
+          "U3:1:reserve:initial:horizon",
+          "U3:1:reserve:initial:margin"
+        ],
+        "previous": "witness",
+        "received": "witness",
+        "role": "initial_reserve",
+        "unit": null
+      },
+      "U3:1:resources": {
+        "kind": "stat",
+        "leg": "U3:1",
+        "name": "resource_checks",
+        "parents": [
+          "U3:1:arrival_h",
+          "U3:1:battery_after",
+          "U3:1:battery_before",
+          "U3:1:delivery_h",
+          "U3:1:departure_h",
+          "U3:1:onboard_after",
+          "U3:1:onboard_before",
+          "U3:1:service_energy_wh"
+        ],
+        "previous": {
+          "battery:U3:1:arrival": "passed",
+          "battery:U3:1:service": "passed",
+          "delivery_availability:U3:1": "passed",
+          "depot_arrival_reserve:U3:1": "inactive",
+          "payload:U3:1": "passed"
+        },
+        "received": {
+          "battery:U3:1:arrival": "passed",
+          "battery:U3:1:service": "passed",
+          "delivery_availability:U3:1": "passed",
+          "depot_arrival_reserve:U3:1": "inactive",
+          "payload:U3:1": "passed"
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U3:1:service_energy_wh": {
+        "kind": "qty",
+        "leg": "U3:1",
+        "name": "service_energy_wh",
+        "parents": [
+          "U3:1:entering",
+          "U3:1:ground_guard",
+          "U3:1:nominal:arrival_h",
+          "U3:1:nominal:duration_h",
+          "U3:1:nominal:energy_wh",
+          "U3:1:nominal:evaluation",
+          "U3:1:nominal:horizon"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U3:2:arrival_h": {
+        "kind": "qty",
+        "leg": "U3:2",
+        "name": "arrival_h",
+        "parents": [
+          "U3:2:entering",
+          "U3:2:ground_guard",
+          "U3:2:nominal:arrival_h",
+          "U3:2:nominal:duration_h",
+          "U3:2:nominal:energy_wh",
+          "U3:2:nominal:evaluation",
+          "U3:2:nominal:horizon"
+        ],
+        "previous": 2.0,
+        "received": 2.0,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U3:2:battery_after": {
+        "kind": "qty",
+        "leg": "U3:2",
+        "name": "battery_after",
+        "parents": [
+          "U3:2:entering",
+          "U3:2:ground_guard",
+          "U3:2:nominal:arrival_h",
+          "U3:2:nominal:duration_h",
+          "U3:2:nominal:energy_wh",
+          "U3:2:nominal:evaluation",
+          "U3:2:nominal:horizon"
+        ],
+        "previous": 9.700000000000001,
+        "received": 9.700000000000001,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U3:2:battery_before": {
+        "kind": "qty",
+        "leg": "U3:2",
+        "name": "battery_before",
+        "parents": [
+          "U3:2:entering",
+          "U3:2:ground_guard",
+          "U3:2:nominal:arrival_h",
+          "U3:2:nominal:duration_h",
+          "U3:2:nominal:energy_wh",
+          "U3:2:nominal:evaluation",
+          "U3:2:nominal:horizon"
+        ],
+        "previous": 9.700000000000001,
+        "received": 9.700000000000001,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U3:2:delivery_h": {
+        "kind": "qty",
+        "leg": "U3:2",
+        "name": "delivery_h",
+        "parents": [
+          "U3:2:entering",
+          "U3:2:ground_guard",
+          "U3:2:nominal:arrival_h",
+          "U3:2:nominal:duration_h",
+          "U3:2:nominal:energy_wh",
+          "U3:2:nominal:evaluation",
+          "U3:2:nominal:horizon"
+        ],
+        "previous": 2.0,
+        "received": 2.0,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U3:2:departure_h": {
+        "kind": "qty",
+        "leg": "U3:2",
+        "name": "departure_h",
+        "parents": [
+          "U3:2:entering",
+          "U3:2:ground_guard",
+          "U3:2:nominal:arrival_h",
+          "U3:2:nominal:duration_h",
+          "U3:2:nominal:energy_wh",
+          "U3:2:nominal:evaluation",
+          "U3:2:nominal:horizon"
+        ],
+        "previous": null,
+        "received": null,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U3:2:entering": {
+        "kind": "state",
+        "leg": "U3:2",
+        "name": "entering_state",
+        "parents": [
+          "U3:1:post"
+        ],
+        "previous": {
+          "battery_wh": 9.8,
+          "onboard": 0.0,
+          "position_xy": [
+            -1,
+            0
+          ],
+          "time_h": 1.0
+        },
+        "received": {
+          "battery_wh": 9.8,
+          "onboard": 0.0,
+          "position_xy": [
+            -1,
+            0
+          ],
+          "time_h": 1.0
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U3:2:ground_guard": {
+        "kind": "stat",
+        "leg": "U3:2",
+        "name": "ground_horizon_guard",
+        "parents": [
+          "U3:2:entering",
+          "U3:2:nominal:arrival_h",
+          "U3:2:nominal:duration_h",
+          "U3:2:nominal:energy_wh",
+          "U3:2:nominal:evaluation",
+          "U3:2:nominal:horizon"
+        ],
+        "previous": "complete",
+        "received": "complete",
+        "role": "nominal",
+        "unit": null
+      },
+      "U3:2:nominal:arrival_h": {
+        "kind": "qty",
+        "leg": "U3:2",
+        "name": "arrival_h",
+        "parents": [
+          "U3:2:nominal:evaluation"
+        ],
+        "previous": 2.0,
+        "received": 2.0,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U3:2:nominal:bins": {
+        "kind": "stat",
+        "leg": "U3:2",
+        "name": "time_bin_selection",
+        "parents": [
+          "U3:2:entering",
+          "U3:2:nominal:wind:WEST:0"
+        ],
+        "previous": [
+          [
+            "WEST",
+            0
+          ]
+        ],
+        "received": [
+          [
+            "WEST",
+            0
+          ]
+        ],
+        "role": "nominal",
+        "unit": null
+      },
+      "U3:2:nominal:duration_h": {
+        "kind": "qty",
+        "leg": "U3:2",
+        "name": "duration_h",
+        "parents": [
+          "U3:2:nominal:evaluation"
+        ],
+        "previous": 1.0,
+        "received": 1.0,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U3:2:nominal:energy_wh": {
+        "kind": "qty",
+        "leg": "U3:2",
+        "name": "energy_wh",
+        "parents": [
+          "U3:2:nominal:evaluation"
+        ],
+        "previous": 0.1,
+        "received": 0.1,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U3:2:nominal:evaluation": {
+        "kind": "eval",
+        "leg": "U3:2",
+        "name": "path_integration",
+        "parents": [
+          "U3:2:entering",
+          "U3:2:nominal:bins",
+          "U3:2:nominal:horizon",
+          "U3:2:nominal:wind:WEST:0"
+        ],
+        "previous": {
+          "arrival_h": 2.0,
+          "duration_h": 1.0,
+          "energy_wh": 0.1,
+          "slices": [
+            {
+              "bin_index": 0,
+              "cell_id": "WEST",
+              "distance_km": 1.0,
+              "end_h": 2.0,
+              "energy_wh": 0.1,
+              "ground_speed_kmh": 1.0,
+              "start_h": 1.0
+            }
+          ],
+          "status": "complete"
+        },
+        "received": {
+          "arrival_h": 2.0,
+          "duration_h": 1.0,
+          "energy_wh": 0.1,
+          "slices": [
+            {
+              "bin_index": 0,
+              "cell_id": "WEST",
+              "distance_km": 1.0,
+              "end_h": 2.0,
+              "energy_wh": 0.1,
+              "ground_speed_kmh": 1.0,
+              "start_h": 1.0
+            }
+          ],
+          "status": "complete"
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U3:2:nominal:horizon": {
+        "kind": "stat",
+        "leg": "U3:2",
+        "name": "horizon_guard",
+        "parents": [
+          "U3:2:entering",
+          "U3:2:nominal:wind:WEST:0"
+        ],
+        "previous": "complete",
+        "received": "complete",
+        "role": "nominal",
+        "unit": null
+      },
+      "U3:2:nominal:wind:WEST:0": {
+        "kind": "wind",
+        "leg": "U3:2",
+        "name": "wind_query",
+        "parents": [],
+        "previous": [
+          0.0,
+          0.0
+        ],
+        "received": [
+          0.0,
+          0.0
+        ],
+        "role": "nominal",
+        "unit": "speed_kmh"
+      },
+      "U3:2:onboard_after": {
+        "kind": "qty",
+        "leg": "U3:2",
+        "name": "onboard_after",
+        "parents": [
+          "U3:2:entering",
+          "U3:2:ground_guard",
+          "U3:2:nominal:arrival_h",
+          "U3:2:nominal:duration_h",
+          "U3:2:nominal:energy_wh",
+          "U3:2:nominal:evaluation",
+          "U3:2:nominal:horizon"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "nominal",
+        "unit": "quantity"
+      },
+      "U3:2:onboard_before": {
+        "kind": "qty",
+        "leg": "U3:2",
+        "name": "onboard_before",
+        "parents": [
+          "U3:2:entering",
+          "U3:2:ground_guard",
+          "U3:2:nominal:arrival_h",
+          "U3:2:nominal:duration_h",
+          "U3:2:nominal:energy_wh",
+          "U3:2:nominal:evaluation",
+          "U3:2:nominal:horizon"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "nominal",
+        "unit": "quantity"
+      },
+      "U3:2:post": {
+        "kind": "state",
+        "leg": "U3:2",
+        "name": "post_stop_state",
+        "parents": [
+          "U3:2:arrival_h",
+          "U3:2:battery_after",
+          "U3:2:battery_before",
+          "U3:2:delivery_h",
+          "U3:2:departure_h",
+          "U3:2:ground_guard",
+          "U3:2:onboard_after",
+          "U3:2:onboard_before",
+          "U3:2:service_energy_wh"
+        ],
+        "previous": {
+          "battery_wh": 9.700000000000001,
+          "onboard": 0.0,
+          "site": "DEPOT",
+          "time_h": 2.0
+        },
+        "received": {
+          "battery_wh": 9.700000000000001,
+          "onboard": 0.0,
+          "site": "DEPOT",
+          "time_h": 2.0
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U3:2:resources": {
+        "kind": "stat",
+        "leg": "U3:2",
+        "name": "resource_checks",
+        "parents": [
+          "U3:2:arrival_h",
+          "U3:2:battery_after",
+          "U3:2:battery_before",
+          "U3:2:delivery_h",
+          "U3:2:departure_h",
+          "U3:2:onboard_after",
+          "U3:2:onboard_before",
+          "U3:2:service_energy_wh"
+        ],
+        "previous": {
+          "battery:U3:2:arrival": "passed",
+          "battery:U3:2:service": "passed",
+          "delivery_availability:U3:2": "passed",
+          "depot_arrival_reserve:U3:2": "passed",
+          "payload:U3:2": "passed"
+        },
+        "received": {
+          "battery:U3:2:arrival": "passed",
+          "battery:U3:2:service": "passed",
+          "delivery_availability:U3:2": "passed",
+          "depot_arrival_reserve:U3:2": "passed",
+          "payload:U3:2": "passed"
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U3:2:service_energy_wh": {
+        "kind": "qty",
+        "leg": "U3:2",
+        "name": "service_energy_wh",
+        "parents": [
+          "U3:2:entering",
+          "U3:2:ground_guard",
+          "U3:2:nominal:arrival_h",
+          "U3:2:nominal:duration_h",
+          "U3:2:nominal:energy_wh",
+          "U3:2:nominal:evaluation",
+          "U3:2:nominal:horizon"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U3:observed": {
+        "kind": "state",
+        "leg": null,
+        "name": "observed_state",
+        "parents": [],
+        "previous": {
+          "battery_wh": 10.0,
+          "onboard": 0.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "received": {
+          "battery_wh": 10.0,
+          "onboard": 0.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U3:origin": {
+        "kind": "eval",
+        "leg": null,
+        "name": "initial_ground_operation",
+        "parents": [
+          "U3:observed"
+        ],
+        "previous": {
+          "arrival_h": 0.0,
+          "battery_after": 10.0,
+          "battery_before": 10.0,
+          "delivery_h": 0.0,
+          "departure_h": 0.0,
+          "entering_state": {
+            "battery_wh": 10.0,
+            "onboard": 0.0,
+            "position_xy": [
+              0,
+              0
+            ],
+            "time_h": 0.0
+          },
+          "flight": null,
+          "flight_duration_h": 0.0,
+          "flight_energy_wh": 0.0,
+          "flight_status": "origin",
+          "onboard_after": 1.0,
+          "onboard_before": 0.0,
+          "service_energy_wh": 0.0,
+          "site": "ORIGIN",
+          "slot": 0,
+          "status": "complete",
+          "wind_queries": []
+        },
+        "received": {
+          "arrival_h": 0.0,
+          "battery_after": 10.0,
+          "battery_before": 10.0,
+          "delivery_h": 0.0,
+          "departure_h": 0.0,
+          "entering_state": {
+            "battery_wh": 10.0,
+            "onboard": 0.0,
+            "position_xy": [
+              0,
+              0
+            ],
+            "time_h": 0.0
+          },
+          "flight": null,
+          "flight_duration_h": 0.0,
+          "flight_energy_wh": 0.0,
+          "flight_status": "origin",
+          "onboard_after": 1.0,
+          "onboard_before": 0.0,
+          "service_energy_wh": 0.0,
+          "site": "ORIGIN",
+          "slot": 0,
+          "status": "complete",
+          "wind_queries": []
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U3:terminal": {
+        "kind": "stat",
+        "leg": null,
+        "name": "terminal_check",
+        "parents": [
+          "U3:2:post"
+        ],
+        "previous": {
+          "state": {
+            "battery_wh": 9.700000000000001,
+            "onboard": 0.0,
+            "position_xy": [
+              0,
+              0
+            ],
+            "time_h": 2.0
+          },
+          "status": "passed"
+        },
+        "received": {
+          "state": {
+            "battery_wh": 9.700000000000001,
+            "onboard": 0.0,
+            "position_xy": [
+              0,
+              0
+            ],
+            "time_h": 2.0
+          },
+          "status": "passed"
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U4:1:arrival_h": {
+        "kind": "qty",
+        "leg": "U4:1",
+        "name": "arrival_h",
+        "parents": [
+          "U4:1:entering",
+          "U4:1:ground_guard",
+          "U4:1:nominal:arrival_h",
+          "U4:1:nominal:duration_h",
+          "U4:1:nominal:energy_wh",
+          "U4:1:nominal:evaluation",
+          "U4:1:nominal:horizon"
+        ],
+        "previous": 1.0,
+        "received": 1.0,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U4:1:battery_after": {
+        "kind": "qty",
+        "leg": "U4:1",
+        "name": "battery_after",
+        "parents": [
+          "U4:1:entering",
+          "U4:1:ground_guard",
+          "U4:1:nominal:arrival_h",
+          "U4:1:nominal:duration_h",
+          "U4:1:nominal:energy_wh",
+          "U4:1:nominal:evaluation",
+          "U4:1:nominal:horizon"
+        ],
+        "previous": 9.8,
+        "received": 9.8,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U4:1:battery_before": {
+        "kind": "qty",
+        "leg": "U4:1",
+        "name": "battery_before",
+        "parents": [
+          "U4:1:entering",
+          "U4:1:ground_guard",
+          "U4:1:nominal:arrival_h",
+          "U4:1:nominal:duration_h",
+          "U4:1:nominal:energy_wh",
+          "U4:1:nominal:evaluation",
+          "U4:1:nominal:horizon"
+        ],
+        "previous": 9.8,
+        "received": 9.8,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U4:1:deadline": {
+        "kind": "stat",
+        "leg": "U4:1",
+        "name": "deadline_status",
+        "parents": [
+          "U4:1:deadline_slack"
+        ],
+        "previous": "passed",
+        "received": "passed",
+        "role": "nominal",
+        "unit": null
+      },
+      "U4:1:deadline_slack": {
+        "kind": "qty",
+        "leg": "U4:1",
+        "name": "deadline_slack_h",
+        "parents": [
+          "U4:1:arrival_h",
+          "U4:1:battery_after",
+          "U4:1:battery_before",
+          "U4:1:delivery_h",
+          "U4:1:departure_h",
+          "U4:1:onboard_after",
+          "U4:1:onboard_before",
+          "U4:1:service_energy_wh"
+        ],
+        "previous": 2.0,
+        "received": 2.0,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U4:1:delivery_h": {
+        "kind": "qty",
+        "leg": "U4:1",
+        "name": "delivery_h",
+        "parents": [
+          "U4:1:entering",
+          "U4:1:ground_guard",
+          "U4:1:nominal:arrival_h",
+          "U4:1:nominal:duration_h",
+          "U4:1:nominal:energy_wh",
+          "U4:1:nominal:evaluation",
+          "U4:1:nominal:horizon"
+        ],
+        "previous": 1.0,
+        "received": 1.0,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U4:1:departure_h": {
+        "kind": "qty",
+        "leg": "U4:1",
+        "name": "departure_h",
+        "parents": [
+          "U4:1:entering",
+          "U4:1:ground_guard",
+          "U4:1:nominal:arrival_h",
+          "U4:1:nominal:duration_h",
+          "U4:1:nominal:energy_wh",
+          "U4:1:nominal:evaluation",
+          "U4:1:nominal:horizon"
+        ],
+        "previous": 1.0,
+        "received": 1.0,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U4:1:entering": {
+        "kind": "state",
+        "leg": "U4:1",
+        "name": "entering_state",
+        "parents": [
+          "U4:origin"
+        ],
+        "previous": {
+          "battery_wh": 10.0,
+          "onboard": 1.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "received": {
+          "battery_wh": 10.0,
+          "onboard": 1.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U4:1:ground_guard": {
+        "kind": "stat",
+        "leg": "U4:1",
+        "name": "ground_horizon_guard",
+        "parents": [
+          "U4:1:entering",
+          "U4:1:nominal:arrival_h",
+          "U4:1:nominal:duration_h",
+          "U4:1:nominal:energy_wh",
+          "U4:1:nominal:evaluation",
+          "U4:1:nominal:horizon"
+        ],
+        "previous": "complete",
+        "received": "complete",
+        "role": "nominal",
+        "unit": null
+      },
+      "U4:1:nominal:arrival_h": {
+        "kind": "qty",
+        "leg": "U4:1",
+        "name": "arrival_h",
+        "parents": [
+          "U4:1:nominal:evaluation"
+        ],
+        "previous": 1.0,
+        "received": 1.0,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U4:1:nominal:bins": {
+        "kind": "stat",
+        "leg": "U4:1",
+        "name": "time_bin_selection",
+        "parents": [
+          "U4:1:entering",
+          "U4:1:nominal:wind:WEST:0"
+        ],
+        "previous": [
+          [
+            "WEST",
+            0
+          ]
+        ],
+        "received": [
+          [
+            "WEST",
+            0
+          ]
+        ],
+        "role": "nominal",
+        "unit": null
+      },
+      "U4:1:nominal:duration_h": {
+        "kind": "qty",
+        "leg": "U4:1",
+        "name": "duration_h",
+        "parents": [
+          "U4:1:nominal:evaluation"
+        ],
+        "previous": 1.0,
+        "received": 1.0,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U4:1:nominal:energy_wh": {
+        "kind": "qty",
+        "leg": "U4:1",
+        "name": "energy_wh",
+        "parents": [
+          "U4:1:nominal:evaluation"
+        ],
+        "previous": 0.2,
+        "received": 0.2,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U4:1:nominal:evaluation": {
+        "kind": "eval",
+        "leg": "U4:1",
+        "name": "path_integration",
+        "parents": [
+          "U4:1:entering",
+          "U4:1:nominal:bins",
+          "U4:1:nominal:horizon",
+          "U4:1:nominal:wind:WEST:0"
+        ],
+        "previous": {
+          "arrival_h": 1.0,
+          "duration_h": 1.0,
+          "energy_wh": 0.2,
+          "slices": [
+            {
+              "bin_index": 0,
+              "cell_id": "WEST",
+              "distance_km": 1.0,
+              "end_h": 1.0,
+              "energy_wh": 0.2,
+              "ground_speed_kmh": 1.0,
+              "start_h": 0.0
+            }
+          ],
+          "status": "complete"
+        },
+        "received": {
+          "arrival_h": 1.0,
+          "duration_h": 1.0,
+          "energy_wh": 0.2,
+          "slices": [
+            {
+              "bin_index": 0,
+              "cell_id": "WEST",
+              "distance_km": 1.0,
+              "end_h": 1.0,
+              "energy_wh": 0.2,
+              "ground_speed_kmh": 1.0,
+              "start_h": 0.0
+            }
+          ],
+          "status": "complete"
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U4:1:nominal:horizon": {
+        "kind": "stat",
+        "leg": "U4:1",
+        "name": "horizon_guard",
+        "parents": [
+          "U4:1:entering",
+          "U4:1:nominal:wind:WEST:0"
+        ],
+        "previous": "complete",
+        "received": "complete",
+        "role": "nominal",
+        "unit": null
+      },
+      "U4:1:nominal:wind:WEST:0": {
+        "kind": "wind",
+        "leg": "U4:1",
+        "name": "wind_query",
+        "parents": [],
+        "previous": [
+          0.0,
+          0.0
+        ],
+        "received": [
+          0.0,
+          0.0
+        ],
+        "role": "nominal",
+        "unit": "speed_kmh"
+      },
+      "U4:1:onboard_after": {
+        "kind": "qty",
+        "leg": "U4:1",
+        "name": "onboard_after",
+        "parents": [
+          "U4:1:entering",
+          "U4:1:ground_guard",
+          "U4:1:nominal:arrival_h",
+          "U4:1:nominal:duration_h",
+          "U4:1:nominal:energy_wh",
+          "U4:1:nominal:evaluation",
+          "U4:1:nominal:horizon"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "nominal",
+        "unit": "quantity"
+      },
+      "U4:1:onboard_before": {
+        "kind": "qty",
+        "leg": "U4:1",
+        "name": "onboard_before",
+        "parents": [
+          "U4:1:entering",
+          "U4:1:ground_guard",
+          "U4:1:nominal:arrival_h",
+          "U4:1:nominal:duration_h",
+          "U4:1:nominal:energy_wh",
+          "U4:1:nominal:evaluation",
+          "U4:1:nominal:horizon"
+        ],
+        "previous": 1.0,
+        "received": 1.0,
+        "role": "nominal",
+        "unit": "quantity"
+      },
+      "U4:1:post": {
+        "kind": "state",
+        "leg": "U4:1",
+        "name": "post_stop_state",
+        "parents": [
+          "U4:1:arrival_h",
+          "U4:1:battery_after",
+          "U4:1:battery_before",
+          "U4:1:delivery_h",
+          "U4:1:departure_h",
+          "U4:1:ground_guard",
+          "U4:1:onboard_after",
+          "U4:1:onboard_before",
+          "U4:1:service_energy_wh"
+        ],
+        "previous": {
+          "battery_wh": 9.8,
+          "onboard": 0.0,
+          "site": "T4",
+          "time_h": 1.0
+        },
+        "received": {
+          "battery_wh": 9.8,
+          "onboard": 0.0,
+          "site": "T4",
+          "time_h": 1.0
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U4:1:reserve:1:arrival_h": {
+        "kind": "qty",
+        "leg": "U4:1",
+        "name": "arrival_h",
+        "parents": [
+          "U4:1:reserve:1:evaluation"
+        ],
+        "previous": 2.0,
+        "received": 2.0,
+        "role": "reserve",
+        "unit": "time_h"
+      },
+      "U4:1:reserve:1:bins": {
+        "kind": "stat",
+        "leg": "U4:1",
+        "name": "time_bin_selection",
+        "parents": [
+          "U4:1:reserve:1:state",
+          "U4:1:reserve:1:wind:WEST:0"
+        ],
+        "previous": [
+          [
+            "WEST",
+            0
+          ]
+        ],
+        "received": [
+          [
+            "WEST",
+            0
+          ]
+        ],
+        "role": "reserve",
+        "unit": null
+      },
+      "U4:1:reserve:1:duration_h": {
+        "kind": "qty",
+        "leg": "U4:1",
+        "name": "duration_h",
+        "parents": [
+          "U4:1:reserve:1:evaluation"
+        ],
+        "previous": 1.0,
+        "received": 1.0,
+        "role": "reserve",
+        "unit": "time_h"
+      },
+      "U4:1:reserve:1:energy_wh": {
+        "kind": "qty",
+        "leg": "U4:1",
+        "name": "energy_wh",
+        "parents": [
+          "U4:1:reserve:1:evaluation"
+        ],
+        "previous": 0.1,
+        "received": 0.1,
+        "role": "reserve",
+        "unit": "energy_wh"
+      },
+      "U4:1:reserve:1:evaluation": {
+        "kind": "eval",
+        "leg": "U4:1",
+        "name": "path_integration",
+        "parents": [
+          "U4:1:reserve:1:bins",
+          "U4:1:reserve:1:horizon",
+          "U4:1:reserve:1:state",
+          "U4:1:reserve:1:wind:WEST:0"
+        ],
+        "previous": {
+          "arrival_h": 2.0,
+          "duration_h": 1.0,
+          "energy_wh": 0.1,
+          "slices": [
+            {
+              "bin_index": 0,
+              "cell_id": "WEST",
+              "distance_km": 1.0,
+              "end_h": 2.0,
+              "energy_wh": 0.1,
+              "ground_speed_kmh": 1.0,
+              "start_h": 1.0
+            }
+          ],
+          "status": "complete"
+        },
+        "received": {
+          "arrival_h": 2.0,
+          "duration_h": 1.0,
+          "energy_wh": 0.1,
+          "slices": [
+            {
+              "bin_index": 0,
+              "cell_id": "WEST",
+              "distance_km": 1.0,
+              "end_h": 2.0,
+              "energy_wh": 0.1,
+              "ground_speed_kmh": 1.0,
+              "start_h": 1.0
+            }
+          ],
+          "status": "complete"
+        },
+        "role": "reserve",
+        "unit": null
+      },
+      "U4:1:reserve:1:horizon": {
+        "kind": "stat",
+        "leg": "U4:1",
+        "name": "horizon_guard",
+        "parents": [
+          "U4:1:reserve:1:state",
+          "U4:1:reserve:1:wind:WEST:0"
+        ],
+        "previous": "complete",
+        "received": "complete",
+        "role": "reserve",
+        "unit": null
+      },
+      "U4:1:reserve:1:margin": {
+        "kind": "qty",
+        "leg": "U4:1",
+        "name": "margin_wh",
+        "parents": [
+          "U4:1:reserve:1:arrival_h",
+          "U4:1:reserve:1:duration_h",
+          "U4:1:reserve:1:energy_wh",
+          "U4:1:reserve:1:evaluation",
+          "U4:1:reserve:1:horizon",
+          "U4:1:reserve:1:state"
+        ],
+        "previous": 8.700000000000001,
+        "received": 8.700000000000001,
+        "role": "reserve",
+        "unit": "energy_wh"
+      },
+      "U4:1:reserve:1:state": {
+        "kind": "state",
+        "leg": "U4:1",
+        "name": "reserve_state",
+        "parents": [
+          "U4:1:post"
+        ],
+        "previous": {
+          "battery_wh": 9.8,
+          "onboard": 0.0,
+          "position_xy": [
+            -1,
+            0
+          ],
+          "time_h": 1.0
+        },
+        "received": {
+          "battery_wh": 9.8,
+          "onboard": 0.0,
+          "position_xy": [
+            -1,
+            0
+          ],
+          "time_h": 1.0
+        },
+        "role": "reserve",
+        "unit": null
+      },
+      "U4:1:reserve:1:status": {
+        "kind": "stat",
+        "leg": "U4:1",
+        "name": "reserve_status",
+        "parents": [
+          "U4:1:reserve:1:arrival_h",
+          "U4:1:reserve:1:duration_h",
+          "U4:1:reserve:1:energy_wh",
+          "U4:1:reserve:1:evaluation",
+          "U4:1:reserve:1:horizon",
+          "U4:1:reserve:1:margin"
+        ],
+        "previous": "witness",
+        "received": "witness",
+        "role": "reserve",
+        "unit": null
+      },
+      "U4:1:reserve:1:wind:WEST:0": {
+        "kind": "wind",
+        "leg": "U4:1",
+        "name": "wind_query",
+        "parents": [],
+        "previous": [
+          0.0,
+          0.0
+        ],
+        "received": [
+          0.0,
+          0.0
+        ],
+        "role": "reserve",
+        "unit": "speed_kmh"
+      },
+      "U4:1:reserve:initial:arrival_h": {
+        "kind": "qty",
+        "leg": "U4:1",
+        "name": "arrival_h",
+        "parents": [
+          "U4:1:reserve:initial:evaluation"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "initial_reserve",
+        "unit": "time_h"
+      },
+      "U4:1:reserve:initial:bins": {
+        "kind": "stat",
+        "leg": "U4:1",
+        "name": "time_bin_selection",
+        "parents": [
+          "U4:1:reserve:initial:state"
+        ],
+        "previous": [],
+        "received": [],
+        "role": "initial_reserve",
+        "unit": null
+      },
+      "U4:1:reserve:initial:duration_h": {
+        "kind": "qty",
+        "leg": "U4:1",
+        "name": "duration_h",
+        "parents": [
+          "U4:1:reserve:initial:evaluation"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "initial_reserve",
+        "unit": "time_h"
+      },
+      "U4:1:reserve:initial:energy_wh": {
+        "kind": "qty",
+        "leg": "U4:1",
+        "name": "energy_wh",
+        "parents": [
+          "U4:1:reserve:initial:evaluation"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "initial_reserve",
+        "unit": "energy_wh"
+      },
+      "U4:1:reserve:initial:evaluation": {
+        "kind": "eval",
+        "leg": "U4:1",
+        "name": "path_integration",
+        "parents": [
+          "U4:1:reserve:initial:bins",
+          "U4:1:reserve:initial:horizon",
+          "U4:1:reserve:initial:state"
+        ],
+        "previous": {
+          "arrival_h": 0.0,
+          "duration_h": 0.0,
+          "energy_wh": 0.0,
+          "slices": [],
+          "status": "complete"
+        },
+        "received": {
+          "arrival_h": 0.0,
+          "duration_h": 0.0,
+          "energy_wh": 0.0,
+          "slices": [],
+          "status": "complete"
+        },
+        "role": "initial_reserve",
+        "unit": null
+      },
+      "U4:1:reserve:initial:horizon": {
+        "kind": "stat",
+        "leg": "U4:1",
+        "name": "horizon_guard",
+        "parents": [
+          "U4:1:reserve:initial:state"
+        ],
+        "previous": "complete",
+        "received": "complete",
+        "role": "initial_reserve",
+        "unit": null
+      },
+      "U4:1:reserve:initial:margin": {
+        "kind": "qty",
+        "leg": "U4:1",
+        "name": "margin_wh",
+        "parents": [
+          "U4:1:reserve:initial:arrival_h",
+          "U4:1:reserve:initial:duration_h",
+          "U4:1:reserve:initial:energy_wh",
+          "U4:1:reserve:initial:evaluation",
+          "U4:1:reserve:initial:horizon",
+          "U4:1:reserve:initial:state"
+        ],
+        "previous": 9.0,
+        "received": 9.0,
+        "role": "initial_reserve",
+        "unit": "energy_wh"
+      },
+      "U4:1:reserve:initial:state": {
+        "kind": "state",
+        "leg": "U4:1",
+        "name": "reserve_state",
+        "parents": [
+          "U4:origin"
+        ],
+        "previous": {
+          "battery_wh": 10.0,
+          "onboard": 1.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "received": {
+          "battery_wh": 10.0,
+          "onboard": 1.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "role": "initial_reserve",
+        "unit": null
+      },
+      "U4:1:reserve:initial:status": {
+        "kind": "stat",
+        "leg": "U4:1",
+        "name": "reserve_status",
+        "parents": [
+          "U4:1:reserve:initial:arrival_h",
+          "U4:1:reserve:initial:duration_h",
+          "U4:1:reserve:initial:energy_wh",
+          "U4:1:reserve:initial:evaluation",
+          "U4:1:reserve:initial:horizon",
+          "U4:1:reserve:initial:margin"
+        ],
+        "previous": "witness",
+        "received": "witness",
+        "role": "initial_reserve",
+        "unit": null
+      },
+      "U4:1:resources": {
+        "kind": "stat",
+        "leg": "U4:1",
+        "name": "resource_checks",
+        "parents": [
+          "U4:1:arrival_h",
+          "U4:1:battery_after",
+          "U4:1:battery_before",
+          "U4:1:delivery_h",
+          "U4:1:departure_h",
+          "U4:1:onboard_after",
+          "U4:1:onboard_before",
+          "U4:1:service_energy_wh"
+        ],
+        "previous": {
+          "battery:U4:1:arrival": "passed",
+          "battery:U4:1:service": "passed",
+          "delivery_availability:U4:1": "passed",
+          "depot_arrival_reserve:U4:1": "inactive",
+          "payload:U4:1": "passed"
+        },
+        "received": {
+          "battery:U4:1:arrival": "passed",
+          "battery:U4:1:service": "passed",
+          "delivery_availability:U4:1": "passed",
+          "depot_arrival_reserve:U4:1": "inactive",
+          "payload:U4:1": "passed"
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U4:1:service_energy_wh": {
+        "kind": "qty",
+        "leg": "U4:1",
+        "name": "service_energy_wh",
+        "parents": [
+          "U4:1:entering",
+          "U4:1:ground_guard",
+          "U4:1:nominal:arrival_h",
+          "U4:1:nominal:duration_h",
+          "U4:1:nominal:energy_wh",
+          "U4:1:nominal:evaluation",
+          "U4:1:nominal:horizon"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U4:2:arrival_h": {
+        "kind": "qty",
+        "leg": "U4:2",
+        "name": "arrival_h",
+        "parents": [
+          "U4:2:entering",
+          "U4:2:ground_guard",
+          "U4:2:nominal:arrival_h",
+          "U4:2:nominal:duration_h",
+          "U4:2:nominal:energy_wh",
+          "U4:2:nominal:evaluation",
+          "U4:2:nominal:horizon"
+        ],
+        "previous": 2.0,
+        "received": 2.0,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U4:2:battery_after": {
+        "kind": "qty",
+        "leg": "U4:2",
+        "name": "battery_after",
+        "parents": [
+          "U4:2:entering",
+          "U4:2:ground_guard",
+          "U4:2:nominal:arrival_h",
+          "U4:2:nominal:duration_h",
+          "U4:2:nominal:energy_wh",
+          "U4:2:nominal:evaluation",
+          "U4:2:nominal:horizon"
+        ],
+        "previous": 9.700000000000001,
+        "received": 9.700000000000001,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U4:2:battery_before": {
+        "kind": "qty",
+        "leg": "U4:2",
+        "name": "battery_before",
+        "parents": [
+          "U4:2:entering",
+          "U4:2:ground_guard",
+          "U4:2:nominal:arrival_h",
+          "U4:2:nominal:duration_h",
+          "U4:2:nominal:energy_wh",
+          "U4:2:nominal:evaluation",
+          "U4:2:nominal:horizon"
+        ],
+        "previous": 9.700000000000001,
+        "received": 9.700000000000001,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U4:2:delivery_h": {
+        "kind": "qty",
+        "leg": "U4:2",
+        "name": "delivery_h",
+        "parents": [
+          "U4:2:entering",
+          "U4:2:ground_guard",
+          "U4:2:nominal:arrival_h",
+          "U4:2:nominal:duration_h",
+          "U4:2:nominal:energy_wh",
+          "U4:2:nominal:evaluation",
+          "U4:2:nominal:horizon"
+        ],
+        "previous": 2.0,
+        "received": 2.0,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U4:2:departure_h": {
+        "kind": "qty",
+        "leg": "U4:2",
+        "name": "departure_h",
+        "parents": [
+          "U4:2:entering",
+          "U4:2:ground_guard",
+          "U4:2:nominal:arrival_h",
+          "U4:2:nominal:duration_h",
+          "U4:2:nominal:energy_wh",
+          "U4:2:nominal:evaluation",
+          "U4:2:nominal:horizon"
+        ],
+        "previous": null,
+        "received": null,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U4:2:entering": {
+        "kind": "state",
+        "leg": "U4:2",
+        "name": "entering_state",
+        "parents": [
+          "U4:1:post"
+        ],
+        "previous": {
+          "battery_wh": 9.8,
+          "onboard": 0.0,
+          "position_xy": [
+            -1,
+            0
+          ],
+          "time_h": 1.0
+        },
+        "received": {
+          "battery_wh": 9.8,
+          "onboard": 0.0,
+          "position_xy": [
+            -1,
+            0
+          ],
+          "time_h": 1.0
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U4:2:ground_guard": {
+        "kind": "stat",
+        "leg": "U4:2",
+        "name": "ground_horizon_guard",
+        "parents": [
+          "U4:2:entering",
+          "U4:2:nominal:arrival_h",
+          "U4:2:nominal:duration_h",
+          "U4:2:nominal:energy_wh",
+          "U4:2:nominal:evaluation",
+          "U4:2:nominal:horizon"
+        ],
+        "previous": "complete",
+        "received": "complete",
+        "role": "nominal",
+        "unit": null
+      },
+      "U4:2:nominal:arrival_h": {
+        "kind": "qty",
+        "leg": "U4:2",
+        "name": "arrival_h",
+        "parents": [
+          "U4:2:nominal:evaluation"
+        ],
+        "previous": 2.0,
+        "received": 2.0,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U4:2:nominal:bins": {
+        "kind": "stat",
+        "leg": "U4:2",
+        "name": "time_bin_selection",
+        "parents": [
+          "U4:2:entering",
+          "U4:2:nominal:wind:WEST:0"
+        ],
+        "previous": [
+          [
+            "WEST",
+            0
+          ]
+        ],
+        "received": [
+          [
+            "WEST",
+            0
+          ]
+        ],
+        "role": "nominal",
+        "unit": null
+      },
+      "U4:2:nominal:duration_h": {
+        "kind": "qty",
+        "leg": "U4:2",
+        "name": "duration_h",
+        "parents": [
+          "U4:2:nominal:evaluation"
+        ],
+        "previous": 1.0,
+        "received": 1.0,
+        "role": "nominal",
+        "unit": "time_h"
+      },
+      "U4:2:nominal:energy_wh": {
+        "kind": "qty",
+        "leg": "U4:2",
+        "name": "energy_wh",
+        "parents": [
+          "U4:2:nominal:evaluation"
+        ],
+        "previous": 0.1,
+        "received": 0.1,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U4:2:nominal:evaluation": {
+        "kind": "eval",
+        "leg": "U4:2",
+        "name": "path_integration",
+        "parents": [
+          "U4:2:entering",
+          "U4:2:nominal:bins",
+          "U4:2:nominal:horizon",
+          "U4:2:nominal:wind:WEST:0"
+        ],
+        "previous": {
+          "arrival_h": 2.0,
+          "duration_h": 1.0,
+          "energy_wh": 0.1,
+          "slices": [
+            {
+              "bin_index": 0,
+              "cell_id": "WEST",
+              "distance_km": 1.0,
+              "end_h": 2.0,
+              "energy_wh": 0.1,
+              "ground_speed_kmh": 1.0,
+              "start_h": 1.0
+            }
+          ],
+          "status": "complete"
+        },
+        "received": {
+          "arrival_h": 2.0,
+          "duration_h": 1.0,
+          "energy_wh": 0.1,
+          "slices": [
+            {
+              "bin_index": 0,
+              "cell_id": "WEST",
+              "distance_km": 1.0,
+              "end_h": 2.0,
+              "energy_wh": 0.1,
+              "ground_speed_kmh": 1.0,
+              "start_h": 1.0
+            }
+          ],
+          "status": "complete"
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U4:2:nominal:horizon": {
+        "kind": "stat",
+        "leg": "U4:2",
+        "name": "horizon_guard",
+        "parents": [
+          "U4:2:entering",
+          "U4:2:nominal:wind:WEST:0"
+        ],
+        "previous": "complete",
+        "received": "complete",
+        "role": "nominal",
+        "unit": null
+      },
+      "U4:2:nominal:wind:WEST:0": {
+        "kind": "wind",
+        "leg": "U4:2",
+        "name": "wind_query",
+        "parents": [],
+        "previous": [
+          0.0,
+          0.0
+        ],
+        "received": [
+          0.0,
+          0.0
+        ],
+        "role": "nominal",
+        "unit": "speed_kmh"
+      },
+      "U4:2:onboard_after": {
+        "kind": "qty",
+        "leg": "U4:2",
+        "name": "onboard_after",
+        "parents": [
+          "U4:2:entering",
+          "U4:2:ground_guard",
+          "U4:2:nominal:arrival_h",
+          "U4:2:nominal:duration_h",
+          "U4:2:nominal:energy_wh",
+          "U4:2:nominal:evaluation",
+          "U4:2:nominal:horizon"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "nominal",
+        "unit": "quantity"
+      },
+      "U4:2:onboard_before": {
+        "kind": "qty",
+        "leg": "U4:2",
+        "name": "onboard_before",
+        "parents": [
+          "U4:2:entering",
+          "U4:2:ground_guard",
+          "U4:2:nominal:arrival_h",
+          "U4:2:nominal:duration_h",
+          "U4:2:nominal:energy_wh",
+          "U4:2:nominal:evaluation",
+          "U4:2:nominal:horizon"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "nominal",
+        "unit": "quantity"
+      },
+      "U4:2:post": {
+        "kind": "state",
+        "leg": "U4:2",
+        "name": "post_stop_state",
+        "parents": [
+          "U4:2:arrival_h",
+          "U4:2:battery_after",
+          "U4:2:battery_before",
+          "U4:2:delivery_h",
+          "U4:2:departure_h",
+          "U4:2:ground_guard",
+          "U4:2:onboard_after",
+          "U4:2:onboard_before",
+          "U4:2:service_energy_wh"
+        ],
+        "previous": {
+          "battery_wh": 9.700000000000001,
+          "onboard": 0.0,
+          "site": "DEPOT",
+          "time_h": 2.0
+        },
+        "received": {
+          "battery_wh": 9.700000000000001,
+          "onboard": 0.0,
+          "site": "DEPOT",
+          "time_h": 2.0
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U4:2:resources": {
+        "kind": "stat",
+        "leg": "U4:2",
+        "name": "resource_checks",
+        "parents": [
+          "U4:2:arrival_h",
+          "U4:2:battery_after",
+          "U4:2:battery_before",
+          "U4:2:delivery_h",
+          "U4:2:departure_h",
+          "U4:2:onboard_after",
+          "U4:2:onboard_before",
+          "U4:2:service_energy_wh"
+        ],
+        "previous": {
+          "battery:U4:2:arrival": "passed",
+          "battery:U4:2:service": "passed",
+          "delivery_availability:U4:2": "passed",
+          "depot_arrival_reserve:U4:2": "passed",
+          "payload:U4:2": "passed"
+        },
+        "received": {
+          "battery:U4:2:arrival": "passed",
+          "battery:U4:2:service": "passed",
+          "delivery_availability:U4:2": "passed",
+          "depot_arrival_reserve:U4:2": "passed",
+          "payload:U4:2": "passed"
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U4:2:service_energy_wh": {
+        "kind": "qty",
+        "leg": "U4:2",
+        "name": "service_energy_wh",
+        "parents": [
+          "U4:2:entering",
+          "U4:2:ground_guard",
+          "U4:2:nominal:arrival_h",
+          "U4:2:nominal:duration_h",
+          "U4:2:nominal:energy_wh",
+          "U4:2:nominal:evaluation",
+          "U4:2:nominal:horizon"
+        ],
+        "previous": 0.0,
+        "received": 0.0,
+        "role": "nominal",
+        "unit": "energy_wh"
+      },
+      "U4:observed": {
+        "kind": "state",
+        "leg": null,
+        "name": "observed_state",
+        "parents": [],
+        "previous": {
+          "battery_wh": 10.0,
+          "onboard": 0.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "received": {
+          "battery_wh": 10.0,
+          "onboard": 0.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U4:origin": {
+        "kind": "eval",
+        "leg": null,
+        "name": "initial_ground_operation",
+        "parents": [
+          "U4:observed"
+        ],
+        "previous": {
+          "arrival_h": 0.0,
+          "battery_after": 10.0,
+          "battery_before": 10.0,
+          "delivery_h": 0.0,
+          "departure_h": 0.0,
+          "entering_state": {
+            "battery_wh": 10.0,
+            "onboard": 0.0,
+            "position_xy": [
+              0,
+              0
+            ],
+            "time_h": 0.0
+          },
+          "flight": null,
+          "flight_duration_h": 0.0,
+          "flight_energy_wh": 0.0,
+          "flight_status": "origin",
+          "onboard_after": 1.0,
+          "onboard_before": 0.0,
+          "service_energy_wh": 0.0,
+          "site": "ORIGIN",
+          "slot": 0,
+          "status": "complete",
+          "wind_queries": []
+        },
+        "received": {
+          "arrival_h": 0.0,
+          "battery_after": 10.0,
+          "battery_before": 10.0,
+          "delivery_h": 0.0,
+          "departure_h": 0.0,
+          "entering_state": {
+            "battery_wh": 10.0,
+            "onboard": 0.0,
+            "position_xy": [
+              0,
+              0
+            ],
+            "time_h": 0.0
+          },
+          "flight": null,
+          "flight_duration_h": 0.0,
+          "flight_energy_wh": 0.0,
+          "flight_status": "origin",
+          "onboard_after": 1.0,
+          "onboard_before": 0.0,
+          "service_energy_wh": 0.0,
+          "site": "ORIGIN",
+          "slot": 0,
+          "status": "complete",
+          "wind_queries": []
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "U4:terminal": {
+        "kind": "stat",
+        "leg": null,
+        "name": "terminal_check",
+        "parents": [
+          "U4:2:post"
+        ],
+        "previous": {
+          "state": {
+            "battery_wh": 9.700000000000001,
+            "onboard": 0.0,
+            "position_xy": [
+              0,
+              0
+            ],
+            "time_h": 2.0
+          },
+          "status": "passed"
+        },
+        "received": {
+          "state": {
+            "battery_wh": 9.700000000000001,
+            "onboard": 0.0,
+            "position_xy": [
+              0,
+              0
+            ],
+            "time_h": 2.0
+          },
+          "status": "passed"
+        },
+        "role": "nominal",
+        "unit": null
+      },
+      "change:east:0": {
+        "kind": "change",
+        "leg": null,
+        "name": "wind_entry",
+        "parents": [],
+        "previous": [
+          0.0,
+          0.0
+        ],
+        "received": [
+          -0.5,
+          0.0
+        ],
+        "role": "nominal",
+        "unit": "speed_kmh"
+      }
+    },
+    "input_hash": "4a6fe224f73c35f1a73be797543187c5b4882684c5dc1880796fdd8c105c81fe",
+    "legs": {
+      "U1:1": {
+        "affected": true,
+        "conservative_queries_previous": false,
+        "conservative_queries_received": false,
+        "direct": true,
+        "incident_tasks": [
+          "T1"
+        ],
+        "material": true,
+        "nominal_queries_previous": [
+          [
+            "east",
+            0
+          ]
+        ],
+        "nominal_queries_received": [
+          [
+            "east",
+            0
+          ]
+        ],
+        "propagated": false,
+        "query_support": [
+          [
+            "east",
+            0
+          ]
+        ],
+        "structural": true
+      },
+      "U1:2": {
+        "affected": true,
+        "conservative_queries_previous": false,
+        "conservative_queries_received": false,
+        "direct": true,
+        "incident_tasks": [
+          "T1"
+        ],
+        "material": true,
+        "nominal_queries_previous": [
+          [
+            "east",
+            0
+          ]
+        ],
+        "nominal_queries_received": [
+          [
+            "east",
+            0
+          ]
+        ],
+        "propagated": true,
+        "query_support": [
+          [
+            "east",
+            0
+          ]
+        ],
+        "structural": true
+      },
+      "U2:1": {
+        "affected": true,
+        "conservative_queries_previous": false,
+        "conservative_queries_received": false,
+        "direct": true,
+        "incident_tasks": [
+          "T2"
+        ],
+        "material": true,
+        "nominal_queries_previous": [
+          [
+            "east",
+            0
+          ]
+        ],
+        "nominal_queries_received": [
+          [
+            "east",
+            0
+          ]
+        ],
+        "propagated": false,
+        "query_support": [
+          [
+            "east",
+            0
+          ]
+        ],
+        "structural": true
+      },
+      "U2:2": {
+        "affected": true,
+        "conservative_queries_previous": false,
+        "conservative_queries_received": false,
+        "direct": true,
+        "incident_tasks": [
+          "T2"
+        ],
+        "material": true,
+        "nominal_queries_previous": [
+          [
+            "east",
+            0
+          ]
+        ],
+        "nominal_queries_received": [
+          [
+            "east",
+            0
+          ]
+        ],
+        "propagated": true,
+        "query_support": [
+          [
+            "east",
+            0
+          ]
+        ],
+        "structural": true
+      },
+      "U3:1": {
+        "affected": false,
+        "conservative_queries_previous": false,
+        "conservative_queries_received": false,
+        "direct": false,
+        "incident_tasks": [
+          "T3"
+        ],
+        "material": false,
+        "nominal_queries_previous": [
+          [
+            "WEST",
+            0
+          ]
+        ],
+        "nominal_queries_received": [
+          [
+            "WEST",
+            0
+          ]
+        ],
+        "propagated": false,
+        "query_support": [
+          [
+            "WEST",
+            0
+          ]
+        ],
+        "structural": false
+      },
+      "U3:2": {
+        "affected": false,
+        "conservative_queries_previous": false,
+        "conservative_queries_received": false,
+        "direct": false,
+        "incident_tasks": [
+          "T3"
+        ],
+        "material": false,
+        "nominal_queries_previous": [
+          [
+            "WEST",
+            0
+          ]
+        ],
+        "nominal_queries_received": [
+          [
+            "WEST",
+            0
+          ]
+        ],
+        "propagated": false,
+        "query_support": [
+          [
+            "WEST",
+            0
+          ]
+        ],
+        "structural": false
+      },
+      "U4:1": {
+        "affected": false,
+        "conservative_queries_previous": false,
+        "conservative_queries_received": false,
+        "direct": false,
+        "incident_tasks": [
+          "T4"
+        ],
+        "material": false,
+        "nominal_queries_previous": [
+          [
+            "WEST",
+            0
+          ]
+        ],
+        "nominal_queries_received": [
+          [
+            "WEST",
+            0
+          ]
+        ],
+        "propagated": false,
+        "query_support": [
+          [
+            "WEST",
+            0
+          ]
+        ],
+        "structural": false
+      },
+      "U4:2": {
+        "affected": false,
+        "conservative_queries_previous": false,
+        "conservative_queries_received": false,
+        "direct": false,
+        "incident_tasks": [
+          "T4"
+        ],
+        "material": false,
+        "nominal_queries_previous": [
+          [
+            "WEST",
+            0
+          ]
+        ],
+        "nominal_queries_received": [
+          [
+            "WEST",
+            0
+          ]
+        ],
+        "propagated": false,
+        "query_support": [
+          [
+            "WEST",
+            0
+          ]
+        ],
+        "structural": false
+      }
+    },
+    "material_support": [
+      "U1:1:arrival_h",
+      "U1:1:battery_after",
+      "U1:1:battery_before",
+      "U1:1:deadline",
+      "U1:1:deadline_slack",
+      "U1:1:delivery_h",
+      "U1:1:departure_h",
+      "U1:1:nominal:arrival_h",
+      "U1:1:nominal:duration_h",
+      "U1:1:nominal:energy_wh",
+      "U1:1:nominal:evaluation",
+      "U1:1:nominal:wind:east:0",
+      "U1:1:post",
+      "U1:1:reserve:1:arrival_h",
+      "U1:1:reserve:1:duration_h",
+      "U1:1:reserve:1:energy_wh",
+      "U1:1:reserve:1:evaluation",
+      "U1:1:reserve:1:margin",
+      "U1:1:reserve:1:state",
+      "U1:1:reserve:1:wind:east:0",
+      "U1:2:arrival_h",
+      "U1:2:battery_after",
+      "U1:2:battery_before",
+      "U1:2:delivery_h",
+      "U1:2:entering",
+      "U1:2:nominal:arrival_h",
+      "U1:2:nominal:duration_h",
+      "U1:2:nominal:energy_wh",
+      "U1:2:nominal:evaluation",
+      "U1:2:nominal:wind:east:0",
+      "U1:2:post",
+      "U1:terminal",
+      "U2:1:arrival_h",
+      "U2:1:battery_after",
+      "U2:1:battery_before",
+      "U2:1:deadline_slack",
+      "U2:1:delivery_h",
+      "U2:1:departure_h",
+      "U2:1:nominal:arrival_h",
+      "U2:1:nominal:duration_h",
+      "U2:1:nominal:energy_wh",
+      "U2:1:nominal:evaluation",
+      "U2:1:nominal:wind:east:0",
+      "U2:1:post",
+      "U2:1:reserve:1:arrival_h",
+      "U2:1:reserve:1:duration_h",
+      "U2:1:reserve:1:energy_wh",
+      "U2:1:reserve:1:evaluation",
+      "U2:1:reserve:1:margin",
+      "U2:1:reserve:1:state",
+      "U2:1:reserve:1:wind:east:0",
+      "U2:2:arrival_h",
+      "U2:2:battery_after",
+      "U2:2:battery_before",
+      "U2:2:delivery_h",
+      "U2:2:entering",
+      "U2:2:nominal:arrival_h",
+      "U2:2:nominal:duration_h",
+      "U2:2:nominal:energy_wh",
+      "U2:2:nominal:evaluation",
+      "U2:2:nominal:wind:east:0",
+      "U2:2:post",
+      "U2:terminal"
+    ],
+    "material_tasks": [
+      "T1",
+      "T2"
+    ],
+    "neighborhood": [
+      "T1",
+      "T2",
+      "T3",
+      "T4"
+    ],
+    "operational_support": [
+      "U1:1:arrival_h",
+      "U1:1:battery_after",
+      "U1:1:battery_before",
+      "U1:1:deadline",
+      "U1:1:deadline_slack",
+      "U1:1:delivery_h",
+      "U1:1:departure_h",
+      "U1:1:nominal:arrival_h",
+      "U1:1:nominal:duration_h",
+      "U1:1:nominal:energy_wh",
+      "U1:1:nominal:evaluation",
+      "U1:1:post",
+      "U1:1:reserve:1:arrival_h",
+      "U1:1:reserve:1:duration_h",
+      "U1:1:reserve:1:energy_wh",
+      "U1:1:reserve:1:evaluation",
+      "U1:1:reserve:1:margin",
+      "U1:1:reserve:1:state",
+      "U1:2:arrival_h",
+      "U1:2:battery_after",
+      "U1:2:battery_before",
+      "U1:2:delivery_h",
+      "U1:2:entering",
+      "U1:2:nominal:arrival_h",
+      "U1:2:nominal:duration_h",
+      "U1:2:nominal:energy_wh",
+      "U1:2:nominal:evaluation",
+      "U1:2:post",
+      "U1:terminal",
+      "U2:1:arrival_h",
+      "U2:1:battery_after",
+      "U2:1:battery_before",
+      "U2:1:deadline_slack",
+      "U2:1:delivery_h",
+      "U2:1:departure_h",
+      "U2:1:nominal:arrival_h",
+      "U2:1:nominal:duration_h",
+      "U2:1:nominal:energy_wh",
+      "U2:1:nominal:evaluation",
+      "U2:1:post",
+      "U2:1:reserve:1:arrival_h",
+      "U2:1:reserve:1:duration_h",
+      "U2:1:reserve:1:energy_wh",
+      "U2:1:reserve:1:evaluation",
+      "U2:1:reserve:1:margin",
+      "U2:1:reserve:1:state",
+      "U2:2:arrival_h",
+      "U2:2:battery_after",
+      "U2:2:battery_before",
+      "U2:2:delivery_h",
+      "U2:2:entering",
+      "U2:2:nominal:arrival_h",
+      "U2:2:nominal:duration_h",
+      "U2:2:nominal:energy_wh",
+      "U2:2:nominal:evaluation",
+      "U2:2:post",
+      "U2:terminal"
+    ],
+    "relevant_atoms": [
+      "change:east:0"
+    ],
+    "reportable_support": [
+      "U1:1:arrival_h",
+      "U1:1:battery_after",
+      "U1:1:battery_before",
+      "U1:1:deadline",
+      "U1:1:deadline_slack",
+      "U1:1:delivery_h",
+      "U1:1:departure_h",
+      "U1:1:nominal:arrival_h",
+      "U1:1:nominal:duration_h",
+      "U1:1:nominal:energy_wh",
+      "U1:1:nominal:evaluation",
+      "U1:1:nominal:wind:east:0",
+      "U1:1:post",
+      "U1:1:reserve:1:arrival_h",
+      "U1:1:reserve:1:duration_h",
+      "U1:1:reserve:1:energy_wh",
+      "U1:1:reserve:1:evaluation",
+      "U1:1:reserve:1:margin",
+      "U1:1:reserve:1:state",
+      "U1:1:reserve:1:wind:east:0",
+      "U1:2:arrival_h",
+      "U1:2:battery_after",
+      "U1:2:battery_before",
+      "U1:2:delivery_h",
+      "U1:2:entering",
+      "U1:2:nominal:arrival_h",
+      "U1:2:nominal:duration_h",
+      "U1:2:nominal:energy_wh",
+      "U1:2:nominal:evaluation",
+      "U1:2:nominal:wind:east:0",
+      "U1:2:post",
+      "U1:terminal",
+      "U2:1:arrival_h",
+      "U2:1:battery_after",
+      "U2:1:battery_before",
+      "U2:1:deadline_slack",
+      "U2:1:delivery_h",
+      "U2:1:departure_h",
+      "U2:1:nominal:arrival_h",
+      "U2:1:nominal:duration_h",
+      "U2:1:nominal:energy_wh",
+      "U2:1:nominal:evaluation",
+      "U2:1:nominal:wind:east:0",
+      "U2:1:post",
+      "U2:1:reserve:1:arrival_h",
+      "U2:1:reserve:1:duration_h",
+      "U2:1:reserve:1:energy_wh",
+      "U2:1:reserve:1:evaluation",
+      "U2:1:reserve:1:margin",
+      "U2:1:reserve:1:state",
+      "U2:1:reserve:1:wind:east:0",
+      "U2:2:arrival_h",
+      "U2:2:battery_after",
+      "U2:2:battery_before",
+      "U2:2:delivery_h",
+      "U2:2:entering",
+      "U2:2:nominal:arrival_h",
+      "U2:2:nominal:duration_h",
+      "U2:2:nominal:energy_wh",
+      "U2:2:nominal:evaluation",
+      "U2:2:nominal:wind:east:0",
+      "U2:2:post",
+      "U2:terminal",
+      "change:east:0"
+    ],
+    "seed_support": [
+      "U1:1:nominal:wind:east:0",
+      "U1:1:reserve:1:wind:east:0",
+      "U1:2:nominal:wind:east:0",
+      "U2:1:nominal:wind:east:0",
+      "U2:1:reserve:1:wind:east:0",
+      "U2:2:nominal:wind:east:0",
+      "change:east:0"
+    ],
+    "structural_closure": [
+      "U1:1:arrival_h",
+      "U1:1:battery_after",
+      "U1:1:battery_before",
+      "U1:1:deadline",
+      "U1:1:deadline_slack",
+      "U1:1:delivery_h",
+      "U1:1:departure_h",
+      "U1:1:ground_guard",
+      "U1:1:nominal:arrival_h",
+      "U1:1:nominal:bins",
+      "U1:1:nominal:duration_h",
+      "U1:1:nominal:energy_wh",
+      "U1:1:nominal:evaluation",
+      "U1:1:nominal:horizon",
+      "U1:1:nominal:wind:east:0",
+      "U1:1:onboard_after",
+      "U1:1:onboard_before",
+      "U1:1:post",
+      "U1:1:reserve:1:arrival_h",
+      "U1:1:reserve:1:bins",
+      "U1:1:reserve:1:duration_h",
+      "U1:1:reserve:1:energy_wh",
+      "U1:1:reserve:1:evaluation",
+      "U1:1:reserve:1:horizon",
+      "U1:1:reserve:1:margin",
+      "U1:1:reserve:1:state",
+      "U1:1:reserve:1:status",
+      "U1:1:reserve:1:wind:east:0",
+      "U1:1:resources",
+      "U1:1:service_energy_wh",
+      "U1:2:arrival_h",
+      "U1:2:battery_after",
+      "U1:2:battery_before",
+      "U1:2:delivery_h",
+      "U1:2:departure_h",
+      "U1:2:entering",
+      "U1:2:ground_guard",
+      "U1:2:nominal:arrival_h",
+      "U1:2:nominal:bins",
+      "U1:2:nominal:duration_h",
+      "U1:2:nominal:energy_wh",
+      "U1:2:nominal:evaluation",
+      "U1:2:nominal:horizon",
+      "U1:2:nominal:wind:east:0",
+      "U1:2:onboard_after",
+      "U1:2:onboard_before",
+      "U1:2:post",
+      "U1:2:resources",
+      "U1:2:service_energy_wh",
+      "U1:terminal",
+      "U2:1:arrival_h",
+      "U2:1:battery_after",
+      "U2:1:battery_before",
+      "U2:1:deadline",
+      "U2:1:deadline_slack",
+      "U2:1:delivery_h",
+      "U2:1:departure_h",
+      "U2:1:ground_guard",
+      "U2:1:nominal:arrival_h",
+      "U2:1:nominal:bins",
+      "U2:1:nominal:duration_h",
+      "U2:1:nominal:energy_wh",
+      "U2:1:nominal:evaluation",
+      "U2:1:nominal:horizon",
+      "U2:1:nominal:wind:east:0",
+      "U2:1:onboard_after",
+      "U2:1:onboard_before",
+      "U2:1:post",
+      "U2:1:reserve:1:arrival_h",
+      "U2:1:reserve:1:bins",
+      "U2:1:reserve:1:duration_h",
+      "U2:1:reserve:1:energy_wh",
+      "U2:1:reserve:1:evaluation",
+      "U2:1:reserve:1:horizon",
+      "U2:1:reserve:1:margin",
+      "U2:1:reserve:1:state",
+      "U2:1:reserve:1:status",
+      "U2:1:reserve:1:wind:east:0",
+      "U2:1:resources",
+      "U2:1:service_energy_wh",
+      "U2:2:arrival_h",
+      "U2:2:battery_after",
+      "U2:2:battery_before",
+      "U2:2:delivery_h",
+      "U2:2:departure_h",
+      "U2:2:entering",
+      "U2:2:ground_guard",
+      "U2:2:nominal:arrival_h",
+      "U2:2:nominal:bins",
+      "U2:2:nominal:duration_h",
+      "U2:2:nominal:energy_wh",
+      "U2:2:nominal:evaluation",
+      "U2:2:nominal:horizon",
+      "U2:2:nominal:wind:east:0",
+      "U2:2:onboard_after",
+      "U2:2:onboard_before",
+      "U2:2:post",
+      "U2:2:resources",
+      "U2:2:service_energy_wh",
+      "U2:terminal",
+      "change:east:0"
+    ],
+    "structural_tasks": [
+      "T1",
+      "T2"
+    ],
+    "task_closure": [
+      "T1",
+      "T2",
+      "T3",
+      "T4"
+    ],
+    "task_supports": {
+      "battery_arrival:U1:0": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "battery_arrival:U1:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "battery_arrival:U1:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "battery_arrival:U2:0": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "battery_arrival:U2:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "battery_arrival:U2:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "battery_arrival:U3:0": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "battery_arrival:U3:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "battery_arrival:U3:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "battery_arrival:U4:0": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "battery_arrival:U4:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "battery_arrival:U4:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "battery_service:U1:0": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "battery_service:U1:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "battery_service:U1:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "battery_service:U2:0": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "battery_service:U2:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "battery_service:U2:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "battery_service:U3:0": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "battery_service:U3:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "battery_service:U3:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "battery_service:U4:0": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "battery_service:U4:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "battery_service:U4:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "deadline:U1:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "deadline:U1:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "deadline:U2:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "deadline:U2:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "deadline:U3:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "deadline:U3:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "deadline:U4:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "deadline:U4:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "delivery_availability:U1:0": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "delivery_availability:U1:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "delivery_availability:U1:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "delivery_availability:U2:0": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "delivery_availability:U2:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "delivery_availability:U2:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "delivery_availability:U3:0": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "delivery_availability:U3:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "delivery_availability:U3:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "delivery_availability:U4:0": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "delivery_availability:U4:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "delivery_availability:U4:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "depot_arrival_reserve:U1:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "depot_arrival_reserve:U1:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "depot_arrival_reserve:U2:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "depot_arrival_reserve:U2:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "depot_arrival_reserve:U3:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "depot_arrival_reserve:U3:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "depot_arrival_reserve:U4:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "depot_arrival_reserve:U4:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "flight_completion:U1:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "flight_completion:U1:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "flight_completion:U2:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "flight_completion:U2:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "flight_completion:U3:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "flight_completion:U3:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "flight_completion:U4:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "flight_completion:U4:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "ground_completion:U1:0": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "ground_completion:U1:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "ground_completion:U1:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "ground_completion:U2:0": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "ground_completion:U2:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "ground_completion:U2:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "ground_completion:U3:0": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "ground_completion:U3:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "ground_completion:U3:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "ground_completion:U4:0": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "ground_completion:U4:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "ground_completion:U4:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "inventory": [],
+      "payload:U1:0": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "payload:U1:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "payload:U1:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "payload:U2:0": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "payload:U2:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "payload:U2:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "payload:U3:0": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "payload:U3:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "payload:U3:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "payload:U4:0": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "payload:U4:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "payload:U4:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "reserve:U1:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "reserve:U1:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "reserve:U1:initial": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "reserve:U2:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "reserve:U2:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "reserve:U2:initial": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "reserve:U3:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "reserve:U3:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "reserve:U3:initial": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "reserve:U4:1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "reserve:U4:2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "reserve:U4:initial": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "service:T1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "service:T2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "service:T3": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "service:T4": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "terminal:U1": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "terminal:U2": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "terminal:U3": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "terminal:U4": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ]
+    },
+    "tolerances": {
+      "distance_km": 1e-09,
+      "energy_wh": 1e-09,
+      "quantity": 1e-09,
+      "speed_kmh": 1e-09,
+      "time_h": 1e-09
+    }
+  },
+  "feasible_level_upper_bound": 3,
+  "minimum_certified": false,
+  "mission": {
+    "complete": true,
+    "evaluation": {
+      "complete": true,
+      "completed_flight_energy_wh": 1.4133333333333336,
+      "completed_flight_time_h": 7.7333333333333325,
+      "conservation_error": 0.0,
+      "delivered": {
+        "T1": 1.0,
+        "T2": 1.0,
+        "T3": 1.0,
+        "T4": 1.0
+      },
+      "depot_stock_remaining": 0.0,
+      "final_states": {
+        "U1": {
+          "battery_wh": 9.533333333333333,
+          "onboard": 0.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 2.6666666666666665
+        },
+        "U2": {
+          "battery_wh": 9.653333333333332,
+          "onboard": 0.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 1.0666666666666667
+        },
+        "U3": {
+          "battery_wh": 9.700000000000001,
+          "onboard": 0.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 2.0
+        },
+        "U4": {
+          "battery_wh": 9.700000000000001,
+          "onboard": 0.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 2.0
+        }
+      },
+      "input_hash": "4a6fe224f73c35f1a73be797543187c5b4882684c5dc1880796fdd8c105c81fe",
+      "projection": "received",
+      "records": {
+        "U1": [
+          {
+            "arrival_h": 0.0,
+            "battery_after": 10.0,
+            "battery_before": 10.0,
+            "delivery_h": 0.0,
+            "departure_h": 0.0,
+            "entering_state": {
+              "battery_wh": 10.0,
+              "onboard": 0.0,
+              "position_xy": [
+                0,
+                0
+              ],
+              "time_h": 0.0
+            },
+            "flight": null,
+            "flight_duration_h": 0.0,
+            "flight_energy_wh": 0.0,
+            "flight_status": "origin",
+            "onboard_after": 1.0,
+            "onboard_before": 0.0,
+            "service_energy_wh": 0.0,
+            "site": "ORIGIN",
+            "slot": 0,
+            "status": "complete",
+            "wind_queries": []
+          },
+          {
+            "arrival_h": 2.0,
+            "battery_after": 9.6,
+            "battery_before": 9.6,
+            "delivery_h": 2.0,
+            "departure_h": 2.0,
+            "entering_state": {
+              "battery_wh": 10.0,
+              "onboard": 1.0,
+              "position_xy": [
+                0,
+                0
+              ],
+              "time_h": 0.0
+            },
+            "flight": {
+              "arrival_h": 2.0,
+              "duration_h": 2.0,
+              "energy_wh": 0.4,
+              "slices": [
+                {
+                  "bin_index": 0,
+                  "cell_id": "east",
+                  "distance_km": 1.0,
+                  "end_h": 2.0,
+                  "energy_wh": 0.4,
+                  "ground_speed_kmh": 0.5,
+                  "start_h": 0.0
+                }
+              ],
+              "status": "complete"
+            },
+            "flight_duration_h": 2.0,
+            "flight_energy_wh": 0.4,
+            "flight_status": "complete",
+            "onboard_after": 0.0,
+            "onboard_before": 1.0,
+            "service_energy_wh": 0.0,
+            "site": "T2",
+            "slot": 1,
+            "status": "complete",
+            "wind_queries": [
+              {
+                "bin_index": 0,
+                "cell_id": "east",
+                "distance_km": 1.0,
+                "end_h": 2.0,
+                "energy_wh": 0.4,
+                "ground_speed_kmh": 0.5,
+                "start_h": 0.0
+              }
+            ]
+          },
+          {
+            "arrival_h": 2.6666666666666665,
+            "battery_after": 9.533333333333333,
+            "battery_before": 9.533333333333333,
+            "delivery_h": 2.6666666666666665,
+            "departure_h": null,
+            "entering_state": {
+              "battery_wh": 9.6,
+              "onboard": 0.0,
+              "position_xy": [
+                1,
+                0
+              ],
+              "time_h": 2.0
+            },
+            "flight": {
+              "arrival_h": 2.6666666666666665,
+              "duration_h": 0.6666666666666665,
+              "energy_wh": 0.06666666666666665,
+              "slices": [
+                {
+                  "bin_index": 0,
+                  "cell_id": "east",
+                  "distance_km": 1.0,
+                  "end_h": 2.6666666666666665,
+                  "energy_wh": 0.06666666666666665,
+                  "ground_speed_kmh": 1.5,
+                  "start_h": 2.0
+                }
+              ],
+              "status": "complete"
+            },
+            "flight_duration_h": 0.6666666666666665,
+            "flight_energy_wh": 0.06666666666666665,
+            "flight_status": "complete",
+            "onboard_after": 0.0,
+            "onboard_before": 0.0,
+            "service_energy_wh": 0.0,
+            "site": "DEPOT",
+            "slot": 2,
+            "status": "complete",
+            "wind_queries": [
+              {
+                "bin_index": 0,
+                "cell_id": "east",
+                "distance_km": 1.0,
+                "end_h": 2.6666666666666665,
+                "energy_wh": 0.06666666666666665,
+                "ground_speed_kmh": 1.5,
+                "start_h": 2.0
+              }
+            ]
+          }
+        ],
+        "U2": [
+          {
+            "arrival_h": 0.0,
+            "battery_after": 10.0,
+            "battery_before": 10.0,
+            "delivery_h": 0.0,
+            "departure_h": 0.0,
+            "entering_state": {
+              "battery_wh": 10.0,
+              "onboard": 0.0,
+              "position_xy": [
+                0,
+                0
+              ],
+              "time_h": 0.0
+            },
+            "flight": null,
+            "flight_duration_h": 0.0,
+            "flight_energy_wh": 0.0,
+            "flight_status": "origin",
+            "onboard_after": 1.0,
+            "onboard_before": 0.0,
+            "service_energy_wh": 0.0,
+            "site": "ORIGIN",
+            "slot": 0,
+            "status": "complete",
+            "wind_queries": []
+          },
+          {
+            "arrival_h": 0.6666666666666666,
+            "battery_after": 9.733333333333333,
+            "battery_before": 9.733333333333333,
+            "delivery_h": 0.6666666666666666,
+            "departure_h": 0.6666666666666666,
+            "entering_state": {
+              "battery_wh": 10.0,
+              "onboard": 1.0,
+              "position_xy": [
+                0,
+                0
+              ],
+              "time_h": 0.0
+            },
+            "flight": {
+              "arrival_h": 0.6666666666666666,
+              "duration_h": 0.6666666666666666,
+              "energy_wh": 0.26666666666666666,
+              "slices": [
+                {
+                  "bin_index": 0,
+                  "cell_id": "east",
+                  "distance_km": 1.0,
+                  "end_h": 0.6666666666666666,
+                  "energy_wh": 0.26666666666666666,
+                  "ground_speed_kmh": 1.5,
+                  "start_h": 0.0
+                }
+              ],
+              "status": "complete"
+            },
+            "flight_duration_h": 0.6666666666666666,
+            "flight_energy_wh": 0.26666666666666666,
+            "flight_status": "complete",
+            "onboard_after": 0.0,
+            "onboard_before": 1.0,
+            "service_energy_wh": 0.0,
+            "site": "T1",
+            "slot": 1,
+            "status": "complete",
+            "wind_queries": [
+              {
+                "bin_index": 0,
+                "cell_id": "east",
+                "distance_km": 1.0,
+                "end_h": 0.6666666666666666,
+                "energy_wh": 0.26666666666666666,
+                "ground_speed_kmh": 1.5,
+                "start_h": 0.0
+              }
+            ]
+          },
+          {
+            "arrival_h": 1.0666666666666667,
+            "battery_after": 9.653333333333332,
+            "battery_before": 9.653333333333332,
+            "delivery_h": 1.0666666666666667,
+            "departure_h": null,
+            "entering_state": {
+              "battery_wh": 9.733333333333333,
+              "onboard": 0.0,
+              "position_xy": [
+                1,
+                0
+              ],
+              "time_h": 0.6666666666666666
+            },
+            "flight": {
+              "arrival_h": 1.0666666666666667,
+              "duration_h": 0.4,
+              "energy_wh": 0.08000000000000002,
+              "slices": [
+                {
+                  "bin_index": 0,
+                  "cell_id": "east",
+                  "distance_km": 1.0,
+                  "end_h": 1.0666666666666667,
+                  "energy_wh": 0.08000000000000002,
+                  "ground_speed_kmh": 2.5,
+                  "start_h": 0.6666666666666666
+                }
+              ],
+              "status": "complete"
+            },
+            "flight_duration_h": 0.4,
+            "flight_energy_wh": 0.08000000000000002,
+            "flight_status": "complete",
+            "onboard_after": 0.0,
+            "onboard_before": 0.0,
+            "service_energy_wh": 0.0,
+            "site": "DEPOT",
+            "slot": 2,
+            "status": "complete",
+            "wind_queries": [
+              {
+                "bin_index": 0,
+                "cell_id": "east",
+                "distance_km": 1.0,
+                "end_h": 1.0666666666666667,
+                "energy_wh": 0.08000000000000002,
+                "ground_speed_kmh": 2.5,
+                "start_h": 0.6666666666666666
+              }
+            ]
+          }
+        ],
+        "U3": [
+          {
+            "arrival_h": 0.0,
+            "battery_after": 10.0,
+            "battery_before": 10.0,
+            "delivery_h": 0.0,
+            "departure_h": 0.0,
+            "entering_state": {
+              "battery_wh": 10.0,
+              "onboard": 0.0,
+              "position_xy": [
+                0,
+                0
+              ],
+              "time_h": 0.0
+            },
+            "flight": null,
+            "flight_duration_h": 0.0,
+            "flight_energy_wh": 0.0,
+            "flight_status": "origin",
+            "onboard_after": 1.0,
+            "onboard_before": 0.0,
+            "service_energy_wh": 0.0,
+            "site": "ORIGIN",
+            "slot": 0,
+            "status": "complete",
+            "wind_queries": []
+          },
+          {
+            "arrival_h": 1.0,
+            "battery_after": 9.8,
+            "battery_before": 9.8,
+            "delivery_h": 1.0,
+            "departure_h": 1.0,
+            "entering_state": {
+              "battery_wh": 10.0,
+              "onboard": 1.0,
+              "position_xy": [
+                0,
+                0
+              ],
+              "time_h": 0.0
+            },
+            "flight": {
+              "arrival_h": 1.0,
+              "duration_h": 1.0,
+              "energy_wh": 0.2,
+              "slices": [
+                {
+                  "bin_index": 0,
+                  "cell_id": "WEST",
+                  "distance_km": 1.0,
+                  "end_h": 1.0,
+                  "energy_wh": 0.2,
+                  "ground_speed_kmh": 1.0,
+                  "start_h": 0.0
+                }
+              ],
+              "status": "complete"
+            },
+            "flight_duration_h": 1.0,
+            "flight_energy_wh": 0.2,
+            "flight_status": "complete",
+            "onboard_after": 0.0,
+            "onboard_before": 1.0,
+            "service_energy_wh": 0.0,
+            "site": "T3",
+            "slot": 1,
+            "status": "complete",
+            "wind_queries": [
+              {
+                "bin_index": 0,
+                "cell_id": "WEST",
+                "distance_km": 1.0,
+                "end_h": 1.0,
+                "energy_wh": 0.2,
+                "ground_speed_kmh": 1.0,
+                "start_h": 0.0
+              }
+            ]
+          },
+          {
+            "arrival_h": 2.0,
+            "battery_after": 9.700000000000001,
+            "battery_before": 9.700000000000001,
+            "delivery_h": 2.0,
+            "departure_h": null,
+            "entering_state": {
+              "battery_wh": 9.8,
+              "onboard": 0.0,
+              "position_xy": [
+                -1,
+                0
+              ],
+              "time_h": 1.0
+            },
+            "flight": {
+              "arrival_h": 2.0,
+              "duration_h": 1.0,
+              "energy_wh": 0.1,
+              "slices": [
+                {
+                  "bin_index": 0,
+                  "cell_id": "WEST",
+                  "distance_km": 1.0,
+                  "end_h": 2.0,
+                  "energy_wh": 0.1,
+                  "ground_speed_kmh": 1.0,
+                  "start_h": 1.0
+                }
+              ],
+              "status": "complete"
+            },
+            "flight_duration_h": 1.0,
+            "flight_energy_wh": 0.1,
+            "flight_status": "complete",
+            "onboard_after": 0.0,
+            "onboard_before": 0.0,
+            "service_energy_wh": 0.0,
+            "site": "DEPOT",
+            "slot": 2,
+            "status": "complete",
+            "wind_queries": [
+              {
+                "bin_index": 0,
+                "cell_id": "WEST",
+                "distance_km": 1.0,
+                "end_h": 2.0,
+                "energy_wh": 0.1,
+                "ground_speed_kmh": 1.0,
+                "start_h": 1.0
+              }
+            ]
+          }
+        ],
+        "U4": [
+          {
+            "arrival_h": 0.0,
+            "battery_after": 10.0,
+            "battery_before": 10.0,
+            "delivery_h": 0.0,
+            "departure_h": 0.0,
+            "entering_state": {
+              "battery_wh": 10.0,
+              "onboard": 0.0,
+              "position_xy": [
+                0,
+                0
+              ],
+              "time_h": 0.0
+            },
+            "flight": null,
+            "flight_duration_h": 0.0,
+            "flight_energy_wh": 0.0,
+            "flight_status": "origin",
+            "onboard_after": 1.0,
+            "onboard_before": 0.0,
+            "service_energy_wh": 0.0,
+            "site": "ORIGIN",
+            "slot": 0,
+            "status": "complete",
+            "wind_queries": []
+          },
+          {
+            "arrival_h": 1.0,
+            "battery_after": 9.8,
+            "battery_before": 9.8,
+            "delivery_h": 1.0,
+            "departure_h": 1.0,
+            "entering_state": {
+              "battery_wh": 10.0,
+              "onboard": 1.0,
+              "position_xy": [
+                0,
+                0
+              ],
+              "time_h": 0.0
+            },
+            "flight": {
+              "arrival_h": 1.0,
+              "duration_h": 1.0,
+              "energy_wh": 0.2,
+              "slices": [
+                {
+                  "bin_index": 0,
+                  "cell_id": "WEST",
+                  "distance_km": 1.0,
+                  "end_h": 1.0,
+                  "energy_wh": 0.2,
+                  "ground_speed_kmh": 1.0,
+                  "start_h": 0.0
+                }
+              ],
+              "status": "complete"
+            },
+            "flight_duration_h": 1.0,
+            "flight_energy_wh": 0.2,
+            "flight_status": "complete",
+            "onboard_after": 0.0,
+            "onboard_before": 1.0,
+            "service_energy_wh": 0.0,
+            "site": "T4",
+            "slot": 1,
+            "status": "complete",
+            "wind_queries": [
+              {
+                "bin_index": 0,
+                "cell_id": "WEST",
+                "distance_km": 1.0,
+                "end_h": 1.0,
+                "energy_wh": 0.2,
+                "ground_speed_kmh": 1.0,
+                "start_h": 0.0
+              }
+            ]
+          },
+          {
+            "arrival_h": 2.0,
+            "battery_after": 9.700000000000001,
+            "battery_before": 9.700000000000001,
+            "delivery_h": 2.0,
+            "departure_h": null,
+            "entering_state": {
+              "battery_wh": 9.8,
+              "onboard": 0.0,
+              "position_xy": [
+                -1,
+                0
+              ],
+              "time_h": 1.0
+            },
+            "flight": {
+              "arrival_h": 2.0,
+              "duration_h": 1.0,
+              "energy_wh": 0.1,
+              "slices": [
+                {
+                  "bin_index": 0,
+                  "cell_id": "WEST",
+                  "distance_km": 1.0,
+                  "end_h": 2.0,
+                  "energy_wh": 0.1,
+                  "ground_speed_kmh": 1.0,
+                  "start_h": 1.0
+                }
+              ],
+              "status": "complete"
+            },
+            "flight_duration_h": 1.0,
+            "flight_energy_wh": 0.1,
+            "flight_status": "complete",
+            "onboard_after": 0.0,
+            "onboard_before": 0.0,
+            "service_energy_wh": 0.0,
+            "site": "DEPOT",
+            "slot": 2,
+            "status": "complete",
+            "wind_queries": [
+              {
+                "bin_index": 0,
+                "cell_id": "WEST",
+                "distance_km": 1.0,
+                "end_h": 2.0,
+                "energy_wh": 0.1,
+                "ground_speed_kmh": 1.0,
+                "start_h": 1.0
+              }
+            ]
+          }
+        ]
+      },
+      "reserve_checks": {
+        "reserve:U1:1": {
+          "arrival_h": 2.6666666666666665,
+          "duration_h": 0.6666666666666665,
+          "energy_wh": 0.06666666666666665,
+          "flight_status": "complete",
+          "margin_wh": 8.533333333333333,
+          "state": {
+            "battery_wh": 9.6,
+            "onboard": 0.0,
+            "position_xy": [
+              1,
+              0
+            ],
+            "time_h": 2.0
+          },
+          "status": "witness",
+          "wind_queries": [
+            {
+              "bin_index": 0,
+              "cell_id": "east",
+              "distance_km": 1.0,
+              "end_h": 2.6666666666666665,
+              "energy_wh": 0.06666666666666665,
+              "ground_speed_kmh": 1.5,
+              "start_h": 2.0
+            }
+          ]
+        },
+        "reserve:U1:initial": {
+          "arrival_h": 0.0,
+          "duration_h": 0.0,
+          "energy_wh": 0.0,
+          "flight_status": "complete",
+          "margin_wh": 9.0,
+          "state": {
+            "battery_wh": 10.0,
+            "onboard": 1.0,
+            "position_xy": [
+              0,
+              0
+            ],
+            "time_h": 0.0
+          },
+          "status": "witness",
+          "wind_queries": []
+        },
+        "reserve:U2:1": {
+          "arrival_h": 1.0666666666666667,
+          "duration_h": 0.4,
+          "energy_wh": 0.08000000000000002,
+          "flight_status": "complete",
+          "margin_wh": 8.653333333333332,
+          "state": {
+            "battery_wh": 9.733333333333333,
+            "onboard": 0.0,
+            "position_xy": [
+              1,
+              0
+            ],
+            "time_h": 0.6666666666666666
+          },
+          "status": "witness",
+          "wind_queries": [
+            {
+              "bin_index": 0,
+              "cell_id": "east",
+              "distance_km": 1.0,
+              "end_h": 1.0666666666666667,
+              "energy_wh": 0.08000000000000002,
+              "ground_speed_kmh": 2.5,
+              "start_h": 0.6666666666666666
+            }
+          ]
+        },
+        "reserve:U2:initial": {
+          "arrival_h": 0.0,
+          "duration_h": 0.0,
+          "energy_wh": 0.0,
+          "flight_status": "complete",
+          "margin_wh": 9.0,
+          "state": {
+            "battery_wh": 10.0,
+            "onboard": 1.0,
+            "position_xy": [
+              0,
+              0
+            ],
+            "time_h": 0.0
+          },
+          "status": "witness",
+          "wind_queries": []
+        },
+        "reserve:U3:1": {
+          "arrival_h": 2.0,
+          "duration_h": 1.0,
+          "energy_wh": 0.1,
+          "flight_status": "complete",
+          "margin_wh": 8.700000000000001,
+          "state": {
+            "battery_wh": 9.8,
+            "onboard": 0.0,
+            "position_xy": [
+              -1,
+              0
+            ],
+            "time_h": 1.0
+          },
+          "status": "witness",
+          "wind_queries": [
+            {
+              "bin_index": 0,
+              "cell_id": "WEST",
+              "distance_km": 1.0,
+              "end_h": 2.0,
+              "energy_wh": 0.1,
+              "ground_speed_kmh": 1.0,
+              "start_h": 1.0
+            }
+          ]
+        },
+        "reserve:U3:initial": {
+          "arrival_h": 0.0,
+          "duration_h": 0.0,
+          "energy_wh": 0.0,
+          "flight_status": "complete",
+          "margin_wh": 9.0,
+          "state": {
+            "battery_wh": 10.0,
+            "onboard": 1.0,
+            "position_xy": [
+              0,
+              0
+            ],
+            "time_h": 0.0
+          },
+          "status": "witness",
+          "wind_queries": []
+        },
+        "reserve:U4:1": {
+          "arrival_h": 2.0,
+          "duration_h": 1.0,
+          "energy_wh": 0.1,
+          "flight_status": "complete",
+          "margin_wh": 8.700000000000001,
+          "state": {
+            "battery_wh": 9.8,
+            "onboard": 0.0,
+            "position_xy": [
+              -1,
+              0
+            ],
+            "time_h": 1.0
+          },
+          "status": "witness",
+          "wind_queries": [
+            {
+              "bin_index": 0,
+              "cell_id": "WEST",
+              "distance_km": 1.0,
+              "end_h": 2.0,
+              "energy_wh": 0.1,
+              "ground_speed_kmh": 1.0,
+              "start_h": 1.0
+            }
+          ]
+        },
+        "reserve:U4:initial": {
+          "arrival_h": 0.0,
+          "duration_h": 0.0,
+          "energy_wh": 0.0,
+          "flight_status": "complete",
+          "margin_wh": 9.0,
+          "state": {
+            "battery_wh": 10.0,
+            "onboard": 1.0,
+            "position_xy": [
+              0,
+              0
+            ],
+            "time_h": 0.0
+          },
+          "status": "witness",
+          "wind_queries": []
+        }
+      },
+      "status": "feasible",
+      "unresolved": [],
+      "violations": []
+    },
+    "status": "feasible",
+    "unresolved": [],
+    "violations": []
+  },
+  "numerical_model": "Floating-point evaluation; resource/deadline tolerance 1e-9 in the declared units.",
+  "requested_level": 3,
+  "reserves": {
+    "checks": {
+      "reserve:U1:1": {
+        "arrival_h": 2.6666666666666665,
+        "duration_h": 0.6666666666666665,
+        "energy_wh": 0.06666666666666665,
+        "flight_status": "complete",
+        "margin_wh": 8.533333333333333,
+        "state": {
+          "battery_wh": 9.6,
+          "onboard": 0.0,
+          "position_xy": [
+            1,
+            0
+          ],
+          "time_h": 2.0
+        },
+        "status": "witness",
+        "wind_queries": [
+          {
+            "bin_index": 0,
+            "cell_id": "east",
+            "distance_km": 1.0,
+            "end_h": 2.6666666666666665,
+            "energy_wh": 0.06666666666666665,
+            "ground_speed_kmh": 1.5,
+            "start_h": 2.0
+          }
+        ]
+      },
+      "reserve:U1:initial": {
+        "arrival_h": 0.0,
+        "duration_h": 0.0,
+        "energy_wh": 0.0,
+        "flight_status": "complete",
+        "margin_wh": 9.0,
+        "state": {
+          "battery_wh": 10.0,
+          "onboard": 1.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "status": "witness",
+        "wind_queries": []
+      },
+      "reserve:U2:1": {
+        "arrival_h": 1.0666666666666667,
+        "duration_h": 0.4,
+        "energy_wh": 0.08000000000000002,
+        "flight_status": "complete",
+        "margin_wh": 8.653333333333332,
+        "state": {
+          "battery_wh": 9.733333333333333,
+          "onboard": 0.0,
+          "position_xy": [
+            1,
+            0
+          ],
+          "time_h": 0.6666666666666666
+        },
+        "status": "witness",
+        "wind_queries": [
+          {
+            "bin_index": 0,
+            "cell_id": "east",
+            "distance_km": 1.0,
+            "end_h": 1.0666666666666667,
+            "energy_wh": 0.08000000000000002,
+            "ground_speed_kmh": 2.5,
+            "start_h": 0.6666666666666666
+          }
+        ]
+      },
+      "reserve:U2:initial": {
+        "arrival_h": 0.0,
+        "duration_h": 0.0,
+        "energy_wh": 0.0,
+        "flight_status": "complete",
+        "margin_wh": 9.0,
+        "state": {
+          "battery_wh": 10.0,
+          "onboard": 1.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "status": "witness",
+        "wind_queries": []
+      },
+      "reserve:U3:1": {
+        "arrival_h": 2.0,
+        "duration_h": 1.0,
+        "energy_wh": 0.1,
+        "flight_status": "complete",
+        "margin_wh": 8.700000000000001,
+        "state": {
+          "battery_wh": 9.8,
+          "onboard": 0.0,
+          "position_xy": [
+            -1,
+            0
+          ],
+          "time_h": 1.0
+        },
+        "status": "witness",
+        "wind_queries": [
+          {
+            "bin_index": 0,
+            "cell_id": "WEST",
+            "distance_km": 1.0,
+            "end_h": 2.0,
+            "energy_wh": 0.1,
+            "ground_speed_kmh": 1.0,
+            "start_h": 1.0
+          }
+        ]
+      },
+      "reserve:U3:initial": {
+        "arrival_h": 0.0,
+        "duration_h": 0.0,
+        "energy_wh": 0.0,
+        "flight_status": "complete",
+        "margin_wh": 9.0,
+        "state": {
+          "battery_wh": 10.0,
+          "onboard": 1.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "status": "witness",
+        "wind_queries": []
+      },
+      "reserve:U4:1": {
+        "arrival_h": 2.0,
+        "duration_h": 1.0,
+        "energy_wh": 0.1,
+        "flight_status": "complete",
+        "margin_wh": 8.700000000000001,
+        "state": {
+          "battery_wh": 9.8,
+          "onboard": 0.0,
+          "position_xy": [
+            -1,
+            0
+          ],
+          "time_h": 1.0
+        },
+        "status": "witness",
+        "wind_queries": [
+          {
+            "bin_index": 0,
+            "cell_id": "WEST",
+            "distance_km": 1.0,
+            "end_h": 2.0,
+            "energy_wh": 0.1,
+            "ground_speed_kmh": 1.0,
+            "start_h": 1.0
+          }
+        ]
+      },
+      "reserve:U4:initial": {
+        "arrival_h": 0.0,
+        "duration_h": 0.0,
+        "energy_wh": 0.0,
+        "flight_status": "complete",
+        "margin_wh": 9.0,
+        "state": {
+          "battery_wh": 10.0,
+          "onboard": 1.0,
+          "position_xy": [
+            0,
+            0
+          ],
+          "time_h": 0.0
+        },
+        "status": "witness",
+        "wind_queries": []
+      }
+    },
+    "errors": [],
+    "input_valid": true
+  },
+  "scenario_hash": "4a6fe224f73c35f1a73be797543187c5b4882684c5dc1880796fdd8c105c81fe",
+  "scope": {
+    "allowed": true,
+    "memberships": [
+      false,
+      false,
+      false,
+      true,
+      true
+    ],
+    "release_counts": [
+      {
+        "A": 0,
+        "L": 0,
+        "P": 0,
+        "S": 0
+      },
+      {
+        "A": 0,
+        "L": 0,
+        "P": 8,
+        "S": 0
+      },
+      {
+        "A": 0,
+        "L": 0,
+        "P": 8,
+        "S": 4
+      },
+      {
+        "A": 4,
+        "L": 0,
+        "P": 8,
+        "S": 4
+      },
+      {
+        "A": 4,
+        "L": 0,
+        "P": 8,
+        "S": 4
+      }
+    ],
+    "violations": []
+  },
+  "status": "witness",
+  "structure": {
+    "valid": true,
+    "violations": []
+  }
+}

@@ -3,6 +3,7 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.venv/
 
 # Local scratch and reproducibility copies.
 results/*_dryrun/
@@ -21,3 +22,12 @@ outputs/
 # Editor and operating-system clutter.
 .DS_Store
 Thumbs.db
+
+# Workspace organization: preserve local workspaces without adding them to Git.
+.worktrees/
+.superpowers/
+.wheels/
+
+# Regenerable intermediate presentation serialization.
+artifacts/**/build/deck_proto.json
+artifacts/**/build/draft_proto.json

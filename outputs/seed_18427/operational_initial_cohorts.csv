@@ -1,9 +1,0 @@
-node_id,commodity_index,commodity,cohort_id,reported_onset_time_s,quantity
-N1,0,medical,N1_medical_reported_initial,0.0,7.0
-N1,2,water,N1_water_reported_initial,0.0,10.0
-N2,0,medical,N2_medical_reported_initial,0.0,4.0
-N2,2,water,N2_water_reported_initial,0.0,11.0
-N3,0,medical,N3_medical_reported_initial,0.0,8.0
-N3,2,water,N3_water_reported_initial,0.0,6.0
-N4,0,medical,N4_medical_reported_initial,0.0,5.0
-N4,2,water,N4_water_reported_initial,0.0,9.0

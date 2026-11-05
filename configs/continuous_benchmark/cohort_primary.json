@@ -1,0 +1,12 @@
+{
+  "stage": "cohort",
+  "phase": "primary",
+  "sizes": [[3, 3], [6, 3], [12, 4], [24, 6]],
+  "families": ["uniform", "clustered"],
+  "seeds": [61001, 61002, 61003, 61004],
+  "max_attempts": 24,
+  "offset": "1/10",
+  "generation_refinements": [2],
+  "freeze_note": "Fixed after development seed 51001 and review. At most two geometries per slot, selected by exposure/locality/positive certified delay only. Capped failures retained; no recovery-level quotas.",
+  "budget": {"max_seconds": 10, "max_proposals": 120, "refinements": [1, 2], "digits": 18}
+}

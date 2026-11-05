@@ -1,0 +1,617 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:post-disaster-logistics:wind-benchmark-v1",
+  "title": "2026-09-17 wind-only remaining-mission benchmark",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "wind-benchmark-v1"
+    },
+    "formulation_date": {
+      "const": "2026-09-17"
+    },
+    "benchmark_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9_-]*$"
+    },
+    "units": {
+      "type": "object",
+      "properties": {
+        "distance": {
+          "const": "km"
+        },
+        "time": {
+          "const": "h"
+        },
+        "mass": {
+          "const": "kg"
+        },
+        "energy": {
+          "const": "Wh"
+        },
+        "quantity": {
+          "const": "commodity_unit"
+        }
+      },
+      "required": [
+        "distance",
+        "time",
+        "mass",
+        "energy",
+        "quantity"
+      ],
+      "additionalProperties": false
+    },
+    "mission": {
+      "type": "object",
+      "properties": {
+        "epoch_h": {
+          "type": "number",
+          "minimum": 0
+        },
+        "horizon_h": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "commodity_unit_mass_kg": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "operating_region_xy": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "minItems": 3
+        },
+        "depot_xy": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "tasks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z][A-Za-z0-9_-]*$"
+              },
+              "position_xy": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "minItems": 2,
+                "maxItems": 2
+              },
+              "demand": {
+                "type": "number",
+                "minimum": 0
+              },
+              "mandatory": {
+                "type": "number",
+                "minimum": 0
+              },
+              "deadline_h": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "position_xy",
+              "demand",
+              "mandatory",
+              "deadline_h"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "vehicles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z][A-Za-z0-9_-]*$"
+              },
+              "airspeed_kmh": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "empty_mass_kg": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "energy_coefficient_wh_per_kg_km": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "battery_capacity_wh": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "reserve_wh": {
+                "type": "number",
+                "minimum": 0
+              },
+              "payload_capacity_kg": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "slot_bound": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "required": [
+              "id",
+              "airspeed_kmh",
+              "empty_mass_kg",
+              "energy_coefficient_wh_per_kg_km",
+              "battery_capacity_wh",
+              "reserve_wh",
+              "payload_capacity_kg",
+              "slot_bound"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "epoch_h",
+        "horizon_h",
+        "commodity_unit_mass_kg",
+        "operating_region_xy",
+        "depot_xy",
+        "tasks",
+        "vehicles"
+      ],
+      "additionalProperties": false
+    },
+    "state": {
+      "type": "object",
+      "properties": {
+        "depot_stock": {
+          "type": "number",
+          "minimum": 0
+        },
+        "cumulative_delivered": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "fleet": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "position_xy": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "minItems": 2,
+                "maxItems": 2
+              },
+              "battery_wh": {
+                "type": "number",
+                "minimum": 0
+              },
+              "onboard": {
+                "type": "number",
+                "minimum": 0
+              },
+              "mode": {
+                "enum": [
+                  "idle",
+                  "airborne",
+                  "servicing",
+                  "preparing"
+                ]
+              },
+              "residual_operation": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "duration_h": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "energy_wh": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "delivery": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "load": {
+                        "type": "number",
+                        "minimum": 0
+                      }
+                    },
+                    "required": [
+                      "duration_h",
+                      "energy_wh",
+                      "delivery",
+                      "load"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            },
+            "required": [
+              "position_xy",
+              "battery_wh",
+              "onboard",
+              "mode",
+              "residual_operation"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "depot_stock",
+        "cumulative_delivered",
+        "fleet"
+      ],
+      "additionalProperties": false
+    },
+    "operations": {
+      "type": "object",
+      "properties": {
+        "service_duration_h": {
+          "type": "number",
+          "minimum": 0
+        },
+        "service_energy_wh": {
+          "type": "number",
+          "minimum": 0
+        },
+        "preparation_duration_h": {
+          "type": "number",
+          "minimum": 0
+        },
+        "depot_bays": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "service_duration_h",
+        "service_energy_wh",
+        "preparation_duration_h",
+        "depot_bays"
+      ],
+      "additionalProperties": false
+    },
+    "wind": {
+      "type": "object",
+      "properties": {
+        "cells": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z][A-Za-z0-9_-]*$"
+              },
+              "polygon_xy": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 2,
+                  "maxItems": 2
+                },
+                "minItems": 3
+              }
+            },
+            "required": [
+              "id",
+              "polygon_xy"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "boundary_owner": {
+          "const": "lowest_cell_id"
+        },
+        "time_knots_h": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 0
+          },
+          "minItems": 2
+        },
+        "speed_bound_kmh": {
+          "type": "number",
+          "minimum": 0
+        },
+        "previous": {
+          "type": "object",
+          "properties": {
+            "issued_at_h": {
+              "type": "number",
+              "minimum": 0
+            },
+            "values": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 2,
+                  "maxItems": 2
+                },
+                "minItems": 1
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "issued_at_h",
+            "values"
+          ],
+          "additionalProperties": false
+        },
+        "received": {
+          "type": "object",
+          "properties": {
+            "issued_at_h": {
+              "type": "number",
+              "minimum": 0
+            },
+            "values": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 2,
+                  "maxItems": 2
+                },
+                "minItems": 1
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "issued_at_h",
+            "values"
+          ],
+          "additionalProperties": false
+        },
+        "update_support": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "string",
+                "pattern": "^[A-Za-z][A-Za-z0-9_-]*$"
+              },
+              {
+                "type": "integer",
+                "minimum": 0
+              }
+            ],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "cells",
+        "boundary_owner",
+        "time_knots_h",
+        "speed_bound_kmh",
+        "previous",
+        "received",
+        "update_support"
+      ],
+      "additionalProperties": false
+    },
+    "incumbent": {
+      "type": "object",
+      "properties": {
+        "assignment": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "routes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "stops": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "minItems": 0
+              },
+              "paths": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    },
+                    "minItems": 2,
+                    "maxItems": 2
+                  },
+                  "minItems": 1
+                },
+                "minItems": 0
+              },
+              "deliveries": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "minItems": 1
+              },
+              "loads": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "minItems": 1
+              }
+            },
+            "required": [
+              "stops",
+              "paths",
+              "deliveries",
+              "loads"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "assignment",
+        "routes"
+      ],
+      "additionalProperties": false
+    },
+    "commitments": {
+      "type": "object",
+      "properties": {
+        "A": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "S": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "P": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "L": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "A",
+        "S",
+        "P",
+        "L"
+      ],
+      "additionalProperties": false
+    },
+    "reserve_paths": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "minItems": 1
+        }
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "formulation_date",
+    "benchmark_id",
+    "units",
+    "mission",
+    "state",
+    "operations",
+    "wind",
+    "incumbent",
+    "commitments",
+    "reserve_paths"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,169 @@
+{
+  "study": "final",
+  "design": "docs/SCENARIO_DESIGN_2026_10_14.md, docs/COMPARISON_PROTOCOL_2026_10_14.md, method v2 (docs/CERTIFICATION_METHOD_PLAN_2026_10_09.md with the 10 October amendments)",
+  "calibration": "Frozen after the pilot of 14 October 2026 (configs/final_study/pilot.json; docs/FINAL_STUDY_PILOT_2026_10_14.md): slack and battery values kept; PH shares, base slice and plan-search share kept; hypothesis thresholds kept (H2 80% certified at 10 s, H3 within 3x); LS reordering recipe uses the loosest slack.",
+  "fs": {
+    "fleets": [
+      4,
+      6,
+      8
+    ],
+    "tasks_per_uav": [
+      2,
+      3,
+      4
+    ],
+    "sigma": {
+      "tight": "1/400",
+      "medium": "1/100",
+      "loose": "1/25"
+    },
+    "beta": {
+      "tight": "3/20",
+      "medium": "1/2",
+      "ample": "4"
+    },
+    "families": [
+      "uniform",
+      "clustered"
+    ],
+    "seed": 76001,
+    "rule": "D1p",
+    "max_attempts": 48
+  },
+  "ls": {
+    "fleets": [
+      4,
+      6,
+      8
+    ],
+    "quota_per_fleet": 20,
+    "residue": 30,
+    "residue_seed": 78001,
+    "max_draws_per_cell": 800,
+    "batch": 48,
+    "seed": 78001
+  },
+  "label_budget_s": 600,
+  "arena": {
+    "budget_short": 10,
+    "budget_long": 60,
+    "arms_short": [
+      "GR",
+      "GR-c",
+      "LR",
+      "PH",
+      "CMI",
+      "noAF",
+      "noER"
+    ],
+    "arms_long": [
+      "GR",
+      "GR-c",
+      "LR",
+      "PH",
+      "CMI"
+    ],
+    "third_seed": 76002
+  },
+  "p1": {
+    "source": "results/escalation_study_primary",
+    "budget_s": 10,
+    "arms": [
+      "GR",
+      "GR-c",
+      "LR",
+      "PH",
+      "CMI"
+    ]
+  },
+  "xr": {
+    "budget_s": 10
+  },
+  "scaling": {
+    "sizes": [
+      [
+        24,
+        6
+      ],
+      [
+        24,
+        8
+      ],
+      [
+        48,
+        6
+      ],
+      [
+        48,
+        8
+      ]
+    ],
+    "families": [
+      "uniform",
+      "clustered"
+    ],
+    "seeds": [
+      73001,
+      73002,
+      73003,
+      73004,
+      73005
+    ],
+    "strength": "2/5",
+    "slack": "1/1000",
+    "max_attempts": 24,
+    "budgets": [
+      60,
+      300
+    ],
+    "arms": [
+      "GR",
+      "GR-c",
+      "LR",
+      "PH",
+      "CMI"
+    ],
+    "r1_source": "results/escalation_study_r1_large"
+  },
+  "contention": {
+    "instances": 30,
+    "seed": 76003,
+    "arms": [
+      "GR",
+      "GR-c",
+      "LR",
+      "PH",
+      "CMI",
+      "noAF",
+      "noER"
+    ]
+  },
+  "settings": {
+    "ph_shares": [
+      0.05,
+      0.15,
+      0.2,
+      0.3,
+      0.3
+    ],
+    "base_slice_fraction": 0.025,
+    "cmi": {}
+  },
+  "variance": {
+    "instances": 30,
+    "seeds": [
+      1,
+      2
+    ],
+    "seed": 76004,
+    "arms": [
+      "GR",
+      "GR-c"
+    ]
+  },
+  "hypotheses": {
+    "h2_min_certified": 0.8,
+    "h3_max_ratio": 3
+  }
+}
