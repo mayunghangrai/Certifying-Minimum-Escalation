@@ -110,3 +110,23 @@ def test_in_flight_snapshot(mission, fraction):
     premise = previous_premise(snap)
     assert premise['accepted'], premise
     assert premise['kind'] == 'binned_interval_witness_v3'
+
+
+@pytest.mark.parametrize('L, T', [(F(2), F(1, 2)), (F(1, 2), F(2))])
+def test_rescaled_mission_is_the_same_mission(mission, L, T):
+    from env.fixed_plan import evaluate_plan
+    from env.scenario import Scenario
+    from study_v3.rescale import incumbent_routes, rebuild_incumbent, rescale
+    scenario, info = mission
+    payload = scenario.to_dict()
+    scaled = rescale(payload, L, T)
+    assert scaled['mission']['vehicles'][0]['airspeed_mps'] == float(F(str(payload['mission']['vehicles'][0]['airspeed_mps']))*L/T)
+    assert previous_premise(Scenario(scaled))['accepted'] == previous_premise(scenario)['accepted']
+    a = evaluate_plan(scenario, projection='previous').final_states
+    b = evaluate_plan(Scenario(scaled), projection='previous').final_states
+    assert all(abs(b[u]['time_h'] - float(T)*a[u]['time_h']) <= 1e-9*a[u]['time_h'] for u in a)
+
+    def wind(r, j):
+        return tuple(x*L/T for x in wind_model.f0_value(info['seed'], r, j))
+    assert incumbent_routes(payload) == info['routes']
+    assert rebuild_incumbent(scaled, wind, iterations=50) == info['routes']
