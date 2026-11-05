@@ -1,9 +1,16 @@
-"""A3: random_pair geometry scaled to a 10 km region with 8 x 8 cells of 1,250 m."""
+"""A3: random_pair geometry scaled to a 10 km region with 8 x 8 cells of 1,250 m.
+
+The task grid and the depot are offset by 125 m from the cell lines, so no task
+or depot lies on a cell boundary and no axis-parallel leg runs along one.
+"""
 from .seeds import stable_rng
 
 HALF = 5000          # region [-5000, 5000]^2 m
 CELL = 1250
 STEP = 500           # random_pair's 0.1 grid, scaled
+OFFSET = 125         # 125 + 500 k is never a multiple of 1,250
+DEPOT = (OFFSET, OFFSET)
+STOCK_FACTOR = 1.25  # fixed, not drawn
 AIRSPEEDS = (10, 12.5, 15)
 PACKAGES = (1, 2, 3, 4, 5)      # 0.5 to 2.5 kg
 
@@ -25,7 +32,8 @@ def layout(n, family, seed):
         raise ValueError('invalid layout setting')
     rng = stable_rng(seed, 'geometry', n, family)
     k = HALF//STEP
-    grid = [(x*STEP, y*STEP) for x in range(-k, k+1) for y in range(-k, k+1) if (x, y) != (0, 0)]
+    axis = [OFFSET + i*STEP for i in range(-k, k)]            # -4875 ... 4625
+    grid = [(x, y) for x in axis for y in axis if (x, y) != DEPOT]
     if family == 'uniform':
         points = [rng.choice(grid) for _ in range(n)]
     else:
@@ -35,7 +43,7 @@ def layout(n, family, seed):
             return (1 + 100*min((x+.5)**2 + y*y, (x-.5)**2 + y*y))**-2
         points = rng.choices(grid, weights=[weight(p) for p in grid], k=n)
     demands = [rng.choice(PACKAGES) for _ in range(n)]
-    stock = int(sum(demands)*rng.choice((1, 1.25, 1.5)))      # whole packages
+    stock = int(sum(demands)*STOCK_FACTOR)      # whole packages
     return dict(positions=[list(p) for p in points], demands=demands, stock=stock)
 
 

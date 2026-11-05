@@ -84,7 +84,7 @@ def build_mission(seed, *, m, n, family, slack, beta, coefficients, iterations=2
     tasks = [f'T{i+1}' for i in range(n)]
     uids = [f'U{j+1}' for j in range(m)]
     speeds = dict(zip(uids, geometry.airspeeds(m)))
-    cells, region, depot = geometry.cells(), geometry.region(), (0, 0)
+    cells, region, depot = geometry.cells(), geometry.region(), geometry.DEPOT
     legs = FloatLegs(region, cells, lambda r, j: wind_model.f0_value(seed, r, j), wind_model.BIN_S)
     problem = Problem(depot, dict(zip(tasks, map(tuple, layout['positions']))), dict(zip(tasks, layout['demands'])),
                       speeds, task_counts(n, m), CAPACITY, float(SERVICE_S), float(PREPARATION_S), legs)
@@ -123,7 +123,8 @@ def _payload(seed, layout, tasks, uids, speeds, routes, horizon, coefficients):
     plan, reserves = {'assignment': {}, 'routes': {}}, {}
     for u in uids:
         stops = routes[u] + [DEPOT]
-        points = [[0, 0]] + [[0, 0] if s == DEPOT else positions[s] for s in stops]
+        home = list(geometry.DEPOT)
+        points = [home] + [home if s == DEPOT else positions[s] for s in stops]
         loads, deliveries = [0]*(bound + 1), [0]*(bound + 1)
         for h, s in enumerate([DEPOT] + stops):      # h = 0 is the depot origin
             if s == DEPOT:
@@ -139,12 +140,12 @@ def _payload(seed, layout, tasks, uids, speeds, routes, horizon, coefficients):
                 plan['assignment'][s] = u
         paths = [[points[h], points[h+1]] for h in range(len(stops))]
         plan['routes'][u] = dict(stops=stops + [None]*(bound - len(stops)),
-                                 paths=paths + [[[0, 0]]]*(bound - len(stops)),
+                                 paths=paths + [[home]]*(bound - len(stops)),
                                  deliveries=deliveries, loads=loads)
-        reserves[u] = {'initial': [[0, 0]]}
+        reserves[u] = {'initial': [home]}
         for h, s in enumerate(stops, 1):
             if s != DEPOT:
-                reserves[u][str(h)] = [positions[s], [0, 0]]
+                reserves[u][str(h)] = [positions[s], home]
     big = 10**6
     return dict(
         schema_version='wind-benchmark-v3', formulation_date='2026-11-04',
@@ -152,7 +153,7 @@ def _payload(seed, layout, tasks, uids, speeds, routes, horizon, coefficients):
         units=dict(distance='m', time='s', mass='kg', energy='Wh', quantity='commodity_unit'),
         hierarchy=dict(helper_budget=1, affected_set_rule='directed_incumbent_union'),
         mission=dict(epoch_s=0, horizon_s=horizon, commodity_unit_mass_kg=float(PACKAGE_KG),
-                     operating_region_xy=geometry.region(), depot_xy=[0, 0],
+                     operating_region_xy=geometry.region(), depot_xy=list(geometry.DEPOT),
                      tasks=[dict(id=t, position_xy=positions[t], demand=demands[t], mandatory=demands[t],
                                  deadline_s=horizon) for t in tasks],
                      vehicles=[dict(id=u, airspeed_mps=speeds[u], empty_mass_kg=float(EMPTY_KG),
@@ -160,7 +161,7 @@ def _payload(seed, layout, tasks, uids, speeds, routes, horizon, coefficients):
                                     battery_capacity_wh=big, reserve_wh=0, payload_capacity_kg=float(PAYLOAD_KG),
                                     slot_bound=bound) for u in uids]),
         state=dict(depot_stock=layout['stock'], cumulative_delivered={t: 0 for t in tasks},
-                   fleet={u: dict(position_xy=[0, 0], battery_wh=big, onboard=0, mode='idle',
+                   fleet={u: dict(position_xy=list(geometry.DEPOT), battery_wh=big, onboard=0, mode='idle',
                                   residual_operation=None) for u in uids}),
         operations=dict(service_duration_s=SERVICE_S, service_energy_wh=0,
                         preparation_duration_s=PREPARATION_S, depot_bays=None),
@@ -208,7 +209,7 @@ def exact_pass(scenario, coefficients):
             deliveries[stop] = hi
             used += service_energy + _power(coefficients, speed, EMPTY_KG + unit*load)*SERVICE_S/3600
             load -= F(route['deliveries'][h])
-            rlo, rhi = binned_interval(scenario, uid, [tasks[stop]['position_xy'], [0, 0]], lo, hi)
+            rlo, rhi = binned_interval(scenario, uid, [tasks[stop]['position_xy'], data['mission']['depot_xy']], lo, hi)
             back = _power(coefficients, speed, EMPTY_KG + unit*load)*(rhi - lo)/3600
             need = max(need, used + back)
         requirement[uid] = need

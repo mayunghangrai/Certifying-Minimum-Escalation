@@ -25,9 +25,17 @@ def test_geometry_layout():
     cells = geometry.cells()
     assert len(cells) == 64 and cells[0]['polygon_xy'][0] == [-5000, -5000]
     lay = geometry.layout(12, 'clustered', 3)
-    assert all(abs(c) <= 5000 and c % 500 == 0 for p in lay['positions'] for c in p)
-    assert set(lay['demands']) <= {1, 2, 3, 4, 5} and lay['stock'] >= sum(lay['demands'])
+    assert all(abs(c) <= 5000 and (c - 125) % 500 == 0 for p in lay['positions'] for c in p)
+    assert set(lay['demands']) <= {1, 2, 3, 4, 5} and lay['stock'] == int(sum(lay['demands'])*1.25)
     assert geometry.airspeeds(4) == [10, 12.5, 15, 10]
+
+
+def test_no_task_or_depot_on_a_cell_line():
+    # Cell lines sit at multiples of 1,250 m; tasks and depot never do (problem 1).
+    for family in ('uniform', 'clustered'):
+        for seed in range(20):
+            points = geometry.layout(48, family, seed)['positions'] + [list(geometry.DEPOT)]
+            assert all(c % 1250 != 0 for p in points for c in p)
 
 
 @pytest.fixture(scope='module')
