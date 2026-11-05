@@ -147,7 +147,7 @@ closes it.
 - rescaling: a rescaled scenario is the same mission in other units (same U0, incumbent
   order, premise outcome and float-evaluator ratios), on 200 missions.
 
-Both label comparisons move to Gate B.
+The label rescaling check moves to Gate B. The "v3 equal to v2 on one-bin scenarios" check is dropped (Q14, confirmed 5 November).
 
 ### Phase B: method v3 (`src/certify_v3/`)
 
@@ -242,7 +242,7 @@ checked by:
 | Q10 | **"Helper required".** Does it mean Level 3 at helper allowance 0 is excluded (the existing `level3(allowance=0)`)? | Yes. |
 | Q11 | **CMI+.** The fewest reassigned *tasks* is a new search; the existing CMI-mu counts the fewest *outside UAVs*. Which one? | Keep it optional and decide after the pilot (design decision 6). |
 | Q12 | **Decided 5 November.** From the Matrice 350 RTK: two 263.2 Wh batteries, 55 min without payload, so about 574 W at 6.47 kg; scaled with mass^1.5 and fitted by a line over 6.5-9.0 kg. | P(m) = 145.5 W/kg x m - 368 W for all three airspeeds (about 578 W empty, 942 W fully loaded), exact rationals, in `configs/study_v3/physics.json`. Service: 60 s at P(mass on arrival), so v3 `service_energy_wh` = 0 and the code adds the hover energy. The schema allows a negative a; the validator requires P > 0 at the empty mass. |
-| Q13 | **Decided 5 November: both label checks move to Gate B.** Any check that compares certified labels needs Phase B. | Gate A tests the generator only (Section 3). Admission no longer needs labels (A8). |
+| Q13 | **Decided 5 November: the label rescaling check moves to Gate B; the v3 = v2 label check is dropped (Q14).** Any check that compares certified labels needs Phase B. | Gate A tests the generator only (Section 3). Admission no longer needs labels (A8). |
 | Q14 | **Decided 5 November: no v2 reduction check.** v3 is a new design, so its labels are not compared with v2. | Done (B7, Gate B, D-1). |
 | Q15 | **The payload lower bound in route-check energy.** The "current sortie" is unknown while the forward search is running. | `max(0, remaining mandatory demand - C x reloads still possible)`, plus the exact onboard mass for an airborne start. Energy charged with the envelope bound, alpha for times only. Fix it in B10 first. |
 | Q16 | **zstd.** It needs the `zstandard` package (Python 3.13 has no `compression.zstd`). | Add it to the lock file, or keep gzip (about 20-30% larger). |
