@@ -8,7 +8,7 @@ gate (Q13): on 200 generated missions, check
 - determinism: the mission, block and admission rebuild identically from the seed;
 - incumbent feasibility: the incumbent is certified at Level 0 under F0;
 - admission rule (admitted missions): |U0| in [1, ceil(m/3)], Level 0 rejected
-  under F1 at r = 0.6, and the optimistic pass finds a certain violation;
+  under F1 at the cell's admission strength, and the optimistic pass finds a certain violation;
 - conservation (admitted missions): all nine variants validate and conserve
   stock + onboard + delivered;
 - rescaling: under (L, T) = (2, 1/2) or (1/2, 2) the mission validates, the
@@ -33,7 +33,7 @@ from env.local_scope import affected_uavs
 from env.scenario import Scenario
 from env.wind_dependency import diagnose_wind_update
 from . import wind_model
-from .admission import ADMISSION_R, admit, certain_violations
+from .admission import admit, certain_violations
 from .generate import MAX_DRAWS, fill_slot, ms_cells, sc_cells, variants
 from .missions import build_mission, configured_coefficients
 from .rescale import incumbent_routes, rebuild_incumbent, rescale
@@ -164,9 +164,9 @@ def gate_one(job):
     block = job['block'] if job['block'] is not None else place_block(mission, entry['seed'], cell['size'])
     if job['kind'] == 'admitted':
         checks['determinism_block'] = place_block(mission, entry['seed'], cell['size']) == job['block']
-        decision = json.loads(json.dumps(admit(mission, block)))
+        decision = json.loads(json.dumps(admit(mission, block, cell['admission_r'])))
         checks['determinism_admission'] = all(decision.get(k) == entry.get(k) for k in ('admitted', 'reason', 'u0', 'violations'))
-        updated = Scenario(apply_magnitude(payload, block, ADMISSION_R))
+        updated = Scenario(apply_magnitude(payload, block, cell['admission_r']))
         u0 = _u0(updated.to_dict())
         m = len(payload['mission']['vehicles'])
         checks['admission_u0_range'] = 1 <= len(u0) <= math.ceil(m/3)
@@ -183,7 +183,7 @@ def gate_one(job):
     L, T = (F(x) for x in job['factors'])
     scaled = rescale(payload, L, T)
     checks['rescale_premise'] = previous_premise(Scenario(scaled))['accepted'] == premise['accepted']
-    updated = apply_magnitude(payload, block, ADMISSION_R)
+    updated = apply_magnitude(payload, block, cell['admission_r'])
     scaled_updated = rescale(updated, L, T)
     checks['rescale_u0'] = _u0(scaled_updated) == _u0(updated)
     ratio_ok = True

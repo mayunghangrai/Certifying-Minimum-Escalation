@@ -35,7 +35,7 @@ def test_certain_violation_on_the_hand_checked_case():
 
 @pytest.fixture(scope='module')
 def slot():
-    cell = dict(m=3, n=6, slack='tight', beta='tight', size=4, key='TEST')
+    cell = dict(m=3, n=6, slack='tight', beta='tight', size=4, admission_r=0.8, key='TEST')
     return fill_slot(81001, cell, 0, 'uniform', COEFFICIENTS, iterations=50, max_draws=12)
 
 

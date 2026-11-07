@@ -1,5 +1,9 @@
 """A8 admission (design 7.3), decided by the exact checker alone.
 
+The test runs at the strongest update a study runs (decided 6 November): r = 0.8
+for MS (r in {0.4, 0.6, 0.8}) and r = 0.6 for SC (its only strength). At
+r = 0.6 the pilot fill left 56 of 72 generous-margin MS slots empty.
+
 Level 0 changes nothing, so "the update breaks the plan" means the unchanged
 incumbent, flown under F1, misses a deadline, battery or reserve limit or the
 horizon. Two exact passes decide it:
@@ -23,7 +27,8 @@ from env.scenario import Scenario
 from env.wind_dependency import diagnose_wind_update
 from .update import apply_magnitude
 
-ADMISSION_R = 0.6
+MS_ADMISSION_R = 0.8
+SC_ADMISSION_R = 0.6
 
 
 def _r(value):
@@ -93,14 +98,14 @@ def certain_violations(scenario):
     return violations
 
 
-def admit(mission, block):
-    """Decide one draw at r = 0.6, t_u = 0. Returns a loggable dict."""
+def admit(mission, block, r):
+    """Decide one draw at strength r, t_u = 0. Returns a loggable dict."""
     payload = mission.to_dict()
     m = len(payload['mission']['vehicles'])
     premise = previous_premise(mission)
     if not premise['accepted']:
         return dict(admitted=False, reason='previous premise not certified: ' + premise['reason'])
-    updated = Scenario(apply_magnitude(payload, block, ADMISSION_R))
+    updated = Scenario(apply_magnitude(payload, block, r))
     u0 = affected_uavs(updated, diagnose_wind_update(updated))['uavs']
     result = dict(u0=u0)
     if not 1 <= len(u0) <= math.ceil(m/3):

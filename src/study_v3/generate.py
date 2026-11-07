@@ -10,7 +10,7 @@ from fractions import Fraction as F
 from itertools import product
 
 from env.scenario import Scenario
-from .admission import admit
+from .admission import MS_ADMISSION_R, SC_ADMISSION_R, admit
 from .missions import build_mission
 from .seeds import stable_seed
 from .snapshots import build_snapshot
@@ -30,12 +30,13 @@ def ms_cells():
     cells = []
     for (a, m), (b, k), (c, slack), (d, beta) in product(*(enumerate(x) for x in (FLEETS, TASKS_PER_UAV, SLACKS, BETAS))):
         cells.append(dict(m=m, n=m*k, slack=slack, beta=beta, size=SIZES[(a + b + c + d) % 3],
+                          admission_r=MS_ADMISSION_R,
                           key=f'MS|m{m}|k{k}|{slack}|{beta}'))
     return cells
 
 
 def sc_cells():
-    return [dict(m=m, n=n, slack='medium', beta='medium', key=f'SC|n{n}|m{m}') for n, m in SC_CELLS]
+    return [dict(m=m, n=n, slack='medium', beta='medium', admission_r=SC_ADMISSION_R, key=f'SC|n{n}|m{m}') for n, m in SC_CELLS]
 
 
 def fill_slot(base_seed, cell, slot, family, coefficients, *, iterations=2000, max_draws=MAX_DRAWS):
@@ -51,7 +52,7 @@ def fill_slot(base_seed, cell, slot, family, coefficients, *, iterations=2000, m
                                           beta=cell['beta'], coefficients=coefficients, iterations=iterations,
                                           geometry_seed=entry['geometry_seed'])
             block = place_block(mission, seed, cell['size'])
-            entry.update(admit(mission, block))
+            entry.update(admit(mission, block, cell['admission_r']))
         except ValueError as error:
             entry.update(admitted=False, reason=str(error))
         log.append(entry)
