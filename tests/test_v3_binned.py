@@ -9,7 +9,7 @@ from continuous.binned import (BeyondHorizon, binned_duration, binned_guard,
                                binned_interval, position_at)
 from continuous.physics import stationary_duration
 from env.scenario import Scenario
-from test_final_scope import revised
+from v2_fixtures import revised
 from test_v3_units import v3_case
 
 # The 12 rational unit directions: 4 axes and the 8 (3/5, 4/5) turns.

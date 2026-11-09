@@ -5,7 +5,7 @@ import pytest
 
 from env import units
 from env.scenario import Scenario
-from test_final_scope import revised
+from v2_fixtures import revised
 
 
 def _scale_points(points, k):

@@ -1,0 +1,9 @@
+name: wind_benchmark
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - shapely>=2.0,<3
+  - jsonschema>=4.18,<5
+  - pytest>=8,<10
+  - scipy>=1.10,<2
