@@ -27,8 +27,7 @@ from env.scenario import Scenario
 from env.wind_dependency import diagnose_wind_update
 from .update import apply_magnitude
 
-MS_ADMISSION_R = 0.8
-SC_ADMISSION_R = 0.6
+ADMISSION_R = 0.8
 
 
 def _r(value):
